@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/nested-list-weight-sum-ii
+
+class Solution:
+    def __init__(self):
+        self.depth = 0
+        self.sum = 0
+        self.weighted_sum = 0
+
+    def count(self,nested : NestedInteger,depth : int) -> None:
+        if nested.isInteger():
+            self.depth = max(self.depth,depth)
+            self.sum += nested.getInteger()
+            self.weighted_sum -= depth * nested.getInteger()
+
+        else:
+            for child in nested.getList():
+                self.count(child,depth+1)
+
+    def depthSumInverse(self, nestedList: List[NestedInteger]) -> int:
+        for nested in nestedList:
+            self.count(nested,1)
+        return ((self.depth + 1) * self.sum) + self.weighted_sum
+
+
+
+
+
+

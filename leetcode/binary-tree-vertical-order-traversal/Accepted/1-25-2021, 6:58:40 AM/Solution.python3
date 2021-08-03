@@ -1,0 +1,45 @@
+// https://leetcode.com/problems/binary-tree-vertical-order-traversal
+
+from collections import defaultdict
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def verticalOrder(self, root: TreeNode) -> List[List[int]]:
+        if not root : 
+            return []
+
+        bfs = [(root,0)]
+        ansDict = defaultdict(list)
+
+        minRank,maxRank = root.val,root.val
+        
+        while bfs:
+            n = len(bfs)
+
+            for i in range(n):
+                node,rank = bfs.pop(0)
+                if node.left:
+                    bfs.append((node.left,rank-1))
+                if node.right:
+                    bfs.append((node.right,rank+1))
+
+                ansDict[rank].append(node.val)
+
+                minRank = min(minRank,rank)
+                maxRank = max(maxRank,rank)
+
+        ans = []
+        for i in range(minRank,maxRank+1):
+            if ansDict[i]:
+                ans.append(ansDict[i])
+        return ans
+
+        
+
+                    
+
+        

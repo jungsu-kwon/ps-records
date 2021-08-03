@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/4sum-ii
+
+from collections import Counter
+class Solution:
+    def fourSumCount(self, A: List[int], B: List[int], C: List[int], D: List[int]) -> int:
+        countA = Counter(A)
+        countB = Counter(B)
+
+        countSum1 = Counter()
+
+        for a in countA : 
+            for b in countB : 
+                countSum1[a+b] = countA[a] * countB[b]
+
+        
+        countC = Counter(C)
+        countD = Counter(D)
+
+        countSum2 = Counter()
+
+        for c in countC : 
+            for d in countD : 
+                countSum2[c+d] = countC[c] * countD[d]
+
+        ans = 0
+        for sum1 in countSum1 : 
+            if -sum1 in countSum2 : 
+                ans += countSum1[sum1] * countSum2[-sum1]
+        return ans 
+
+        

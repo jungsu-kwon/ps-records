@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph
+
+class Solution:
+    def countComponents(self, n: int, edges: List[List[int]]) -> int:
+        parents, ranks, count = {}, {}, 0 
+        
+        def add(node):
+            nonlocal count
+            if not node in parents:
+                parents[node] = node
+                ranks[node] = 0
+                count += 1
+        def find(node):
+            if parents[node] != node:
+                return find(parents[node])
+            return node
+        
+        def union(node1,node2):
+            nonlocal count
+            root1,root2 = find(node1),find(node2)
+            
+            if root1 != root2:
+                smaller, larger = sorted([root1,root2],key= lambda x : ranks[x])
+                parents[smaller] = larger
+                ranks[larger] += ranks[larger] == ranks[smaller]
+                count -= 1
+        for node1,node2 in edges:
+            add(node1)
+            add(node2)
+            union(node1,node2)
+        return count + (n - len(parents))

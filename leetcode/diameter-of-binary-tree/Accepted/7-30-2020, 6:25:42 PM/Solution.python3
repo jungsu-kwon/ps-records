@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/diameter-of-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def depth(self,root):
+        if root == None : 
+            return 0 
+        left_depth,right_depth = self.depth(root.left),self.depth(root.right)
+        self.diameter = max(self.diameter,left_depth+right_depth)
+        return max(left_depth,right_depth)+1
+    def diameterOfBinaryTree(self, root) :
+        self.diameter = 0 
+        self.depth(root)
+        return self.diameter

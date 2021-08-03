@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/map-sum-pairs
+
+class MapNode:
+    def __init__(self,finish=False):
+        self.children = {}
+        self.sum = 0
+    
+class MapSum:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.root = MapNode()
+        
+
+    def insert(self, key: str, val: int) -> None:
+        curNode: MapNode = self.root
+        for ch in key:
+            if not ch in curNode.children:
+                curNode.children[ch] = MapNode()
+
+            curNode = curNode.children[ch]
+            curNode.sum += val
+            
+
+
+    def sum(self, prefix: str) -> int:
+        curNode: MapNode = self.root
+
+        for ch in prefix:
+            if not ch in curNode.children:
+                return 0
+            curNode = curNode.children[ch]
+        return curNode.sum

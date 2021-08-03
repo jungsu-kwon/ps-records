@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/cells-with-odd-values-in-a-matrix
+
+class Solution:
+    def oddCells(self, n, m, indices) :
+        self.rows = [0 for i in range(n)]
+        self.cols = [0 for i in range(m)]
+
+        for ri,ci in indices : 
+            self.rows[ri] = 1 - self.rows[ri]
+            self.cols[ci] = 1 - self.cols[ci]
+        count = 0 
+        for row in range(n):
+            for col in range(m) : 
+                if self.rows[row] + self.cols[col] == 1 : 
+                    count += 1 
+        return count 

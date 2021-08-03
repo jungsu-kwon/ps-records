@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/climbing-stairs
+
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n == 1 or n == 2 : 
+            return n
+        self.notes = [-1] * (n)
+        for i in range(2) : 
+            self.notes[i] = i + 1 
+        def helper(n) : 
+            if self.notes[n] != -1 :
+                return self.notes[n]
+            else :
+                self.notes[n] = helper(n-2) + helper(n-1)
+                return self.notes[n]
+        return helper(n-1)
+                
+        

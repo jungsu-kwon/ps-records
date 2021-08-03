@@ -1,0 +1,98 @@
+// https://leetcode.com/problems/sudoku-solver
+
+from typing import List
+
+class Solution:
+    def get_cell_index(self,i,j):
+        return ((i//3) - 1) * 3 + j//3
+
+    def get_available_numbers(self,ind):
+        i,j = ind // self.n, ind % self.n
+        cell_set = self.cells[self.get_cell_index(i,j)]
+        col_set  = self.cols[j]
+        row_set  = self.rows[i]
+
+        return [i for i in range(1,10) if (i in cell_set) and 
+                                          (i in row_set ) and 
+                                          (i in col_set ) ]
+
+    def solveSudoku(self, board: List[List[str]]) -> None:
+        """
+        Do not return anything, modify board in-place instead.
+        :rtype None
+        """
+
+        self.n = 9
+        self.cols = [set([i for i in range(1,10)]) for i in range(self.n)]
+        self.rows    = [set([i for i in range(1,10)]) for i in range(self.n)]
+        self.cells   = [set([i for i in range(1,10)]) for i in range(self.n)]
+        self.board = board
+
+        for i in range(self.n):
+            for j in range(self.n):
+                if board[i][j] == '.':
+                    continue
+                else:
+                    cell_ind = self.get_cell_index(i,j)
+                    num = int(board[i][j])
+
+                    self.cols[j].remove(num)
+                    self.rows[i].remove(num)
+                    self.cells[cell_ind].remove(num)
+        
+        def helper(ind=0) -> bool:
+            if ind == self.n * self.n:
+                return True
+            i,j = ind // self.n, ind % self.n
+            if self.board[i][j] != '.':
+                return helper(ind+1)
+
+            cell_ind = self.get_cell_index(i,j)
+
+
+            available_nums = self.get_available_numbers(ind)
+
+            if not available_nums:
+                return False
+
+            for num in available_nums:
+                self.cols[j].remove(num)
+                self.rows[i].remove(num)
+                self.cells[cell_ind].remove(num)
+                self.board[i][j] = str(num)
+
+                if helper(ind + 1):
+                    return True
+                
+                self.board[i][j] = '.'
+                self.cols[j].add(num)
+                self.rows[i].add(num)
+                self.cells[cell_ind].add(num)
+
+        helper(ind=0)
+        
+        
+
+
+        
+                
+
+        
+
+
+
+
+
+        
+
+        
+
+
+
+
+
+
+
+
+
+

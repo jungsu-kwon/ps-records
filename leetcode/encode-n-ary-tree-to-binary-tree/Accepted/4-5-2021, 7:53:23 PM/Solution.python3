@@ -1,0 +1,38 @@
+// https://leetcode.com/problems/encode-n-ary-tree-to-binary-tree
+
+class Codec:
+    def encode(self, root):
+        #DFS for binary tree construction
+        def encode_recur(arr):
+            if not arr: return None
+            this = TreeNode(arr[0].val) #allocate TreeNode
+            left = arr[0].children #children goes to left
+            right = arr[1:] #nodes at same level goes to right
+            this.left = encode_recur(left)
+            this.right = encode_recur(right)    
+            return this    
+        if not root: return None
+        data = TreeNode(root.val) #allocate initial node
+        data.left = encode_recur(root.children) #call recursion
+        return data
+    
+
+    def decode(self, data):
+        #BFS for n-ary tree construction
+        if not data: return None
+        root = Node(data.val)
+        #use priority queue which preserves depth order
+        #root: root of n-ary tree, data: root of binary tree
+        que = deque([(root, data)]) #push root and data together
+        while que:
+            #ntn: n-ary tree node, #btn: binary tree node
+            ntn, btn = que.popleft()
+            nex_btn = btn.left if btn.left else None
+            children = []
+            while nex_btn: #this means we have children and should add them recursively
+                nex_ntn = Node(nex_btn.val) #allocate Node
+                children.append(nex_ntn) #add it to children
+                que.append((nex_ntn, nex_btn)) #add it to queue so it can be processed
+                nex_btn = nex_btn.right
+            ntn.children = children    
+        return root

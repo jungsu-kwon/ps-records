@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/verify-preorder-sequence-in-binary-search-tree
+
+class Solution:
+    def isLeftChild(self,i):
+        return self.preorder[i-1] > self.preorder[i]
+
+    def verifyPreorder(self, preorder: List[int]) -> bool:
+        self.preorder = preorder
+        if not self.preorder : 
+            return True
+        hardMinInd = None
+        hardMin = -float("inf")
+        maxi = preorder[0]
+        for i,num in enumerate(preorder) :
+            if i == 0 :
+                continue
+            if num < hardMin :
+                return False
+            
+            if not self.isLeftChild(i):
+                if maxi < num :
+                    hardMin = maxi
+                    maxi = num 
+                else :
+                    j = i - 1 if hardMinInd == None else hardMinInd
+                    while self.preorder[j] < num :
+                        j -= 1
+                    hardMinInd = j + 1 
+                    hardMin = self.preorder[j+1]
+        return True
+                
+                
+
+
+
+
+
+
+            
+
+
+
+        

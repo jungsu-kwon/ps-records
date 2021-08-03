@@ -1,0 +1,60 @@
+// https://leetcode.com/problems/optimal-account-balancing
+
+from collections import defaultdict,Counter
+from typing import List
+
+class Solution:
+    def get_balances(self,transactions : List[List[int]]) -> dict:
+        balances = defaultdict(int)
+
+        for src,dst,amount, in transactions:
+            balances[src] += amount
+            balances[dst] -= amount
+
+        return list(balances.values())
+        
+    def minTransfers(self, transactions: List[List[int]]) -> int:
+        balances = self.get_balances(transactions)
+
+        self.notes = {}
+
+        def dfs(balances : List[int], cur: int, path: int):
+            if not balances:
+                return path
+
+            if tuple(balances) in self.notes:
+                return path + self.notes[tuple(balances)]
+
+            res = float("inf")
+            for i,balance in enumerate(balances):
+                if cur == 0:
+                    res = min(res,dfs(balances[:i] +
+                                      balances[i+1:],cur+balances[i],
+                                      path))
+                else:
+                    res = min(res,dfs(balances[:i] +
+                                      balances[i+1:],cur+balances[i],
+                                      path+1))
+            self.notes[tuple(balances)] = res - path
+            return res
+        return dfs(balances,0,0)
+
+        
+
+
+
+        
+
+        
+
+
+            
+
+
+
+
+        
+
+
+
+        

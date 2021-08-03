@@ -1,0 +1,42 @@
+// https://leetcode.com/problems/binary-tree-maximum-path-sum
+
+class Solution:
+    def helper(self,root):
+        if root == None : 
+            return None
+        if root.left == None and root.right == None : 
+            self.maxi = max(self.maxi,root.val)
+            return root.val
+        elif root.left != None and root.right != None : 
+            left_val = self.helper(root.left)
+            right_val = self.helper(root.right)
+            self.maxi = max(self.maxi,
+                            left_val,
+                            right_val,
+                            root.val,
+                            left_val+root.val,
+                            right_val + root.val,
+                            left_val + root.val + right_val
+                           )
+            return max(0,left_val,right_val)+root.val
+        elif root.left != None : 
+            left_val = self.helper(root.left)
+            self.maxi = max(self.maxi,
+                            root.val,
+                            left_val,
+                            left_val+root.val
+                           )
+            return max(left_val,0)+root.val
+        elif root.right != None : 
+            right_val = self.helper(root.right)
+            self.maxi = max(self.maxi,
+                            root.val,
+                            right_val,
+                            right_val + root.val
+                           )
+            return max(right_val,0)+root.val
+
+    def maxPathSum(self,root):
+        self.maxi = root.val
+        self.helper(root)
+        return self.maxi

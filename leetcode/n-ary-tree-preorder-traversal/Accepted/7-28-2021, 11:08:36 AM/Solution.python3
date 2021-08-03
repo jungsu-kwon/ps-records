@@ -1,0 +1,11 @@
+// https://leetcode.com/problems/n-ary-tree-preorder-traversal
+
+class Solution:
+    def preorder(self, root: 'Node') -> List[int]:
+        if not root:
+            return []
+        ans: List[int] = [root.val]
+
+        for child in root.children:
+            ans.extend(self.preorder(child))
+        return ans

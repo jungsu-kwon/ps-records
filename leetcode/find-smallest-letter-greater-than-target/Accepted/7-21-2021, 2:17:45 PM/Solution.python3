@@ -1,0 +1,6 @@
+// https://leetcode.com/problems/find-smallest-letter-greater-than-target
+
+class Solution(object):
+    def nextGreatestLetter(self, letters, target):
+        index = bisect.bisect(letters, target)
+        return letters[index % len(letters)]

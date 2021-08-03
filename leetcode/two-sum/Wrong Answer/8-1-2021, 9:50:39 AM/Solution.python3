@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/two-sum
+
+from typing import List, Dict
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        self.hash: Dict[int,int] = {num:i for i,num in enumerate(nums)}
+        for i,num in enumerate(nums):
+            if target - num in self.hash:
+                return [i,self.hash[target-num]]
+        return [-1,-1]

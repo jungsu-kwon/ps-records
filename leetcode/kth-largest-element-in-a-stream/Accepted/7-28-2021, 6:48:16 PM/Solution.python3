@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/kth-largest-element-in-a-stream
+
+import bisect
+from typing import List
+class KthLargest:
+    def __init__(self, k: int, nums: List[int]):
+        self.nums = [-num for num in nums]
+        self.nums.sort()
+        self.k = k
+
+    def add(self, val: int) -> int:
+        bisect.insort(self.nums,-val)
+        # print(self.nums)
+        # self.nums = self.nums[:self.k]
+        return -self.nums[self.k-1]
+        
+        
+
+
+# Your KthLargest object will be instantiated and called as such:
+# obj = KthLargest(k, nums)
+# param_1 = obj.add(val)

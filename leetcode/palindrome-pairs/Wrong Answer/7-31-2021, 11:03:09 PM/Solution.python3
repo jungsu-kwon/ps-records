@@ -1,0 +1,59 @@
+// https://leetcode.com/problems/palindrome-pairs
+
+from typing import List, Dict, Set, Tuple
+
+class TrieNode:
+    def __init__(self):
+        self.children: Dict[str,TrieNode] = {}
+        self.words: Set[Tuple[str,int]] = set([])
+        self.word: str = None
+        self.ind: int = -1
+
+class Solution:
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
+        root: TrieNode = TrieNode()
+        ans: Set[List[int]] = set([])
+        hasEmptyString: bool = True
+
+        for i,word in enumerate(words):
+            inverseWord: str = word[::-1]
+            curNode = root
+            for ch in inverseWord:
+                if not ch in curNode.children:
+                    curNode.children[ch] = TrieNode()
+                curNode.words.add((inverseWord,i))
+                curNode = curNode.children[ch]
+
+            curNode.word = word
+            curNode.words.add((inverseWord,i))
+            curNode.ind = i
+
+        def isPalindrome(word):
+            for i,letter in enumerate(word[:(len(word)//2) + 1]):
+                if word[i] != word[-i]:
+                    return False
+            return True
+        
+        for wordInd, word in enumerate(words):
+            curNode: TrieNode = root
+            broke: bool = False
+            for chInd, char in enumerate(word):
+                if curNode.word is not None:
+                    remainder: str = word[chInd:]
+                    if isPalindrome(remainder) and \
+                         wordInd != curNode.ind:
+                        ans.add((wordInd,curNode.ind))
+                if not char in curNode.children:
+                    broke = True
+                    break
+                curNode = curNode.children[char]
+            # print(word,curNode.words)
+            if broke: continue
+
+            for word2, wordInd2 in curNode.words:
+                if wordInd == wordInd2: continue
+                remainder: str = word2[len(word):]
+                # print("remainder ",remainder)
+                if isPalindrome(remainder):
+                    ans.add((wordInd,wordInd2))
+        return ans

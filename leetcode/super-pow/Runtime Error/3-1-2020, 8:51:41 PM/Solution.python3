@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/super-pow
+
+class Solution:
+    def helper(self,a,b):
+        if b == 0 : 
+            return 1
+        elif b == 1 : 
+            ret = a 
+        else : 
+            remainder = int(b % 2)
+            b_ = int((b-remainder) / 2 )
+            temp = self.helper(a,b_)
+            ret = temp * temp *  self.helper(a,remainder)
+            
+        if ret >= 1337 : 
+            return ret % 1337
+        else :
+            return ret
+            
+            
+    def superPow(self, a: int, b: List[int]) -> int:
+        def to_str(x):
+            return str(x)
+        pow = int(''.join(map(to_str,b)))
+        if a >= 1337 :
+            a = a % 1337
+        return self.helper(a,pow)
+        
+        
+        

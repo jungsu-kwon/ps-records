@@ -1,0 +1,57 @@
+// https://leetcode.com/problems/implement-queue-using-stacks
+
+class MyQueue:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.stack = []
+        self.stack_reverse = [] 
+        self.n = 0 
+
+    def push(self, x: int) -> None:
+        """
+        Push element x to the back of queue.
+        """
+        self.stack.append(x)
+        self.n += 1
+        
+
+    def pop(self) -> int:
+        """
+        Removes the element from in front of queue and returns that element.
+        """
+        if len(self.stack_reverse ) == 0  : 
+            for i in range(self.n) : 
+                a = self.stack.pop()
+                self.stack_reverse.append(a)
+        self.n -= 1 
+        return self.stack_reverse.pop() 
+            
+
+        
+
+    def peek(self) -> int:
+        """
+        Get the front element.
+        """
+        if len(self.stack_reverse) == 0 :
+            for i in range(self.n) : 
+                a = self.stack.pop()
+                self.stack_reverse.append(a)
+        return self.stack_reverse[-1]
+        
+
+    def empty(self) -> bool:
+        """
+        Returns whether the queue is empty.
+        """
+        return self.n == 0 
+
+# Your MyQueue object will be instantiated and called as such:
+# obj = MyQueue()
+# obj.push(x)
+# param_2 = obj.pop()
+# param_3 = obj.peek()
+# param_4 = obj.empty()

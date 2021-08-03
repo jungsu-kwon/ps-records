@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/minimum-distance-between-bst-nodes
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def traversal(self,root):
+        if root : 
+            self.traversal(root.left)
+            self.traversal(root.right)
+            self.vals.append(root.val)
+            
+
+
+            
+    def minDiffInBST(self, root):
+        self.vals = [] 
+        self.traversal(root)
+
+        vals = sorted(self.vals)
+        min_diff = abs(vals[1] - vals[0])
+        for i in range(2,len(vals)):
+            diff = abs(vals[i] - vals[i-1])
+            if diff < min_diff : 
+                min_diff = diff 
+
+        return min_diff
+            
+
+                    
+
+

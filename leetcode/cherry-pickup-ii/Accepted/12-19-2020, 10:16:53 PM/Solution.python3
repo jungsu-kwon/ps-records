@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/cherry-pickup-ii
+
+class Solution:
+    def pick_cherry(self,state):
+        if state[0] == state[1] :
+            return self.grid[self.row_ind+1][state[0]]
+        return self.grid[self.row_ind+1][state[0]] + self.grid[self.row_ind+1][state[1]]
+
+    def get_valid_children(self,state,val):
+        cands = [(state[0]+offset1,
+                  state[1]+offset2) for offset1 in range(-1,2) 
+                                    for offset2 in range(-1,2)]
+
+        valid_children = [cand for cand in cands if cand[0] >= 0 and 
+                                                    cand[0] < self.num_cols and 
+                                                    cand[1] >= 0 and 
+                                                    cand[1] < self.num_cols]
+
+        valid_children_w_val = [(child,self.pick_cherry(child)+val) for child in valid_children]
+        return valid_children_w_val
+
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        self.num_rows,self.num_cols = len(grid),len(grid[0])
+        states = {(0,self.num_cols-1):grid[0][0] + grid[0][self.num_cols-1]}
+        self.grid = grid
+        self.row_ind = 0
+
+        while self.row_ind != self.num_rows -1  :
+            new_state = {}
+            for state,val in states.items():
+                valid_children = self.get_valid_children(state,val)
+                for child in valid_children:
+                    if child[0] in new_state : 
+                        new_state[child[0]] = max(child[1],new_state[child[0]])
+                    else :
+                        new_state[child[0]] = child[1]
+            self.row_ind += 1 
+            states = new_state 
+
+        return max(states.values())
+
+                
+        

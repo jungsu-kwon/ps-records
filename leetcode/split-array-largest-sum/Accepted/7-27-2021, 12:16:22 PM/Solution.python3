@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/split-array-largest-sum
+
+from typing import List
+
+class Solution:
+    def possible(self,
+        nums: List[int],
+        numSplits: int,
+        targetSum: int) -> bool:
+
+        finishedSplits: int = 0
+        curSum: int = 0
+
+        for num in nums + [0]:
+            if num > targetSum:
+                return False
+
+            if curSum + num <= targetSum:
+                curSum += num
+            else:
+                curSum = num
+                finishedSplits += 1
+
+        return finishedSplits <= numSplits - 1
+
+    def splitArray(self, nums: List[int], m: int) -> int:
+        left: int = 0
+        right: int = sum(nums)
+
+        while left < right:
+            mid: int = (left + right) // 2
+
+            if self.possible(nums,m,mid):
+                right = mid
+            else:
+                left = mid + 1
+        return left

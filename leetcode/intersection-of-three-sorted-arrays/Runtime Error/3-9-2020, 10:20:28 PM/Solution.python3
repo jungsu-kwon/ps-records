@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/intersection-of-three-sorted-arrays
+
+class Solution:
+    def arraysIntersection(self, arr1: List[int], arr2: List[int], arr3: List[int]) -> List[int]:
+        ind1,ind2,ind3 = 0,0,0
+        n1,n2,n3 = len(arr1),len(arr2),len(arr3)
+        ans = []
+        for cand in arr1:
+            cand2 = arr2[ind2]
+            while cand2 < cand : 
+                ind2 += 1 
+                cand2 = arr2[ind2]
+            if cand2 != cand : 
+                continue
+            cand3 = arr3[ind3]
+            while cand3 < cand : 
+                ind3 += 1 
+                cand3 = arr3[ind3]
+            if cand3 != cand : 
+                continue
+            ans.append(cand)   
+        return ans
+                
+                
+        
+        

@@ -1,0 +1,10 @@
+// https://leetcode.com/problems/queue-reconstruction-by-height
+
+class Solution:
+    def reconstructQueue(self, people: List[List[int]]) -> List[List[int]]:
+        sorted_list = sorted(people,key=lambda x :(-x[0],x[1]))
+        ans = []
+        for people in sorted_list : 
+            ans.insert(people[1],people)
+        return ans
+    

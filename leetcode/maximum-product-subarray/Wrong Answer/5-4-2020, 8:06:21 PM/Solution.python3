@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/maximum-product-subarray
+
+class Solution:
+    def maxProduct(self, nums):
+        n = len(nums)
+        self.pos = [0 for i in range(n)]
+        self.neg = [0 for i in range(n)]
+
+        self.pos[0],self.neg[0] = max(nums[0],0),min(nums[0],0)
+        maxi = self.pos[0]
+        for i in range(1,n):
+            self.pos[i] = max(nums[i],0,self.neg[i-1]*nums[i],self.pos[i-1]*nums[i])
+            self.neg[i] = min(nums[i],0,self.neg[i-1]*nums[i],self.pos[i-1]*nums[i])
+            maxi = max(self.pos[i],maxi)
+        return maxi

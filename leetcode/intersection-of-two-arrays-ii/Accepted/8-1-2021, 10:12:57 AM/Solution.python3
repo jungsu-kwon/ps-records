@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/intersection-of-two-arrays-ii
+
+from collections import Counter
+from typing import List
+
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        counter1: Counter = Counter(nums1)
+        counter2: Counter = Counter(nums2)
+
+        intersect: Counter = counter1 & counter2
+        ans: List[int] = []
+        for k,v in intersect.items():
+            ans += [k] * v
+        return ans

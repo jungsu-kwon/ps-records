@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/balanced-binary-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def helper(self, root: TreeNode) -> int:
+        """
+        calculate depth of tree root
+
+        returns -1 if tree is not balanced
+        o.w returns normal height
+        """
+
+        if not root: return 0
+
+        if (leftHeight := self.helper(root.left)) == -1:
+            return -1
+        elif (rightHeight := self.helper(root.right)) == -1:
+            return -1
+        elif abs(rightHeight - leftHeight) > 1:
+            return -1
+        return max(rightHeight,leftHeight) + 1
+
+    def isBalanced(self, root: TreeNode) -> bool:
+        return self.helper(root) != -1

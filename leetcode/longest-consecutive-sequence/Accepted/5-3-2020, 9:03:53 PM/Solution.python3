@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/longest-consecutive-sequence
+
+class Solution:
+    def longestConsecutive(self,nums):
+        if len(nums) == 0 :
+            return 0
+
+        dic = set(nums)
+        visited = set([])
+        maxi = 1
+
+        for key in dic : 
+            if key in visited : 
+                continue
+            visited.add(key)
+            left,right = key-1,key+1
+
+            while left in dic:
+                visited.add(left)
+                left -= 1 
+            while right in dic : 
+                visited.add(right)
+                right += 1 
+
+            maxi = max(maxi,right-left-1)
+
+        return maxi

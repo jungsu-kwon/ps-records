@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/powerful-integers
+
+class Solution:
+    def powerfulIntegers(self, x: int, y: int, bound: int) -> List[int]:
+        import math
+        max_i = int(math.log(bound,x)) if x != 1 else 1
+        max_j = int(math.log(bound,y)) if y != 1 else 1 
+        ans = set([])
+        
+        
+        for i in range(max_i+1):
+            x_i = math.pow(x,i)
+            for j in range(max_j+1):
+                y_j = math.pow(y,j)
+                cand = int(x_i + y_j)
+                if cand <= bound : 
+                    ans.add(cand)
+        return list(ans)            
+                
+        
+        
+        

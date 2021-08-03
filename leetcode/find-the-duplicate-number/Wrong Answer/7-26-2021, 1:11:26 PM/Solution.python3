@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/find-the-duplicate-number
+
+from collections import defaultdict
+from typing import List
+
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        numSum: int = sum(nums)
+
+        n: int = len(nums) - 1 
+        left: int = 1
+        right: int = n
+        duplicate: int = -1
+
+        while left < right:
+            mid: int = (left + right) // 2
+            largeCount: int = sum([num >= mid for num in nums])
+
+            if largeCount > (n - mid + 1):
+                duplicate: int = mid
+                left = mid + 1
+
+            else:
+                right = mid
+
+        return duplicate

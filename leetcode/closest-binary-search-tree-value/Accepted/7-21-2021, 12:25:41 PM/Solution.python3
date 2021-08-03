@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/closest-binary-search-tree-value
+
+class Solution:
+    def inOrderTraversal(self,root: TreeNode) -> None:
+        if not root:
+            return
+        self.inOrderTraversal(root.left)
+        self.ans = min(self.ans,
+                       (abs(root.val-self.target),root.val),
+                       key=lambda x : x[0])
+        self.inOrderTraversal(root.right)
+
+    def closestValue(self, root: TreeNode, target: float) -> int:
+        self.target: int = target
+        self.ans = (float('inf'),float('inf'))
+
+        self.inOrderTraversal(root)
+        return self.ans[1]

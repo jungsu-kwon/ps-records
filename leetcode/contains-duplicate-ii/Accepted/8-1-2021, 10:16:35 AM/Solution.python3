@@ -1,0 +1,12 @@
+// https://leetcode.com/problems/contains-duplicate-ii
+
+from typing import Dict, List
+
+class Solution:
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        self.hash: Dict[int,int] = {}
+        for i,num in enumerate(nums):
+            if num in self.hash and i - self.hash[num] <= k:
+                return True
+            self.hash[num] = i
+        return False

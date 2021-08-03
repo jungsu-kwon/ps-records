@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/group-anagrams
+
+class Solution():                
+        
+    def groupAnagrams(self,strs):
+        import collections
+        #assert len(self.alphabets) == 26
+        self.groups = collections.defaultdict(list)
+        for str_ in strs : 
+            n = len(str_)
+            key = [0 for i in range(26)]
+            for char in str_ : 
+                key[ord(char) -ord('a')] += 1 
+            key_tuple = tuple(key)
+            self.groups[key_tuple].append(str_)
+        return self.groups.values()
+            
+

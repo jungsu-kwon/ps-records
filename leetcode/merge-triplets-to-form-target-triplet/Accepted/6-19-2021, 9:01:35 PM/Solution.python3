@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/merge-triplets-to-form-target-triplet
+
+class Solution:
+    def is_small(self,triplet,target):
+        for num_trip,num_target in zip(triplet,target):
+            if num_trip > num_target:
+                return False
+        return True
+            
+    def mergeTriplets(self, triplets: List[List[int]], target: List[int]) -> bool:
+        found = [False for i in range(3)]
+        for triplet in triplets:
+            if not self.is_small(triplet,target):
+                continue
+            for i in range(3):
+                if triplet[i] == target[i]:
+                    found[i] = True
+        if sum(found) == 3:
+            return True
+        return False
+                
+
+
+                
+                
+
+        

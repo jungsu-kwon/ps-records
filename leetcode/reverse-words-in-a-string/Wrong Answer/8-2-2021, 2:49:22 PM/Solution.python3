@@ -1,0 +1,8 @@
+// https://leetcode.com/problems/reverse-words-in-a-string
+
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        splitted: List[str] = [word.strip() for word in s.split(' ')]
+        splitted = reversed(splitted)
+        return ' '.join(splitted)
+        

@@ -1,0 +1,43 @@
+// https://leetcode.com/problems/the-skyline-problem
+
+from typing import List, Set, Dict
+from collections import namedtuple
+from collections import defaultdict
+import heapq
+
+Point    = namedtuple("point",   ["x","y"])
+Building = namedtuple("building",["left","right","height"])
+Rooftop  = namedtuple("rooftop", ["negHeight","rightend"])
+
+class Solution:
+    def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
+        # NOTE: huge copy operation is performed --> hurts performance
+        buildings : List[Building] = [Building(*b) for b in buildings]
+        transitions = [b.left for b in buildings] + [b.right for b in buildings]
+        transitions : List[int] = sorted(set(transitions))
+
+        buildDict : Dict[int,Set[Building]] = defaultdict(set)
+        for b in buildings:
+            buildDict[b.left].add(b)
+        
+        roofHeap: List[Rooftop] = []
+        out: List[Point] = []
+        lastHeight: int = 0
+        
+        for transition in transitions:
+            for b in buildDict[transition]:
+                heapq.heappush(roofHeap,Rooftop(-b.height,b.right))
+            
+            while roofHeap and roofHeap[0].rightend <= transition:
+                _ = heapq.heappop(roofHeap)
+
+            height: int = 0
+            if roofHeap:
+                height = -roofHeap[0].negHeight
+
+            if height != lastHeight:
+                out.append(Point(transition,height))
+                lastHeight = height
+        return out
+
+

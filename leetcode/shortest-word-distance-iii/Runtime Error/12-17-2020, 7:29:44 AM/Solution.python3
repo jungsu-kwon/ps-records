@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/shortest-word-distance-iii
+
+class Solution:
+    def shortestWordDistance(self, words: List[str], word1: str, word2: str) -> int:
+        ans = len(words)
+        if word1 == word2 :
+            o1= None
+            
+            for i,word in words :
+                if word == word1 :
+                    if o1 != None :
+                        ans = min(ans,i-o1)
+                    o1 = i
+        else : 
+            o1,o2 = -1,-1
+            for i,word in enumerate(words) : 
+                if word == word1 : 
+                    o1 = i
+                    if o2 != -1 :
+                        ans = min(ans,o1-o2)
+                elif word == word2 : 
+                    o2 = i
+                    if o1 != -1 :
+                        ans = min(ans,o2-o1)
+        return ans
+                    
+                        
+
+
+        
+                        
+            
+        
+        

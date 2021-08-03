@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/encode-and-decode-strings
+
+class Codec:
+    def encode(self, strs: [str]) -> str:
+        """Encodes a list of strings to a single string.
+        """
+        if not strs:
+            return ''
+        lens = ','.join([str(len(str_)) for str_ in strs]) + '/'
+        concat = ''.join(strs)
+        return lens + concat
+        
+    def splitIntoStrings(self,lens,concat):
+        startIndex = 0
+        strings = []
+        for len_ in lens:
+            strings.append(concat[startIndex:startIndex+len_])
+            startIndex += len_
+        return strings
+            
+            
+    def decode(self, s: str) -> [str]:
+        """Decodes a single string to a list of strings.
+        """
+        if not s:
+            return []
+        splitIndex = s.find('/')
+        lens = [int(len_) for len_ in s[:splitIndex].split(',')]
+
+        concat = s[splitIndex+1:]
+
+        return self.splitIntoStrings(lens,concat)
+        
+        
+
+
+# Your Codec object will be instantiated and called as such:
+# codec = Codec()
+# codec.decode(codec.encode(strs))

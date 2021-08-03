@@ -1,0 +1,41 @@
+// https://leetcode.com/problems/graph-valid-tree
+
+class Solution:
+    def validTree(self, n, edges) :
+        if n <= 1 :
+            return True
+
+        graph = [{} for i in range(n)]
+        for edge in edges:
+            graph[edge[0]][edge[1]] = 1 
+            graph[edge[1]][edge[0]] = 1 
+
+        queue,visited = [0],set([])
+
+        while queue:
+            queueSize = len(queue)
+            for i in range(queueSize):
+                node = queue.pop(0)
+                if node in visited:
+                    return False
+                for child in graph[node].keys():
+                    queue.append(child)
+                    graph[child].pop(node,None)
+                visited.add(node)
+
+        if len(visited) != n:
+            return False
+        return True
+
+
+
+                
+
+
+
+
+
+
+
+
+        

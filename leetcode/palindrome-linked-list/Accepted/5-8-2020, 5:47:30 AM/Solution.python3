@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/palindrome-linked-list
+
+class Solution:
+    def isPalindrome(self, head) :
+        cur = head 
+        n = 0 
+        while cur != None :
+            cur = cur.next
+            n += 1 
+        if n <= 1 : 
+            return True 
+
+        mid_ind,ind  = n // 2 ,0
+        cur,prev  = head,None 
+
+        while ind < mid_ind : 
+            next_node,temp = cur.next,cur
+            cur.next,cur = prev,next_node
+            prev = temp
+            ind += 1 
+        left,mid = cur if n % 2 == 0 else cur.next,prev
+        while left != None and mid != None : 
+            if left.val != mid.val : 
+                return False
+            left,mid = left.next,mid.next
+        return True
+
+        

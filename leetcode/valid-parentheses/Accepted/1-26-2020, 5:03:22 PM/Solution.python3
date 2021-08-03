@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/valid-parentheses
+
+class Solution : 
+    def isValid(self,s) : 
+        self.starts = list('{[(')
+        self.ends = list(')]}')
+        self.stack_starts = []
+        self.stack_ends = []
+
+        for char in s :  
+            if char in self.starts : 
+                self.stack_starts.append(char)
+            elif char in self.ends : 
+                if len(self.stack_starts) == 0 :
+                    return False
+                else: 
+                    start = self.stack_starts.pop() 
+                    if char == '}' and start != '{' : 
+                        return False 
+                    elif char  == ']' and start != '[' : 
+                        return False
+                    elif char == ')' and start != '(' : 
+                        return False
+        if len(self.stack_starts) != 0 :
+            return False
+        return True

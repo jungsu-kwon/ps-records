@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/closest-binary-search-tree-value-ii
+
+from queue import PriorityQueue
+import heapq
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+
+    def inorder_traversal(self,root : TreeNode):
+        if not root:
+            return
+        self.inorder_traversal(root.left)
+        heapq.heappush(self.pq,(-abs(self.target-root.val),root.val))
+        if len(self.pq) == self.k+1:
+            heapq.heappop(self.pq)
+        self.inorder_traversal(root.right)
+            
+
+    def closestKValues(self, root: TreeNode, target: float, k: int) -> List[int]:
+        self.pq = []
+        self.k = k
+        self.target = target
+        self.inorder_traversal(root)
+
+        return [node[1] for node in self.pq]
+
+
+
+
+
+        
+        
+        

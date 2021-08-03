@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/flatten-binary-tree-to-linked-list
+
+class Solution:
+    def helper(self,root):
+        right,left = root.right,root.left
+        if right == None and left == None :
+            return root
+        elif left != None and right != None : 
+            flatten = self.helper(left)
+            root.right = left
+            root.left = None
+            flatten.right = right
+            flatten = self.helper(right)
+            return flatten
+        elif left == None :
+            flatten = self.helper(right)
+            return flatten
+        elif right == None : 
+            flatten = self.helper(left)
+            root.right = left
+            root.left = None 
+            return flatten
+
+
+        
+    def flatten(self, root: TreeNode) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+        if root != None :  
+            self.helper(root)

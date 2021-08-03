@@ -1,0 +1,58 @@
+// https://leetcode.com/problems/number-of-corner-rectangles
+
+class Solution:
+    def countCornerFromRows(self,grid):
+        num_square = 0 
+        num_bases = [0 for i in range(self.num_cols**2)]
+
+        #for start in range(self.num_cols):
+        #    for end in range(start+1,self.num_cols):
+        #        base_count = 0 
+        #        for row in range(self.num_rows):
+        #            if grid[row][start] == 1 and grid[row][end] == 1 : 
+        #                num_square += base_count
+        #                base_count += 1
+
+        for row in range(self.num_rows):
+            for start in range(self.num_cols):
+                if grid[row][start] != 1 :
+                    continue
+                for end in range(start+1,self.num_cols):
+                    if grid[row][end] == 1 : 
+                        num_square += num_bases[start*self.num_rows + end]
+                        num_bases[start*self.num_rows+end] += 1 
+
+        return num_square
+
+    def countCornerFromCols(self,grid):
+        num_square = 0 
+        num_bases = [0 for i in range(self.num_rows**2)]
+        #for start in range(self.num_rows):
+        #    for end in range(start+1,self.num_rows):
+        #        base_count = 0 
+        #        for col in range(self.num_cols):
+        #            if grid[start][col] == 1 and grid[end][col] == 1 : 
+        #                num_square += base_count
+        #                base_count += 1
+        for col in range(self.num_cols):
+            for start in range(self.num_rows):
+                if grid[start][col] != 1 :
+                    continue
+                for end in range(start+1,self.num_rows):
+                    if grid[end][col] == 1 : 
+                        num_square += num_bases[start*self.num_cols + end]
+                        num_bases[start*self.num_cols+end] += 1 
+            
+        return num_square
+
+    def countCornerRectangles(self, grid):
+        self.num_rows = len(grid)
+        self.num_cols = len(grid[0])
+
+        if self.num_rows <=  1 or self.num_cols <= 1 : 
+            return 0 
+
+        if self.num_rows <= self.num_cols : 
+            return self.countCornerFromRows(grid)
+        else : 
+            return self.countCornerFromCols(grid)

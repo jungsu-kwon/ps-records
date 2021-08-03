@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/generalized-abbreviation
+
+class Solution:
+    def helper(self,word,noNum=False):
+        if not word:
+            return ['']
+        ans = []
+        for i in range(len(word)+1):
+            if i == 0:
+                char,recursiveWord = word[0],word[i+1:]
+                nextNoNum = False
+
+
+            elif noNum:
+                continue
+            elif i == len(word):
+                ans.append(str(i))
+                continue
+
+            else:
+                char,recursiveWord =  str(i),word[i:]
+                nextNoNum = True
+
+            for ret in self.helper(recursiveWord,noNum=nextNoNum):
+                ans.append(char + ret)
+        return ans
+
+    def generateAbbreviations(self, word):
+        return self.helper(word,noNum=False)
+
+        

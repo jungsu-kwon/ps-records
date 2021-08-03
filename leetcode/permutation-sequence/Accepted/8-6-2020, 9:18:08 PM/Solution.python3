@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/permutation-sequence
+
+class Solution:
+    def factorial(self,n):
+        res = 1
+        for i in range(n):
+            res *= (i+1)
+        return res
+
+    def getPermutation(self,n,k):
+        self.ans = [] 
+        nums = [str(i+1) for i in range(n)]
+        self.helper(nums,k-1)
+        return ''.join(self.ans)
+
+    def helper(self,nums,k):
+        if not nums : 
+            return 
+        fac = self.factorial(len(nums)-1)
+        ind = k // fac
+        self.ans.append(nums.pop(ind))
+        self.helper(nums,k % fac)

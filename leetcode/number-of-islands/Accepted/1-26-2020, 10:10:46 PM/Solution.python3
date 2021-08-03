@@ -1,0 +1,46 @@
+// https://leetcode.com/problems/number-of-islands
+
+class Solution:
+    def numIslands(self, grid):
+        self.visited = set([])
+        self.stack = []
+        if grid == [] : 
+            return 0 
+
+        self.h = len(grid)
+        self.w = len(grid[0])
+        self.count = 0
+        self.grid = grid
+
+
+        for i in range(self.h):
+            for j in range(self.w) : 
+                cur = int(grid[i][j])
+                if cur == 0 : 
+                    continue
+                if cur == 1 and not ((i,j) in self.visited) : 
+                    self.dfs(i,j)
+                    self.count += 1 
+        return self.count
+                
+
+    def dfs(self,i,j):
+        self.stack = [(i,j)]
+
+        while self.stack : 
+            node = self.stack.pop()
+            i,j = node 
+            if self.grid[i][j] == '0' or (i,j) in self.visited :
+                continue
+            
+
+            if i-1 >=0 and not ((i-1,j)  in self.visited) : 
+                self.stack.append((i-1,j))
+            if j-1 >=0 and not ((i,j-1)  in self.visited) : 
+                self.stack.append((i,j-1))
+            if i+1<self.h and not ((i+1,j)  in self.visited) : 
+                self.stack.append((i+1,j))
+            if j+1<self.w and not ((i,j+1)  in self.visited) : 
+                self.stack.append((i,j+1))
+            self.visited.add((i,j))
+

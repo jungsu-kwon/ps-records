@@ -1,0 +1,51 @@
+// https://leetcode.com/problems/container-with-most-water
+
+class Solution:
+    def area(self,left,right):
+        width = right - left
+        height = min(self.height[left],self.height[right])
+        return width * height
+    def maxArea(self, height: List[int]) -> int:
+        if not height : 
+            return 0 
+        n = len(height)
+        left,right = 0,n-1
+        self.height = height
+        maxi = self.area(left,right)
+        #cands_left = [i for i in range(n) if self.height[i] > self.height[left]]
+        #cands_right = [i for i in range(n-1,-1,-1) if self.height[i] > self.heigh[right]]
+        search_left,search_right= True,True
+        
+        
+        while search_left or search_right : 
+            if search_left  : 
+                search_left = False
+                left_val = self.height[left]
+                for i in range(left+1,right):
+                    if left_val < self.height[i]:
+                        search_left = True
+                        left_cand = i
+                        maxi = max(maxi,self.area(left_cand,right))
+                        break
+            if search_right : 
+                search_right = False
+                right_val = self.height[right]
+                for i in range(right-1,left,-1):
+                    if right_val < self.height[i] : 
+                        search_right = True
+                        right_cand = i 
+                        maxi = max(maxi,self.area(left,right_cand))
+                        break
+            if search_right and search_left : 
+                maxi = max(maxi,self.area(left_cand,right_cand))
+            left = left_cand if search_left else left
+            right = right_cand if search_right else right
+        return maxi    
+                        
+                    
+            
+            
+            
+        
+            
+        

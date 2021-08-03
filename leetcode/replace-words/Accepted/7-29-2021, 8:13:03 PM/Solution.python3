@@ -1,0 +1,53 @@
+// https://leetcode.com/problems/replace-words
+
+from typing import List
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.finish = False
+
+
+class Trie:
+    def __init__(self):
+        self.root: TrieNode = TrieNode()
+
+    def insert(self,word: str) -> None:
+        curNode: TrieNode = self.root
+        for ch in word:
+            if not ch in curNode.children:
+                curNode.children[ch] = TrieNode()
+            curNode = curNode.children[ch]
+        curNode.finish = True
+    
+    def prefixSearch(self, prefix: str) -> str:
+        '''
+        find shortest word that starts with prefix
+
+        returns "" if such word is not found
+        returns found word otherwise
+        '''
+
+        curNode: TrieNode = self.root
+        for i,ch in enumerate(prefix):
+            if not ch in curNode.children:
+                return ""
+            curNode = curNode.children[ch]
+            if curNode.finish:
+                return prefix[:i+1]
+        return ""
+
+
+class Solution:
+    def replaceWords(self, dictionary: List[str], sentence: str) -> str:
+        self.trie = Trie()
+        for word in dictionary:
+            self.trie.insert(word)
+        
+        convertedWords: List[str] = []
+        for word in sentence.split(' '):
+            if foundWord := self.trie.prefixSearch(word):
+                convertedWords.append(foundWord)
+            else:
+                convertedWords.append(word)
+        return ' '.join(convertedWords)

@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/palindrome-permutation
+
+from collections import Counter
+class Solution:
+    def canPermutePalindrome(self, s):
+        counter = Counter()
+        for char in s :
+            counter[char] += 1
+
+        oddCount = 0
+        for char,count in counter.items():
+            isOdd = count % 2
+            if not isOdd:
+                continue
+            oddCount += 1
+            if oddCount == 2:
+                return False
+        return True
+            
+
+            
+
+
+
+        

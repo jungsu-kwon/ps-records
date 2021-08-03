@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array
+
+class Solution():
+    def sort(self,nums,i):
+        i = nums[i] - 1 
+        while nums[i] != i+1:
+
+            temp = nums[i]
+            nums[i] = i+1
+            i = temp-1
+
+
+    def findDisappearedNumbers(self,nums):
+        n = len(nums)
+        ans = [] 
+        for i in range(n):
+            self.sort(nums,i)
+        for i,num in enumerate(nums) : 
+            if num != i+1 : 
+                ans.append(i+1)
+        return ans

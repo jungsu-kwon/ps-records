@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/number-of-islands-ii
+
+class Solution:
+    def numIslands2(self, m: int, n: int, positions: List[List[int]]) -> List[int]:
+        parents,ranks,count = {},{},0
+        
+        def find(x):
+            if parents[x] != x:
+                return find(parents[x])
+            return x 
+        
+        def union(x,y):
+            nonlocal count
+            root1,root2 = find(x),find(y)
+            
+            if root1 != root2:
+                root1,root2 = sorted([root1,root2],key=lambda x : -ranks[x])
+                parents[root2] = root1
+                ranks[root1] += ranks[root1] == ranks[root2]
+                count -= 1
+        
+        def add(position):
+            nonlocal count
+            i,j = position
+            x = parents[x] = i,j
+            ranks[x] = 0
+            count += 1
+            
+            for neighbor in [(i-1,j),(i+1,j),(i,j-1),(i,j+1)]:
+                if neighbor in parents:
+                    union(x,neighbor)
+            return count
+        return [add(posit) for posit in positions]
+                
+                
+            

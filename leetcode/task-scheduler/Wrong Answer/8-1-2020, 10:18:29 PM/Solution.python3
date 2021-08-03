@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/task-scheduler
+
+class Solution:
+    def leastInterval(self, tasks,n):
+        from collections import Counter
+        counter,to_use  = [list(item) for item in Counter(tasks).most_common()],[]
+        num_tasks,finished_count = len(tasks),0
+        if num_tasks == 0 : 
+            return 0 
+
+        for i in range(n+1) : 
+            if not counter : 
+                to_use.append(['idle',-1])
+            else : 
+                to_use.append(counter.pop(0))
+        ind,processing_time = 0 ,0
+        while finished_count  < num_tasks : 
+            if to_use[ind][0] != 'idle': 
+                to_use[ind][1] -=1 
+                finished_count += 1 
+                if to_use[ind][1] == 0 : 
+                    if counter : 
+                        to_use[ind] = counter.pop(0)
+                    else : 
+                        to_use[ind] = ['idle',-1]
+            ind = (ind+1) % (n+1)
+            processing_time += 1 
+
+
+        return processing_time 

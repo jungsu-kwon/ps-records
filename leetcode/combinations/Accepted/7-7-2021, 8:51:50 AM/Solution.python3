@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/combinations
+
+class Solution:
+    def helper(self,start,k,combis) -> None:
+        '''
+        :rtype None
+        '''
+        if k == 0:
+            for combi in combis:
+                self.ans.add(tuple(combi))
+        
+        for i in range(start,self.n+1):
+            if self.n - (i+1) + 1 >= k - 1:
+                self.helper(i+1,k-1,[combi + [i] 
+                                        for combi in combis])
+        
+
+        
+
+
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        self.n = n
+        self.ans = set([])
+        self.helper(1,k,[[]])
+
+        return self.ans
+
+        

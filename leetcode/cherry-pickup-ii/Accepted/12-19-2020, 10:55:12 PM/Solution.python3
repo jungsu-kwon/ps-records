@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/cherry-pickup-ii
+
+class Solution:
+    def cherryPickup(self, grid: List[List[int]]) -> int:
+        num_rows = len(grid)
+        if num_rows :
+            num_cols = len(grid[0])
+
+        dp = [[-float("inf") for i in range(num_cols)] for i in range(num_cols)]
+        dp[0][num_cols-1] = grid[0][0] + grid[0][num_cols-1]
+
+        for i in range(num_rows-1):
+            dp_new = [[0 for i in range(num_cols)] for i in range(num_cols)]
+            for c1 in range(num_cols):
+                for c2 in range(num_cols):
+                    maxi = max([dp[c1+offset1][c2+offset2] for offset1 in range(max(-1,-c1),min(2,num_cols-c1)) 
+                                                           for offset2 in range(max(-1,-c2),min(2,num_cols-c2))])
+                    if c1 == c2 : 
+                        dp_new[c1][c2] = maxi + grid[i+1][c1]
+                    else : 
+                        dp_new[c1][c2] = maxi + grid[i+1][c1] + grid[i+1][c2]
+            dp = dp_new 
+        return max([max(dp_list) for dp_list in dp])
+            
+
+
+
+
+        

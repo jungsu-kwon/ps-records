@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/permutations-ii
+
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        #ret = set([])
+        ret = []
+        
+        def backtrack(first=0):
+            if first == n : 
+                ret.append(nums[:])
+            else : 
+                for i in range(first,n):
+                    if first != i and nums[i] == nums[first] : 
+                        continue
+                    nums[i],nums[first] = nums[first],nums[i]
+                    backtrack(first+1)
+                    nums[i],nums[first] = nums[first],nums[i]
+        n = len(nums)
+        backtrack()
+        return ret 
+        
+        

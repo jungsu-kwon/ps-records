@@ -1,0 +1,67 @@
+// https://leetcode.com/problems/palindrome-pairs
+
+from typing import List, Dict, Set, Tuple
+
+class TrieNode:
+    def __init__(self):
+        self.children: Dict[str,TrieNode] = {}
+        self.words: Set[Tuple[str,int]] = set([])
+        self.word: str = ""
+        self.ind: int = -1
+
+class Solution:
+
+    def palindromePairs(self, words: List[str]) -> List[List[int]]:
+        self.root: TrieNode = TrieNode()
+        ans: List[List[int]] = []
+        hasEmptyString: bool = True
+
+        for i,word in enumerate(words):
+            inverseWord: str = word[::-1]
+            curNode = self.root
+            for ch in inverseWord:
+                if not ch in curNode.children:
+                    curNode.children[ch] = TrieNode()
+                curNode = curNode.children[ch]
+                curNode.words.add((inverseWord,i))
+
+            curNode.word = word
+            curNode.ind = i
+
+        def isPalindrome(word):
+            return word == word[::-1]
+        
+        for i,word in enumerate(words):
+            curNode: TrieNode = self.root
+            broke: bool = False
+            for j,ch in enumerate(word):
+                if curNode.word:
+                    middle: str = word[j:]
+                    if isPalindrome(middle) and i != curNode.ind:
+                        ans.append([i,curNode.ind])
+
+                if not ch in curNode.children:
+                    broke = True
+                    break
+                curNode = curNode.children[ch]
+            if broke:
+                continue
+            
+            # print(word)
+            # print(curNode.words)
+            for word2,j in curNode.words:
+                if isPalindrome(word2[len(word):]) and i != j:
+                    ans.append([i,j])
+
+        return ans
+
+            
+            
+                    
+                
+
+
+            
+        
+
+        

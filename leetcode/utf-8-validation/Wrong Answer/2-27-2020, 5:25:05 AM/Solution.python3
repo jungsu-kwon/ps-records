@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/utf-8-validation
+
+class Solution:
+    def validUtf8(self, data) :
+        binary_nums = ['{0:08b}'.format(num) for num in data]
+        print(binary_nums)
+        continuation = 0
+        prefixs = ['110','1110','11110']
+
+
+        for binary_num in binary_nums : 
+            if continuation != 0  : 
+                if binary_num[:2] != '10':
+                    return False
+                continuation -= 1 
+                   
+            else : 
+                for i,prefix in enumerate(prefixs) : 
+                    if binary_num.startswith(prefix):
+                        continuation = i+1
+                    else : 
+                        return False
+        return True

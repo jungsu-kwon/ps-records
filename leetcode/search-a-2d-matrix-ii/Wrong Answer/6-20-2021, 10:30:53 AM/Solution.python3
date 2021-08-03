@@ -1,0 +1,41 @@
+// https://leetcode.com/problems/search-a-2d-matrix-ii
+
+import bisect
+from typing import List
+class Solution:
+    def helper(self,matrix,y1,y2,x1,x2):
+        if y1 > y2 or x1 > x2:
+            return False
+        x1 = bisect.bisect_right(matrix[y2],self.target)
+        if x1 == self.num_cols: return False
+        if matrix[y2][x1] == self.target:
+            return True
+            
+        x2 = bisect.bisect_left(matrix[y1],self.target)
+        if x2 == self.num_cols: return False
+        if matrix[y1][x2] == self.target:
+            return True
+        
+        y1 = bisect.bisect_right([matrix[i][x2] for i in range(y1,y2)],self.target) 
+        if y1 == self.num_rows: return False
+        if matrix[x2][y1] == self.target:
+            return True
+
+        y2 = bisect.bisect_left([matrix[i][x1] for i in range(y1,y2)],self.target)
+        if y2 == self.num_rows: return False
+        if matrix[x1][y2] == self.target:
+            return True
+        
+        return self.helper(matrix, y1+1, y2-1, x1+1, x2-1)
+        
+        
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+
+        self.num_rows = len(matrix)
+        self.num_cols = 0 if not self.num_rows else len(matrix[0])
+        self.target = target
+
+        if not self.num_cols or not self.num_rows:
+            return False
+
+        return self.helper(matrix,0,self.num_rows-1,0,self.num_cols-1)

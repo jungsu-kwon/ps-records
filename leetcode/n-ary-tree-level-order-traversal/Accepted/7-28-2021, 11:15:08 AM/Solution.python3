@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/n-ary-tree-level-order-traversal
+
+class Solution:
+    def levelOrder(self, root: 'Node') -> List[List[int]]:
+        if not root: return []
+
+        bfs: List['Node'] = [root]
+        ans: List[List[int]] = []
+
+        while bfs:
+            level: List[int] = []
+            nextBfs: List['Node'] = []
+
+            for node in bfs:
+                nextBfs.extend(node.children)
+                level.append(node.val)
+
+            bfs = nextBfs
+            ans.append(level)
+        return ans

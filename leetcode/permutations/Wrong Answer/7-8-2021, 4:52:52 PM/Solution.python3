@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/permutations
+
+
+class Solution:
+    def helper(self,nums:List[int]) -> List[List[int]]:
+        if not nums:
+            return [[]]
+
+        ans = []
+        for i,num in enumerate(nums):
+            perms = self.helper(nums[:i]+nums[i+1:])
+            for perm in perms:
+                ans.append([num] + perm)
+                ans.append(perm+[num])
+
+        return ans
+
+
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return []
+        return self.helper(nums)
+        

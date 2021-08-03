@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/find-k-length-substrings-with-no-repeated-characters
+
+class Solution:
+    def numKLenSubstrNoRepeats(self, S, K) :
+        list_str = list(S)
+        n = len(list_str)
+        alphabets = 'abcdefghijklmnopqrstuvwxyz'
+
+        if n < K : 
+            return 0
+
+        counter = {}
+        ans = 0 
+        num_alphabets = 0 
+
+        for alphabet in alphabets : 
+            counter[alphabet] = 0 
+
+        for i in range(K) : 
+            counter[list_str[i]] += 1 
+            if counter[list_str[i]] == 1 : 
+                num_alphabets += 1 
+        if num_alphabets == K : 
+            ans += 1 
+
+        for i in range(n-K): # S - 1 ~ (S-K-1)
+            counter[list_str[i]] -= 1 # n-k-2
+            if counter[list_str[i]] == 0 : 
+                num_alphabets -= 1 
+
+            counter[list_str[K+i]] += 1 
+            if counter[list_str[i+K]] == 1 : # n-2
+                num_alphabets += 1 
+            if num_alphabets == K : 
+                ans += 1 
+        return ans

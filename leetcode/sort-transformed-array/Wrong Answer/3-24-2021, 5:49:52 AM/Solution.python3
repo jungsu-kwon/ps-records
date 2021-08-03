@@ -1,0 +1,48 @@
+// https://leetcode.com/problems/sort-transformed-array
+
+from typing import List
+
+class Solution:
+    def split_list(self,nums:List[int]) -> Tuple[List[int]]:
+        prev = nums[0]
+        for i in range(1,len(nums)):
+            cur = nums[i]
+            if cur > prev:
+                break
+        return nums[:i-1],nums[i-1:]
+
+        
+
+    def apply_quad(self,num:int,a:int,b:int,c:int) -> int:
+        return c + (b * num) + (a*num*num)
+
+    def merge_lists(self,asc1 : List[int], asc2 : List[int]) -> List[int]:
+        n = len(asc1) + len(asc2)
+        ans = [-1 for i in range(n)]
+        ind1,ind2 = 0,0
+
+        while ind1 != len(asc1) and ind2 != len(asc2):
+            left,right = asc1[ind1],asc2[ind2]
+            if left < right:
+                ans[ind1+ind2] = left
+                ind1 += 1
+            else:
+                ans[ind1+ind2] = right
+                ind2 += 1
+        if ind1 == len(asc1):
+            for i in range(ind2,len(asc2)):
+                ans[ind1+i] = asc2[i]
+        else:
+            for i in range(ind1,len(asc1)):
+                ans[ind2+i] = asc1[i]
+        return ans
+
+    def sortTransformedArray(self, nums: List[int], a: int, b: int, c: int) -> List[int]:
+        quad_list = [self.apply_quad(num,a,b,c) for num in nums]
+        dec,asc2 = self.split_list(quad_list)
+        asc1 = dec[::-1]
+        merged = self.merge_lists(asc2,asc1)
+        return merged
+
+
+        

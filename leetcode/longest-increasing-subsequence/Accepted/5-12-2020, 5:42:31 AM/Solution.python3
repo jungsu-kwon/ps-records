@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/longest-increasing-subsequence
+
+class Solution:
+    def lengthOfLIS(self, nums):
+        n = len(nums)
+        if n == 0 : 
+            return 0
+        dp = [0 for i in range(n)]
+        dp_max = 0
+        for i in range(n):
+            maxi = 0 
+            num = nums[i]
+            for j in range(i):
+                cand = nums[j]
+                if cand < num : 
+                    maxi = max(maxi,dp[j])
+            dp[i] = maxi + 1 
+            dp_max = max(dp_max,dp[i])
+        return dp_max
+
+                
+

@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/unique-paths
+
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+        a = m + n - 2 
+        b = min(m,n)-1
+        num,denom = 1,1
+        for i in range(b):
+            num *= (a-i)
+            denom *= (1+i)
+            
+            
+        return int(num / denom)
+            
+        

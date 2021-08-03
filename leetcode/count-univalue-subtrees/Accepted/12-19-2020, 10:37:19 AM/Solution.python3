@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/count-univalue-subtrees
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def helper(self,root):
+        '''
+        return if tree root is unival in bool 
+        and number of subtrees under root
+        '''
+        if not root : 
+            return True,0
+        isLeftUnival,numUniLeft = self.helper(root.left)
+        isRightUnival,numUniRight = self.helper(root.right)
+
+        isUnival = isLeftUnival and isRightUnival
+        if isUnival : 
+            if root.right and root.right.val != root.val : 
+                isUnival = False
+            
+            elif root.left and root.left.val != root.val : 
+                isUnival = False
+
+        numUnival = numUniLeft + numUniRight
+        if isUnival : 
+            numUnival += 1 
+        return isUnival,numUnival
+
+
+
+    def countUnivalSubtrees(self, root: TreeNode) -> int:
+        return self.helper(root)[1]
+
+
+        

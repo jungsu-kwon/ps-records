@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/spiral-matrix
+
+from typing import List
+class Solution:
+    def helper(self,matrix: List[List[int]], 
+        leftTop: Tuple[int], 
+        rightBot: Tuple[int]) -> List[int]:
+        i1,j1 = leftTop
+        i2,j2 = rightBot
+        if i1 > i2 or  j1 > j2: return []
+        if i1 == i2: return matrix[i1][j1:j2+1]
+        ans: List[int] = []
+        ans += matrix[i1][j1:j2+1]
+        ans += [matrix[i][j2] for i in range(i1+1,i2+1)]
+        ans += [matrix[i2][j] for j in range(j2-1,j1-1,-1)]
+        ans += [matrix[i][j1] for i in range(i2-1,i1,-1)]
+        ans += self.helper(matrix,[i1+1,j1+1],[i2-1,j2-1])
+        return ans
+
+
+    def spiralOrder(self, matrix: List[List[int]]) -> List[int]:
+        numRows: int = len(matrix)
+        numCols: int = len(matrix[0])
+        return self.helper(matrix,[0,0],[numRows-1,numCols-1])
+        

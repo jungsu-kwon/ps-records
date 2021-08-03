@@ -1,0 +1,15 @@
+// https://leetcode.com/problems/calculate-entropy
+
+from collections import Counter
+from typing import List
+from math import log2
+
+class Solution:
+    def calculateEntropy(self, input: List[int]) -> float:
+        probs: List[float] = [count/float(len(input)) 
+            for count in Counter(input)]
+        ans: float = 0.0
+
+        for prob in probs:
+            ans += - log2(prob)*prob
+        return ans

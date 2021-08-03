@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/lowest-common-ancestor-of-deepest-leaves
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def post_traverse(self,root,depth):
+        if root : 
+            cur_deep = False
+            left_deep = self.post_traverse(root.left,depth+1)
+            right_deep = self.post_traverse(root.right,depth+1)
+            if root.left == None and root.right == None : 
+                if self.depth <= depth : 
+                    self.depth = depth
+                    cur_deep = True
+                    
+            if (left_deep and right_deep) or cur_deep : 
+                self.ret = root
+            return left_deep or right_deep or cur_deep
+            
+            
+            
+    def lcaDeepestLeaves(self, root: TreeNode) -> TreeNode:
+        self.depth = 0 
+        self.maxis = [] 
+        self.ret = root 
+        self.need_update = True
+        self.post_traverse(root,0)
+        return self.ret 
+        
+        
+        

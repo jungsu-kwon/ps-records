@@ -1,0 +1,47 @@
+// https://leetcode.com/problems/reverse-words-in-a-string-ii
+
+class Solution(object):
+    def reverseWords(self, s):
+        """
+        :type s: List[str]
+        :rtype: None Do not return anything, modify s in-place instead.
+        """
+        left = 0
+        right = len(s) - 1
+        
+        # Reversing the entire string
+        while left < right:
+            s[left], s[right] = s[right], s[left]
+            left+=1
+            right -= 1
+        
+        left = 0 # The left index of the current word
+        right = 0 # The right index of the current word
+        
+        # Reversing each word in the string manually
+        while left < len(s):
+            
+            # Make our right pointer point to the end of the current word
+            while right < len(s) and s[right] != " " :
+                right += 1
+            
+            # We bring the right pointer back one, this is because after it exits the while loop it is either
+            # out of the array or it is pointing to a space (we want it to point to the character)
+            right = right - 1
+            savedRight = right
+            
+            # We have our word, Reverse!
+            while left < right: 
+                s[left], s[right] = s[right], s[left]
+                left += 1
+                right -= 1
+            
+            # We bring our pointers back to the start of the next word. 
+            # Take a look at the example below, our saved right is pointing to the last 
+            # character of our previous word, we have to move two indexes forward in order
+            # to point to the first character of the next word. Therefore we add two to the savedRight
+            # ["t","h","e"," ","s","k","y"," ","i","s"," ","b","l","u","e"]
+            #          /\
+            #              +2  /\
+            left = savedRight + 2
+            right = savedRight + 2

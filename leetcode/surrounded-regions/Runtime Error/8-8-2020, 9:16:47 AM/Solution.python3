@@ -1,0 +1,60 @@
+// https://leetcode.com/problems/surrounded-regions
+
+class Solution:
+    def valid_children(self,node):
+        (i,j),children= node,[]
+        surrounded = True
+        for x,y in [(i+1,j),(i-1,j),(i,j+1),(i,j-1)]:
+            if x == self.h or y == self.w : 
+                surrounded = False
+                continue
+            if (x,y) in self.visited or self.board[x][y] == 'X' : 
+                continue
+
+            children.append((x,y))
+        return children,surrounded
+
+
+
+
+
+    def solve(self, board):
+        if not board:
+            return 
+        self.visited = set([])
+        self.queue,self.flip = [],[]
+        self.h,self.w,self.board = len(board),len(board[0]),board
+        self.to_flip = [] 
+
+
+        for i in range(self.h):
+            for j in range(self.w):
+                if (i,j) in self.visited : 
+                    continue 
+                elif self.board[i][j] == 'X' : 
+                    self.visited.add((i,j))
+                    continue
+
+                self.queue =  [(i,j)]
+                self.to_flip = [(i,j)]
+                flip = True
+
+                while self.queue : 
+                    n =len( self.queue)  
+                    for k in range(n):
+                        node = self.queue.pop(0)
+                        valid_children,surrounded = self.valid_children(node)
+
+                        self.queue.extend(valid_children)
+                        self.to_flip.extend(valid_children)
+
+                        if not surrounded:
+                            flip=False
+                        self.visited.add(node)
+
+
+                if flip : 
+                    for i,j in self.to_flip : 
+                        board[i][j] = 'X'
+
+

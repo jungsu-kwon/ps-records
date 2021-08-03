@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/dungeon-game
+
+class Solution:
+    def valid_children(self,node,hp,mini):
+        (i,j),children = node,[]
+        for loc in [[i+1,j],[i,j+1]]:
+            if loc[0] == self.h or loc[1] == self.w :
+                continue
+            hp_ = hp + self.dungeon[loc[0]][loc[1]]
+            mini_ = min(mini,hp_)
+            children.append(loc+[hp_,mini_])
+        return children
+
+    def calculateMinimumHP(self, dungeon):
+        self.h,self.w = len(dungeon),len(dungeon[0])
+        self.dungeon =dungeon
+        #dp = [[None for i in range(self.w)] for j in range(self.h)]
+
+        self.mini = None
+        self.stack = [(0,0,dungeon[0][0],dungeon[0][0])]
+        while self.stack : 
+            x,y,hp,mini = self.stack.pop(0)
+            if x == self.h-1 and y == self.w-1:
+                self.mini = mini if self.mini == None else max(mini,self.mini)
+            valid_children = self.valid_children((x,y),hp,mini)
+            self.stack = valid_children + self.stack
+        return max(1-self.mini,1)
+
+            
+

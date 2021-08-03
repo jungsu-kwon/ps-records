@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/merge-intervals
+
+class Solution():
+    def overlap(self,first,second):
+        f1,f2 = first 
+        s1,s2 = second
+        if f1 <= s2 and s1<=f2 : 
+            return True
+        return False
+    def helper(self,first,second,ind):
+        f1,f2 = first 
+        s1,s2 = second
+        self.intervals_sorted[ind] = [f1,max(s2,f2)]
+        self.intervals_sorted.pop(ind+1)
+
+
+    def merge(self,intervals):
+        ind = 0
+        n = len(intervals)
+        if n <= 1 : 
+            return intervals
+        cur_len = n
+        self.intervals_sorted = sorted(intervals)
+        while ind < cur_len - 1:
+            first,second = self.intervals_sorted[ind],self.intervals_sorted[ind+1]
+            if self.overlap(first,second):
+                self.helper(first,second,ind)
+                cur_len -= 1 
+            else : 
+                ind += 1 
+        return self.intervals_sorted
+            

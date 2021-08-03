@@ -1,0 +1,105 @@
+// https://leetcode.com/problems/robot-room-cleaner
+
+# """
+# This is the robot's control interface.
+# You should not implement it, or speculate about its implementation
+# """
+#class Robot:
+#    def move(self):
+#        """
+#        Returns true if the cell in front is open and robot moves into the cell.
+#        Returns false if the cell in front is blocked and robot stays in the current cell.
+#        :rtype bool
+#        """
+#
+#    def turnLeft(self):
+#        """
+#        Robot will stay in the same cell after calling turnLeft/turnRight.
+#        Each turn will be 90 degrees.
+#        :rtype void
+#        """
+#
+#    def turnRight(self):
+#        """
+#        Robot will stay in the same cell after calling turnLeft/turnRight.
+#        Each turn will be 90 degrees.
+#        :rtype void
+#        """
+#
+#    def clean(self):
+#        """
+#        Clean the current cell.
+#        :rtype void
+#        """
+
+class Solution:
+    def init(self,robot):
+        self.pos = [0,0]
+        self.oris = [[-1,0],[0,-1],[1,0],[0,1]]
+        self.ori = 0
+        self.robot = robot
+        self.visited = set([])
+
+    def turn_left(self):
+        self.ori += 1
+        self.ori %= 4
+        self.robot.turnLeft()
+
+    def turn_back(self):
+        self.turn_left()
+        self.turn_left()
+
+    def move(self):
+        '''
+        move one step forward 
+        and update internal state
+        return False if move fails
+        return True if move success
+        :rtype bool
+        '''
+
+        if not self.robot.move():
+            return False
+
+        delta = self.oris[self.ori]
+
+        self.pos[0] += delta[0]
+        self.pos[1] += delta[1]
+
+        return True
+
+    def come_back(self):
+        self.turn_back()
+        self.move()
+        self.turn_back()
+
+    def helper(self):
+        self.robot.clean()
+        self.visited.add(tuple(self.pos))
+
+        for i in range(4):
+            delta = self.oris[self.ori]
+
+            cand = [0,0]
+            cand[0] = self.pos[0] + delta[0]
+            cand[1] = self.pos[1] + delta[1]
+
+            if tuple(cand) in self.visited or not self.move():
+                self.turn_left()
+                continue
+
+            self.helper()
+            self.come_back()
+            self.turn_left()
+
+
+    def cleanRoom(self, robot):
+        """
+        :type robot: Robot
+        :rtype: None
+        """
+        self.init(robot)
+        self.helper()
+
+
+        

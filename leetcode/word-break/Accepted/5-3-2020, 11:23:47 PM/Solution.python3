@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/word-break
+
+class Solution:
+    def wordBreak(self,s,wordDict):
+        if len(wordDict) == 0 :
+            return False
+        word_lens = list(map(len,wordDict))
+        mini,maxi = min(word_lens),max(word_lens)
+        n = len(s)
+        dp = [False for i in range(n+1)]
+        dic_set = set(wordDict)
+
+        for i in range(mini-1,n):
+            for word_len in range(mini,maxi+1):
+                flag = dp[i-word_len] if i - word_len >=0 else True
+                cand = s[i-word_len+1:i+1]
+                if flag and cand in dic_set: 
+                    dp[i] = True
+                    break
+        return dp[n-1]

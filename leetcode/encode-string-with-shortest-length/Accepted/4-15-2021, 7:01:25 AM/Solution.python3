@@ -1,0 +1,60 @@
+// https://leetcode.com/problems/encode-string-with-shortest-length
+
+class Solution:
+    def encode_substr(self,substr) -> None:
+        if len(substr) <= 4:
+            return substr
+        
+        if substr in self.memo:
+            return self.memo[substr]
+
+        n = len(substr)
+        ans = substr
+
+        for i in range(1,(n//2) + 1):
+            prefix = substr[:i]
+            suffix = substr[i:]
+
+            count = self._get_count(prefix,suffix)
+            encoded_prefix = self.encode_substr(prefix)
+            encoded_suffix = self.encode_substr(suffix)
+
+            cand = encoded_prefix + encoded_suffix
+
+            if count > 0:
+                suff_ind = len(prefix) * (count+1)
+                temp_prefix = self.encode_substr(substr[suff_ind:])
+                temp_cand = f"{count+1}[{encoded_prefix}]{temp_prefix}"
+
+                cand = min(cand,temp_cand,key= lambda x : len(x))
+
+            ans = min(ans,cand,key= lambda x : len(x))
+
+        self.memo[substr] = ans
+        return ans
+
+    def encode(self, s: str) -> str:
+        self.memo = {}
+        return self.encode_substr(s)
+
+
+    def _get_count(self,prefix,suffix):
+        count, n = 0, len(prefix)
+        cur_str = suffix
+        while cur_str.startswith(prefix):
+            count += 1
+            cur_str = cur_str[n:]
+        return count
+        
+
+
+            
+
+
+
+
+        
+
+
+
+        

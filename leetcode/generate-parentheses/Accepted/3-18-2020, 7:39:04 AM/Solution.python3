@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/generate-parentheses
+
+class Solution(): 
+    def valid_neighbors(self,node,maxi) : 
+        paren,count = node
+        ret = []
+        if count - 1 >= 0 :
+            ret.append((paren+')',count -1))
+        if count + 1 <= maxi : 
+            ret.append((paren+'(',count+1))
+        return ret
+
+
+    def generateParenthesis(self,n):
+        if n == 0 : 
+            return []
+        
+        root = ('(',1)
+        stack  = [root]
+        num_chars = 1
+
+        while stack : 
+            num_pops = len(stack)
+            stack_ = [] 
+            
+
+            for i in range(num_pops):
+                node = stack[i]
+                neighbors = self.valid_neighbors(node,2*n - (num_chars+1))
+                stack_.extend(neighbors)
+            stack = stack_
+
+            num_chars += 1 
+            if num_chars == 2*n : 
+                return [paren[0] for paren in stack]
+

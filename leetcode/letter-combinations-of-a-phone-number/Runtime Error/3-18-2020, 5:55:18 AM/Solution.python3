@@ -1,0 +1,45 @@
+// https://leetcode.com/problems/letter-combinations-of-a-phone-number
+
+class Solution(): 
+    def __init__(self):
+        self.num_to_alpha = {}
+        alphabet = 'abcdefghijklmnopqrstuvwxyz'
+        #assert len(alphabet) == 26
+        ind = 0 
+        for i in range(2,10):
+            if i == 7 or i == 9  : 
+                self.num_to_alpha[i] = alphabet[ind:ind+4]
+                ind += 4 
+            else : 
+                self.num_to_alpha[i] = alphabet[ind:ind+3]
+                ind += 3 
+
+    def letterCombinations(self,digits):
+        if '1' in digits or '#' in digits or '*' in digit or not digits : 
+            return []
+        n = len(digits)
+        num_ans = 1 
+        for digit in digits : 
+            num_ans *= len(self.num_to_alpha[int(digit)])
+        ans = [['0' for i in range(n)] for i in range(num_ans)]
+        for i,digit in enumerate(digits):
+            alpha_split = self.num_to_alpha[int(digit)]
+            split_len = len(alpha_split)
+            if i == 0 :
+                cycle_len = num_ans/split_len
+            else : 
+                cycle_len /= split_len
+            ind = 0 
+            for j in range(num_ans):
+                ans[j][i] = alpha_split[ind % split_len]
+                if (j+1) % cycle_len == 0 :
+                    ind += 1 
+        ret = [''.join(ans_) for ans_ in ans]
+        return ret
+
+
+            
+
+
+
+

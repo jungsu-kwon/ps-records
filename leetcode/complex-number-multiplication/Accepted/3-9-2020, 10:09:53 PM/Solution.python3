@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/complex-number-multiplication
+
+class Solution:
+    def complexNumberMultiply(self, a: str, b: str) -> str:
+        a_splitted= a.split('+')
+        a_real = int(a_splitted[0])
+        a_imag = int(a_splitted[1].rstrip('i'))
+        b_splitted = b.split('+')
+        b_real = int(b_splitted[0])
+        b_imag = int(b_splitted[1].rstrip('i'))
+        ans_real = a_real*b_real - a_imag*b_imag
+        ans_imag = a_imag*b_real + a_real*b_imag
+        return "{}+{}i".format(ans_real,ans_imag)
+        
+        
+        

@@ -1,0 +1,45 @@
+// https://leetcode.com/problems/remove-invalid-parentheses
+
+class Solution:
+    def merge(self,l1,l2):
+        ret = [] 
+        if len(l1) == 0 : 
+            return l2
+        else : 
+            n1,n2 = len(l1),len(l2)
+            for s1 in l1 : 
+                for s2 in l2 : 
+                    ret.append(s1+s2)
+        return ret
+    def pop_char(self,s,to_pop):
+        cands = []
+        for i,char in enumerate(s):
+            if char == to_pop : 
+                cand = s[:i] if i == len(s) -1 else s[:i] + s[i+1:]
+                cands.append(cand)
+        return list(set(cands))
+    def removeInvalidParentheses(self, s):
+        ret,count,start,last_zero = [],0,0,0
+        for i,char in enumerate(s) : 
+            if char == '(' : 
+                count += 1 
+            elif char == ')' : 
+                count -= 1 
+
+            if count < 0 : 
+                to_fix = s[start:i+1]
+                cands = self.pop_char(to_fix,')')
+                ret = self.merge(ret,cands)
+                count += 1
+                start,last_zero = i + 1 ,i+1
+            if count == 0 :
+                last_zero = i+1
+        if count == 0 : 
+            cands = [s[start:]]
+            ret = self.merge(ret,cands)
+        return ret
+
+        
+
+        
+

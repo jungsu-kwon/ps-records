@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/intersection-of-two-arrays-ii
+
+from typing import List, Dict
+from collections import Counter
+
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        counter1: Dict[int,int] = Counter(nums1)
+        counter2: Dict[int,int] = Counter(nums2)
+
+        ans: List[int] = []
+        for num, count in counter1.items():
+            if num in counter2:
+                minCount: int = min(count,counter2[num])
+                ans.extend([num for i in range(minCount)])
+
+        return ans

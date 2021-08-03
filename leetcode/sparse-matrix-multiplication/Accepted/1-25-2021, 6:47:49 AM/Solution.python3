@@ -1,0 +1,14 @@
+// https://leetcode.com/problems/sparse-matrix-multiplication
+
+class Solution:
+    def multiply(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+        c = [[0 for i in range(len(B[0]))] for i in range(len(A))]
+        for i,row in enumerate(A):
+            for j,numA in enumerate(row):
+                if numA :
+                    for k,numB in enumerate(B[j]):
+                        if numB:
+                            c[i][k] += numA * numB
+        return c
+
+

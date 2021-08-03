@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/redistribute-characters-to-make-all-strings-equal
+
+from collections import Counter
+class Solution:
+    def makeEqual(self, words: List[str]) -> bool:
+        counter = Counter()
+
+        for word in words:
+            for ch in word:
+                counter[ch] += 1
+        
+        for ch,v in counter.items():
+            if v % len(words):
+                return False
+        return True
+
+
+            

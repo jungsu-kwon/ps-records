@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/3sum
+
+class Solution(): 
+    def threeSum(self,nums):
+        from collections import Counter
+        counter = Counter(nums)
+        ans = set([])
+        n = len(nums)
+        if n < 2 : 
+            return []
+        
+        for i in range(n):
+            a = nums[i]
+            for j in range(i+1,n):
+                b = nums[j]
+                if -a-b in counter and counter[-a-b] > 1 : 
+                    ans.add(tuple(sorted([a,b,-a-b])))
+        ret = [list(elem) for elem in ans]
+        return ret
+                

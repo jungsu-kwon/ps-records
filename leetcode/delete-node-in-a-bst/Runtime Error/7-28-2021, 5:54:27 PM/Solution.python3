@@ -1,0 +1,70 @@
+// https://leetcode.com/problems/delete-node-in-a-bst
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def addNode(self,root: TreeNode, toAddNode: TreeNode) -> None:
+        if not toAddNode:
+            return
+        curNode: TreeNode = root
+        parentNode: TreeNode = None
+        while curNode:
+            parentNode = curNode
+            if curNode.val < toAddNode.val:
+                curNode = curNode.right
+            else:
+                curNode = curNode.left
+        if parentNode.val > toAddNode.val:
+            parentNode.left = toAddNode
+        else:
+            parentNode.right = toAddNode
+
+
+
+
+    def deleteNode(self, root: TreeNode, key: int) -> TreeNode:
+        if not root: return None
+
+        curNode: TreeNode = root
+
+        targetNode: TreeNode = None
+        parentNode: TreeNode = None
+        isLeftChild: bool = False
+        while curNode: 
+            if curNode.val == key:
+                targetNode = curNode
+                break
+            elif curNode.val < key:
+                parentNode = curNode
+                isLeftChild = False
+                curNode = curNode.right
+            else:
+                parentNode = curNode
+                curNode = curNode.left
+                isLeftChild = True
+                
+        if not targetNode:
+            return root
+        
+        rightChild: TreeNode = targetNode.right
+        leftChild: TreeNode = targetNode.left
+        # print(rightChild,leftChild)
+        if isLeftChild:
+            toAddNode: TreeNode = leftChild.right
+            if parentNode:
+                parentNode.left = leftChild
+            if leftChild:
+                leftChild.right = rightChild
+            self.addNode(leftChild,toAddNode)
+        else:
+            toAddNode: TreeNode = rightChild.left
+            if parentNode:
+                parentNode.right = rightChild
+            if rightChild:
+                rightChild.left = leftChild
+            self.addNode(rightChild,toAddNode)
+        return root

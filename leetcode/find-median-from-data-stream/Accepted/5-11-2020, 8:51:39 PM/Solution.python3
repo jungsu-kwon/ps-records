@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/find-median-from-data-stream
+
+import bisect
+class MedianFinder:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.data = []
+        
+
+    def addNum(self, num: int) -> None:
+        bisect.insort(self.data,num)
+
+    def findMedian(self) -> float:
+        n = len(self.data) - 1
+        return (self.data[n // 2 ] + self.data[(n//2) + n % 2]) /2.0
+
+
+# Your MedianFinder object will be instantiated and called as such:
+# obj = MedianFinder()
+# obj.addNum(num)
+# param_2 = obj.findMedian()

@@ -1,0 +1,49 @@
+// https://leetcode.com/problems/sort-list
+
+class Solution:
+    def get_node(self,head,i):
+        for i in range(i-1):
+            head = head.next
+        return head
+
+    def sortList(self, head):
+        size,cur = 0,head
+
+        while cur != None :
+            size += 1
+            cur = cur.next
+
+        head = self.merge_sort(head,size)
+
+        return head
+
+    def merge_sort(self,head,size):
+        if size <= 1 :
+            return head
+        #print(head,size)
+        mid_size = size // 2
+        mid = self.get_node(head,mid_size)
+        right_head = mid.next
+        mid.next = None
+        #print(head,right_head)
+        left_head = self.merge_sort(head,mid_size)
+        right_head = self.merge_sort(right_head,size-mid_size)
+
+        head = self.merge(left_head,right_head)
+        return head
+
+    def merge(self,lh,rh):
+        head = ListNode(val=-1)
+        cur = head
+        while lh != None and rh != None :
+            if lh.val <= rh.val :
+                cur.next = lh
+                lh,cur  = lh.next,cur.next
+                cur.next = None
+            else :
+                cur.next =  rh
+                rh,cur = rh.next,cur.next
+                cur.next = None
+        cur.next = rh if lh == None else lh
+        return head.next
+        

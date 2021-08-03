@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/task-scheduler
+
+class Solution:
+    def leastInterval(self, tasks,n):
+        if not tasks : 
+            return 0 
+
+        from collections import Counter
+        counter = Counter(tasks).most_common()
+        maxi,count  = counter[0][1],0
+        for k,v in counter : 
+            if v == maxi : 
+                count += 1 
+        if count > n + 1 : 
+            return len(tasks)
+        num_idles = (maxi-1) * (n+1-count)
+        if num_idles > len(tasks) - maxi*count:
+            return (n+1)*(maxi-1) + count
+        else : 
+            return len(tasks)
+
+

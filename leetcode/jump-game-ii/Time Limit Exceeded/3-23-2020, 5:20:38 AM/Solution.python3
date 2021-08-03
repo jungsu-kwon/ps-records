@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/jump-game-ii
+
+class Solution:
+    def jump(self, nums) :
+        n = len(nums)
+        dp = [0 for i in range(n)]
+        max_step = max(nums)
+        
+        for i in range(n):
+            for j in range(max(i-max_step,0),i):
+                if nums[j] + j >= i : 
+                    if dp[i] == 0 : 
+                        dp[i] = dp[j] + 1
+                    else : 
+                        dp[i] = min(dp[j] + 1,dp[i])
+        return dp[n-1]
+

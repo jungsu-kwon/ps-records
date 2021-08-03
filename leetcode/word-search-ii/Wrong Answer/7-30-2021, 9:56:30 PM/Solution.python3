@@ -1,0 +1,54 @@
+// https://leetcode.com/problems/word-search-ii
+
+from typing import List, Dict, Set, Tuple
+class TrieNode:
+    def __init__(self):
+        self.children: Dict[str,TrieNode] = {}
+        self.word: str = ""
+
+VISITED = "#"
+class Solution:
+    def findWords(self, board: List[List[str]], words: List[str]) -> List[str]:
+        root: TrieNode = TrieNode()
+
+        for word in words:
+            self.insert(root,word)
+        
+        numCols: int = len(board[0])
+        numRows: int = len(board)
+        foundWords: Set[str] = set()
+
+        def backtrack(i: int,j: int, curNode: TrieNode) -> None:
+            if curNode.word:
+                foundWords.add(curNode.word)
+
+            for iDiff,jDiff in [(0,1),(0,-1),(1,0),(-1,0)]:
+                newI: int = i + iDiff 
+                newJ: int = j + jDiff
+                if not (0 <= newI < numRows) or\
+                     not (0 <= newJ < numCols):
+                     continue
+
+                letter: str = board[newI][newJ]
+                if letter == VISITED:
+                    continue
+
+                if not letter in curNode.children:
+                    continue
+                board[newI][newJ] = VISITED
+                backtrack(newI, newJ, curNode.children[letter])
+                board[newI][newJ] = letter
+
+        for i in range(numRows):
+            for j in range(numCols):
+                backtrack(i, j, root)
+
+        return foundWords
+
+    def insert(self,root, word: str) -> None:
+        curNode: TrieNode = root
+        for ch in word:
+            if not ch in curNode.children:
+                curNode.children[ch] = TrieNode()
+            curNode = curNode.children[ch]
+        curNode.word = word

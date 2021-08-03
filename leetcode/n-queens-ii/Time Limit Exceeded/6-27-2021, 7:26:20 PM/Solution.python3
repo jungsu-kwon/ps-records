@@ -1,0 +1,76 @@
+// https://leetcode.com/problems/n-queens-ii
+
+class Solution:
+	def attackable(self,pos):
+		ans = set([])
+		y,x = pos
+
+		for i in range(self.n):
+			ans.add((y,i))
+			ans.add((i,x))
+		
+		start = [y-x,0] if y > x else [0,x-y]
+		for i in range(self.n - abs(y-x)):
+			ans.add(tuple([point+i for point in start]))
+		
+		sum_ = x + y
+		start = [sum_,0] if sum_ < self.n else [self.n-1,sum_ - self.n+1]
+		for i in range(self.n - abs(self.n - sum_ - 1)):
+			ans.add((start[0]-i,start[1]+i))
+
+		return ans
+	def hash_func(self,current:set):
+		sorted_list = sorted(current,key=lambda x : x[0])
+		return tuple([item for sublist in sorted_list for item in sublist ])
+
+	 
+	def helper(self,current, available):
+		# print(current,available)
+		if self.hash_func(current) in self.visited:
+			return
+
+		if len(current) == self.n:
+			self.ans += 1
+			# print('here')
+			# print(current)
+			# print(available)
+			return
+
+		elif not available:
+			return
+		
+
+		ori_avail = set(available)
+		for pos in ori_avail:
+			# print(ori_avail)
+			available = ori_avail - self.attackable(pos)
+			# print(available,current)
+			# print(current)
+			current.add(pos)
+
+			self.helper(current,available)
+			# print(pos)
+			self.visited.add(self.hash_func(current))
+			current.remove(pos)
+			# print(current)
+
+	def totalNQueens(self, n: int) -> int:
+		self.ans = 0
+		self.visited = set()
+		self.n = n
+		available = [(i,j) for i in range(self.n) 
+			   				for j in range(self.n)]
+
+		self.helper(set([]),available)
+
+		return self.ans
+# if __name__ == '__main__':
+# 	solver = Solution()
+# 	ans = solver.totalNQueens(4)
+# 	# print(solver.attackable((1,0)))
+# 	# print(solver.attackable((0,1)))
+# 	# assert 1==0
+# 	print(ans)
+		
+
+		

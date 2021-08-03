@@ -1,0 +1,7 @@
+// https://leetcode.com/problems/valid-word-square
+
+class Solution:
+    def validWordSquare(self, words: List[str]) -> bool:
+        from itertools import zip_longest
+        new_words = list(map(lambda x: "".join(x), zip_longest(*words, fillvalue="")))
+        return new_words == words

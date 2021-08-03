@@ -1,0 +1,56 @@
+// https://leetcode.com/problems/word-squares
+
+from typing import List, Dict
+
+class TrieNode:
+    def __init__(self,ind: int):
+        self.children: Dict[str,TrieNode] = {}
+        self.word: str = ""
+        self.ind = ind
+
+class Solution:
+    def wordSquares(self, words: List[str]) -> List[List[str]]:
+        # construct Trie from words
+        root: TrieNode = TrieNode(-1)
+        n: int = len(words[0])
+        ans: List[List[str]] = []
+
+        for word in words:
+            curNode: TrieNode = root
+            for i,ch in enumerate(word):
+                if not ch in curNode.children:
+                    curNode.children[ch] = TrieNode(i)
+                curNode = curNode.children[ch]
+            curNode.word = word
+        
+        def backtrack(nodes: List[TrieNode], nodeInd: int) -> None:
+            if nodeInd == n - 1 and nodes[nodeInd].word:
+                ans.append([node.word for node in nodes])
+                return 
+            
+            curNode: TrieNode = nodes[nodeInd]
+            if curNode.word:
+                return backtrack(nodes,nodeInd + 1)
+            
+            charInd: int = curNode.ind + 1
+            mirrorNode: TrieNode = nodes[charInd]
+            for child in curNode.children:
+                if not child in mirrorNode.children:
+                    continue
+                if charInd != nodeInd:
+                    nodes[charInd] = mirrorNode.children[child]
+                nodes[nodeInd] = curNode.children[child]
+
+                backtrack(nodes,nodeInd)
+
+                nodes[nodeInd] = curNode
+                if charInd != nodeInd:
+                    nodes[charInd] = mirrorNode
+
+        nodes: List[TrieNode] = [root for i in range(n)]
+        for ch in root.children:
+            nodes[0] = root.children[ch]
+            backtrack(nodes,0)
+            nodes[0] = root
+            
+        return ans

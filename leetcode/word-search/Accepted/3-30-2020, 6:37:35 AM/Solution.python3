@@ -1,0 +1,50 @@
+// https://leetcode.com/problems/word-search
+
+class Solution:
+    def valid_children(self,r,c,target):
+        children = [(r1,c1) for r1 in range(r-1,r+2)
+                            for c1 in range(c-1,c+2)
+                            if (-1<r1<self.rows and
+                                -1<c1<self.cols and
+                                not (r1,c1) in self.visited and
+                                int(r1 == r) + int (c1 == c) == 1 and
+                                self.board[r1][c1] == target)]
+        return children
+        
+    def backtrack(self,r,c,first=0):
+        if self.board[r][c] != self.word[first] : 
+            return False
+
+        if first == self.n-1:
+            return True
+        
+        valid_children = self.valid_children(r,c,self.word[first+1])
+        if not valid_children : 
+            return False
+        for child in valid_children:
+            self.visited.add(child)
+            child_r,child_c = child
+            if self.backtrack(child_r,child_c,first=first+1):
+                return True
+            self.visited.remove(child)
+        return False
+
+
+        
+    def exist(self,board,word):
+        self.rows = len(board)
+        self.cols = len(board[0])
+        self.n = len(word)
+        self.word,self.board = word,board
+        # basic validity check
+        if self.rows * self.cols < self.n : 
+            return False
+        self.visited = set([])
+        for r in range(self.rows):
+            for c in range(self.cols):
+                self.visited.add((r,c))
+                if self.backtrack(r,c):
+                    return True
+                self.visited.remove((r,c))
+        return False
+        

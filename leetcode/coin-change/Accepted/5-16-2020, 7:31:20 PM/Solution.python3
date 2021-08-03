@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/coin-change
+
+class Solution():
+    def coinChange(self,coins,amount):
+        visited,nodes = set([]),set([amount])
+        if not coins : 
+            return -1 
+        if amount == 0 :
+            return 0 
+        count = 0 
+
+        while nodes : 
+            num_nodes = len(nodes)
+            next_nodes = set([])
+            for i in range(num_nodes):  
+                node = nodes.pop()
+                if node == 0 : 
+                    return count 
+                cands = [node - coin for coin in coins if (not (node - coin in visited) and node - coin >=0)]
+                visited.add(node)
+                next_nodes.update(cands)
+            del nodes
+            nodes = next_nodes
+            count += 1 
+        return - 1 

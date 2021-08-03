@@ -1,0 +1,49 @@
+// https://leetcode.com/problems/first-missing-positive
+
+class Solution():
+    def valid_ind(self,ind):
+        if ind >= self.n : 
+            return False
+        if self.nums[ind] > self.n or self.nums[ind] <= 0 or self.nums[ind] == ind + 1 : 
+            return False
+        return True
+
+    def firstMissingPositive(self,nums):
+        cur_ind = 0 
+        self.n = len(nums)
+        
+        self.nums = nums
+        ind = 0 
+        for i in range(self.n):
+            #print(nums,cur_ind)
+            if i == 0 : 
+                cur_ind = nums[0]-1
+                cur_val = cur_ind + 1 
+                if not self.valid_ind(cur_ind): 
+                    cur_ind,ind = 1,1
+                    while not self.valid_ind(cur_ind) and ind < self.n  :
+                        ind += 1 
+                        cur_ind = ind
+                else : 
+                    cur_ind = cur_val - 1 
+            else : 
+                cur_val = nums[cur_ind] 
+                cur_ind = cur_val -1 
+                if not self.valid_ind(cur_ind): 
+                    ind += 1 
+                    cur_ind = ind
+                    while not self.valid_ind(cur_ind) and ind < self.n:
+                        ind += 1 
+                        cur_ind = ind
+                else : 
+                    nums[cur_ind] = cur_ind + 1 
+                    cur_ind = cur_val -1
+            if ind >= self.n:
+                break
+
+        for i in range(self.n) : 
+            if nums[i] != i + 1 : 
+                return i+1
+                    
+                    
+                    

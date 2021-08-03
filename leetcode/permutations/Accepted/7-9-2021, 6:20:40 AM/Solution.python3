@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/permutations
+
+from typing import List
+class Solution:
+    def helper(self,nums:List[int],first=0) -> List[List[int]]:
+        if first == len(nums):
+            return [[]]
+
+        ans = []
+        for i in range(first,len(nums)):
+            nums[first],nums[i] = nums[i],nums[first]
+            perms = self.helper(nums,first=first+1)
+
+            for perm in perms:
+                ans.append([nums[first]]+perm)
+            nums[first],nums[i] = nums[i],nums[first]
+
+        return ans
+
+
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return []
+        return self.helper(nums)
+        

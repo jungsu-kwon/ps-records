@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/sort-colors
+
+class Solution():
+    def sortColors(self,nums):
+        n = len(nums)
+        if n == 0 : 
+            return 
+        red,white,blue = 0,1,2
+        ri,bi,cur_ind = 0,n-1,0
+        while cur_ind<=bi : 
+            cur = nums[cur_ind]
+            if cur == white : 
+                cur_ind += 1 
+            elif cur == red : 
+                nums[ri],nums[cur_ind]= nums[cur_ind],nums[ri]
+                cur_ind += 1 
+                ri += 1 
+            else : 
+                nums[bi],nums[cur_ind]= nums[cur_ind],nums[bi]
+                #cur_ind += 1 
+                bi -= 1 

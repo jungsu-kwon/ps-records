@@ -1,0 +1,56 @@
+// https://leetcode.com/problems/minimum-moves-to-reach-target-with-rotations
+
+class Solution:
+    def valid_children(self,grid,elem):
+        children = []
+        r1,c1,r2,c2 = elem
+        if r1 == r2 : 
+            # horizontal moves
+            if c2+1 < self.n:
+                if grid[r1][c2+1] == 0 : 
+                    children.append((r1,c1+1,r2,c2+1))
+            # rotate c/w
+            if r1+1 < self.n:
+                if grid[r1+1][c1] == 0 and grid[r1+1][c2] == 0 : 
+                    children.append((r1,c1,r1+1,c1))
+                    children.append((r1+1,c1,r1+1,c2))
+        elif c1 == c2:
+            # vertical moves
+            if r2+1 < self.n : 
+                if grid[r2+1][c1] == 0 : 
+                    children.append((r1+1,c1,r2+1,c2))
+            # rotate c/c/w
+            if c1 + 1 <self.n : 
+                if grid[r1][c1+1] == 0 and grid[r2][c1+1] == 0 : 
+                    children.append((r1,c1,r1,c1+1))
+                    children.append((r1,c1+1,r2,c1+1))
+        return children
+
+        return children
+    def minimumMoves(self, grid):
+        visited = set()
+        step = 0
+        self.n = len(grid)
+        cur = (0,0,0,1)
+        queue = [cur]
+        target = (self.n-1,self.n-2,self.n-1,self.n-1)
+
+        while True:
+            num_elems = len(queue)
+            if num_elems == 0 :
+                return -1
+            for i in range(num_elems):
+                elem = queue.pop(0)
+                if elem == target :
+                    return step
+                if elem in visited : 
+                    continue
+                # append valid children to queue
+                queue.extend(self.valid_children(grid,elem))
+                visited.add(elem)
+
+            step += 1 
+        return step 
+
+        
+

@@ -1,0 +1,91 @@
+// https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree
+
+"""
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children
+"""
+
+class Codec:
+    def serialize(self, root: 'Node') -> str:
+        """Encodes a tree to a single string.
+        
+        :type root: Node
+        :rtype: str
+        """
+
+        nodes = [root]
+        ans = ''
+        while nodes:
+            children = []
+            for node in nodes:
+                if node:
+                    if node.children:
+                        children.extend(node.children+[None])
+                    else:
+                        children.append(None)
+                    ans += str(node.val)
+                else:
+                    ans += 'null'
+                ans += ','
+            if children:
+                ans += 'Level,'
+            nodes = children
+
+        return ans
+        
+	
+
+        
+    def parse_level(self, level_str : str):
+        # print([str_  for str_ in level_str.split('null').split(',') if str_])
+        groups_str = level_str.split('null')
+        groups = [group.strip(',').split(',') for group in groups_str]
+        
+        return [[Node(val=int(child)) for child in group if child] for group in groups ]
+    
+    def deserialize(self, data: str) -> 'Node':
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: Node
+        """
+        levels_str = data.split('Level')
+        
+        levels = [self.parse_level(level) for level in levels_str]
+        
+        if not levels or not levels[0][0]:
+            return None
+        head = levels[0][0][0]
+
+        parents = [head]
+        children = levels[1] if len(levels) >= 2 else []
+
+
+
+        children_ind = 1
+
+        while parents and children:
+            next_parent = []
+            # print([parent.val for parent in parents])
+            # print([[node.val for node in child] for child in children])
+            for parent,child in zip(parents,children):
+                if child:
+                    next_parent.extend(child)
+                parent.children = child
+            parents = next_parent
+            children_ind += 1
+            children = [] if children_ind == len(levels) else levels[children_ind]
+        
+        
+        return head
+        
+
+# Your Codec object will be instantiated and called as such:
+# codec = Codec()
+# codec.deserialize(codec.serialize(root))
+
+
+

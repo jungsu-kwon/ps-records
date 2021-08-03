@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/zigzag-iterator
+
+class ZigzagIterator:
+    def __init__(self, v1: List[int], v2: List[int]):
+        self.lists = [v1,v2]
+        self.n = len(v1) + len(v2)
+        self.counts= [0,0]
+        self.listInd = 0 
+
+    def next(self) -> int:
+        listToUse = self.lists[self.listInd]
+        count = self.counts[self.listInd]
+
+        if len(listToUse) > count:
+            self.counts[self.listInd] += 1 
+            self.listInd = 1 - self.listInd
+
+            return listToUse[count]
+        else:
+            self.listInd = 1 - self.listInd
+            listToUse = self.lists[self.listInd]
+            retIndex =  self.counts[self.listInd]
+            self.counts[self.listInd] += 1 
+            return listToUse[retIndex]
+
+
+
+        
+
+    def hasNext(self) -> bool:
+        return sum(self.counts) < self.n
+        
+
+# Your ZigzagIterator object will be instantiated and called as such:
+# i, v = ZigzagIterator(v1, v2), []
+# while i.hasNext(): v.append(i.next())

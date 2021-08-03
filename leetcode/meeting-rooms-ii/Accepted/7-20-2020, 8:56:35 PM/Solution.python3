@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/meeting-rooms-ii
+
+class Solution:
+    def minMeetingRooms(self, intervals):
+        import bisect
+        intervals = sorted(intervals,key=lambda x : x[0])
+        ends = []
+        reserved = 0
+
+        for interval in intervals : 
+            start,end = interval
+            while ends and start >= ends[0] : 
+                ends.pop(0)
+            available = reserved - len(ends)
+            if available == 0 : 
+                reserved += 1 
+            bisect.insort_left(ends,end)
+        return reserved

@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/maximum-genetic-difference-query
+
+from typing import List, Dict, Tuple
+
+class Solution:
+    def maxGeneticDifference(self, parents: List[int], queries: List[List[int]]) -> List[int]:
+        '''
+        parents = [3,7,-1,2,0,7,0,2], queries = [[4,6],[1,15],[0,5]]
+        expected output : [6,14,7]
+        '''
+
+        ans: List[int] = []
+        cache: Dict[Tuple[int,int],int] = {}
+        for query in queries:
+            if tuple(query) in cache:
+                ans.append(cache[tuple(query)])
+                continue
+
+            node: int = query[0]
+            val: int = query[1]
+            diff: int = 0
+
+            while node != -1:
+                diff = max(diff,val ^ node)
+                node = parents[node]
+            ans.append(diff)
+            cache[tuple(query)] = diff
+
+        return ans 

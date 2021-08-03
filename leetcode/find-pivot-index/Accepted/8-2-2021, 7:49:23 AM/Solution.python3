@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/find-pivot-index
+
+from typing import List
+
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        leftSum: int = 0
+        rightSum: int = sum(nums)
+        curNum: int = 0
+
+        for i,num in enumerate(nums):
+            leftSum += curNum
+            rightSum -= num
+            curNum = num
+
+            if leftSum == rightSum:
+                return i
+        return -1

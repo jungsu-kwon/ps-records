@@ -1,0 +1,94 @@
+// https://leetcode.com/problems/design-circular-queue
+
+class MyCircularQueue:
+
+    def __init__(self, k: int):
+        """
+        Initialize your data structure here. Set the size of the queue to be k.
+        """
+        self.empty_numb = -1
+        self.queue = [self.empty_numb]*k
+        self.head = -1
+        self.tail = -1
+        self.length = k
+        
+
+    def enQueue(self, value: int) -> bool:
+        """
+        Insert an element into the circular queue. Return true if the operation is successful.
+        """
+        if (self.isFull()): 
+           # print(self.queue,self.head,self.tail)
+            return False
+        else :
+            if self.isEmpty() : 
+                self.head = 0 
+                self.tail = -1
+                
+            self.tail += 1 
+            self.tail %= self.length
+            self.queue[self.tail] = value 
+            #print(self.queue,self.head,self.tail)
+            return True
+        
+
+    def deQueue(self) -> bool:
+        """
+        Delete an element from the circular queue. Return true if the operation is successful.
+        """
+        if self.isEmpty() : 
+            #print(self.queue,self.head,self.tail)
+            return False
+        else : 
+            self.queue[self.head] = -1 
+            self.head += 1 
+            self.head %= self.length
+            if self.isEmpty() : 
+                self.head = -1 
+                self.tail = -1
+            #print(self.queue,self.head,self.tail)
+            return True
+
+    def Front(self) -> int:
+        """
+        Get the front item from the queue.
+        """
+        # you could simply return self.queue[head] 
+        # with current implementation
+        # but you could always change implementation details 
+        # safer to have some safeguards
+        
+        if self.isEmpty() : 
+            return -1
+        else : 
+            return self.queue[self.head]
+
+    def Rear(self) -> int:
+        """
+        Get the last item from the queue.
+        """
+        if self.isEmpty() : 
+            return -1
+        else : 
+            return self.queue[self.tail]
+
+    def isEmpty(self) -> bool:
+        """
+        Checks whether the circular queue is empty or not.
+        """
+        return ((self.tail) % self.length) == (self.head % self.length) and (self.queue[self.head]==self.empty_numb)
+
+    def isFull(self) -> bool:
+        """
+        Checks whether the circular queue is full or not.
+        """
+        return ((self.tail + 1) % self.length) == (self.head % self.length)
+
+# Your MyCircularQueue object will be instantiated and called as such:
+# obj = MyCircularQueue(k)
+# param_1 = obj.enQueue(value)
+# param_2 = obj.deQueue()
+# param_3 = obj.Front()
+# param_4 = obj.Rear()
+# param_5 = obj.isEmpty()
+# param_6 = obj.isFull()

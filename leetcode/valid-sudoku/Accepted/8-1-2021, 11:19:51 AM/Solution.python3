@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/valid-sudoku
+
+from typing import List
+from collections import Counter
+
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        numRows: int = 9
+        numCols: int = 9
+        numGrids: int = 9
+
+        for row in board:
+            counter: Counter = Counter(row)
+            counter['.'] = 0
+            if counter.most_common(1)[0][1] >= 2:
+                return False
+        
+        for colInd in range(numCols):
+            col: List[int] = [board[i][colInd] for i in range(numRows)]
+            counter: Counter = Counter(col)
+            counter['.'] = 0
+            if counter.most_common(1)[0][1] >= 2:
+                return False
+        
+        for gridInd in range(numGrids):
+            colInd: int = gridInd // 3
+            rowInd: int = gridInd % 3
+
+            grid: List[int] = [board[i][j] for i in range(3*colInd,3*colInd+3)
+                for j in range(3*rowInd,(3*rowInd) + 3)]
+            counter: Counter = Counter(grid)
+            counter['.'] = 0
+            if counter.most_common(1)[0][1] >= 2:
+                return False
+        return True

@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/one-edit-distance
+
+class Solution:
+    def isOneEditDistance(self, s: str, t: str) -> bool:
+        if len(s) == len(t) :
+            diff_count = 0 
+            for char1,char2 in zip(s,t):
+                if char1 == char2 : 
+                    continue
+                else : 
+                    diff_count += 1
+                    if diff_count > 1 :
+                        return False
+            if diff_count != 1 : 
+                return False
+            return True
+
+        if abs(len(s) - len(t)) == 1 : 
+            short_str,long_str = sorted((s,t),key = lambda x : len(x))
+            short_len = len(short_str)
+            offset = 0 
+            for i in range(short_len):
+                if short_str[i+offset] != long_str[i] :
+                    offset -= 1 
+                    if offset == -2 : 
+                        return False
+              
+            if offset == 0 : 
+                return True
+            elif offset == -1 and short_str[-1] == long_str[-1] : 
+                return True
+            else :
+                return False
+            
+
+        else : 
+            return False
+
+        

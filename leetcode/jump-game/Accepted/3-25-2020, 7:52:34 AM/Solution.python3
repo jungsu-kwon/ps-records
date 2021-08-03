@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/jump-game
+
+class Solution:
+    def canJump(self, nums: List[int]) -> int:
+        step = last_max = max_step = 0
+        n = len(nums)
+        for i in range(len(nums)):  
+            if max_step <i : 
+                return False
+            elif max_step >n :  
+                return True
+            max_step = max(max_step, i+nums[i])
+        return True

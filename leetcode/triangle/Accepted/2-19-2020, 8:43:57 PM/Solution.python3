@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/triangle
+
+class Solution:
+    def minimumTotal(self, triangle) :
+        self.num_rows = len(triangle)
+        if triangle == [[]]:
+            return  
+
+        #self.prev = [0 for i in range(self.num_rows)]
+        self.dp = [0 for i in range(self.num_rows)]
+
+        self.dp[0] = triangle[0][0]
+
+        for i in range(1,self.num_rows):
+            prev = self.dp[0]
+            #print('dp before loop {}'.format(self.dp))
+            for ind,val in enumerate(self.dp[:i]) : 
+                #print('ind {} val {} prev {} tri {} computed {}'.format(ind,val,prev,triangle[i][ind],val+min(prev,triangle[i][ind])))
+                self.dp[ind] = triangle[i][ind] + min(prev,val)
+                prev = val
+            self.dp[i] = prev + triangle[i][i]
+        return min(self.dp)
+
+
+

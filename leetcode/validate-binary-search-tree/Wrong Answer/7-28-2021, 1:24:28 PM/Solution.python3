@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/validate-binary-search-tree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def helper(self,
+        root: TreeNode, 
+        mini: int = None,
+        maxi: int = None
+    ) -> bool:
+        if not root: return True
+        if root.left and root.left.val >= root.val: return False
+        if root.right and root.right.val <= root.val: return False
+
+
+        leftMax: int = max(maxi,root.val) if maxi else root.val
+        leftMin: int = mini
+
+        rightMax: int = maxi
+        rightMin: int = min(mini,root.val) if mini else root.val
+
+        return (self.helper(root.left,mini=leftMin,maxi=leftMax) and 
+            self.helper(root.right,mini=rightMin,maxi=rightMax))
+
+
+    def isValidBST(self, root: TreeNode) -> bool:
+        return self.helper(root,mini=None,maxi=None)

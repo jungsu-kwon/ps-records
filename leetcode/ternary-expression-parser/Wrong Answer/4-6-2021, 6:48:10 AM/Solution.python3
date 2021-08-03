@@ -1,0 +1,48 @@
+// https://leetcode.com/problems/ternary-expression-parser
+
+from collections import deque
+class Solution:
+    def solve(self,start_ind: int) -> str:
+        '''
+        evaluate exp from start_ind
+        update self.queue inplace
+        '''
+        if start_ind >= self.n:
+            return 
+
+        ques_ind  = self.exp.find('?',start_ind)
+        truthy = self.exp[start_ind:ques_ind]
+
+        next_ques = self.exp.find('?',ques_ind+1)
+        left_ind = self.exp.find(':',ques_ind)
+
+        if next_ques !=  -1 and left_ind > next_ques:
+            left = self.solve(ques_ind + 1)
+        else:
+            left = self.exp[ques_ind+1:left_ind]
+
+        next_colon = self.exp.find(':',left_ind + 1)
+        if next_colon == -1: next_colon = self.n
+        next_ques  = self.exp.find('?',left_ind + 1)
+        if next_ques ==  -1: next_ques  = self.n
+
+        if next_colon <= next_ques:
+            right = self.exp[left_ind+1:next_colon]
+        else:
+            right = self.solve(left_ind+1)
+
+        if truthy == 'F' or truthy == '0':
+            return right
+        return left
+
+    def parseTernary(self, expression: str) -> str:
+        self.queue = deque()
+        self.exp = expression
+        self.n = len(expression)
+
+        return self.solve(0)
+
+
+
+
+        

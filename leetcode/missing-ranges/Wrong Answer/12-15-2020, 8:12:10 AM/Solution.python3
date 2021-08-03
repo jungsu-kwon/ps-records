@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/missing-ranges
+
+class Solution:
+    def make_string(self,start,end):
+        if start == end : 
+            return str(start)
+        else :
+            return str(start) + "->" + str(end)
+    def findMissingRanges(self, nums: List[int], lower: int, upper: int) -> List[str]:
+        ans =  []
+        if not nums : 
+            ans.append(self.make_string(lower,upper))
+        for i,num in enumerate(nums) : 
+            if i == 0 : 
+                start, end  = lower, num
+            elif i == len(nums) -1 : 
+                start, end = num, upper 
+            else :
+                start, end = num, nums[i+1]
+
+            if end - start == 1 : 
+                continue
+            else :
+                ans.append(self.make_string(start+1,end-1))
+        return ans  
+
+
+
+        

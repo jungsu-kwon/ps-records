@@ -1,0 +1,51 @@
+// https://leetcode.com/problems/minimum-size-subarray-sum
+
+from typing import List
+
+class Solution:
+
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
+        partialSums: List[int] = [0 for num in nums]
+
+        curSum: int = 0
+        for i, num in enumerate(nums):
+            curSum += num
+            partialSums[i] = curSum
+        
+        def getPartialSum(start: int, end: int) -> int:
+            # sum(nums[start:end]) in O(n)
+            if start >= end: return 0
+            if start == 0: return partialSums[end-1]
+
+            return partialSums[end-1] - partialSums[start-1]
+
+        ans: int = None
+        for i in range(len(nums)):
+            start: int = i
+            left: int = i
+            right: int = len(nums)
+
+            while left < right:
+                mid: int = (left + right) // 2
+                
+                if (partialSum:=getPartialSum(start,mid)) > target:
+                    right = mid -1
+                    # print(ans)
+                    ans = min(ans,mid - start) if ans else mid - start
+                    # print(ans)
+
+                elif partialSum < target:
+                    left = mid + 1
+                    
+                elif partialSum == target:
+                    # print('second',ans)
+                    ans = min(ans,mid - start) if ans else mid - start
+                    # print('second',ans)
+                    break
+                # print(start,mid,getPartialSum(start,mid),ans)
+            
+            if getPartialSum(start,left) >= target:
+                # print("last",ans,start,left,getPartialSum(start,left))
+                ans = min(ans,left - start) if ans else left - start
+                # print("last",ans)
+        return ans if ans else 0

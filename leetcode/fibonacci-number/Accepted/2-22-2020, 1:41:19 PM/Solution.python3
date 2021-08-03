@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/fibonacci-number
+
+class Solution:
+    def fib(self, N: int) -> int:
+        if N == 0 or N == 1 :
+            return N
+        self.notes = [-1]*(N+1)
+        self.notes[0],self.notes[1] = 0,1
+        def helper(N) : 
+            if self.notes[N] != -1 :
+                return self.notes[N]
+            else :
+                self.notes[N] = helper(N-1) + helper(N-2)
+                return self.notes[N]
+        return helper(N)
+        
+        
+        

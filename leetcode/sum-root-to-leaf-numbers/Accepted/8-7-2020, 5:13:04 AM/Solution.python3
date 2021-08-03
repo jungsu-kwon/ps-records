@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/sum-root-to-leaf-numbers
+
+class Solution:
+    def isLeaf(self,node):
+        if node.left == None and node.right == None : 
+            return True
+        return False
+    def sumNumbers(self,root):
+        if not root : 
+            return 0 
+
+        self.queue = [(root,0)]
+        self.count = 0 
+
+        while self.queue : 
+            n = len(self.queue)
+            for i in range(n):
+                node,num = self.queue.pop(0)
+                if self.isLeaf(node):
+                    self.count += 10*num + node.val
+                else :
+                    if node.right != None : 
+                        self.queue.append((node.right,10*num+node.val))
+                    if node.left != None : 
+                        self.queue.append((node.left,10*num+node.val))
+        return self.count

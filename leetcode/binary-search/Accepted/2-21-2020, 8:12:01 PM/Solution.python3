@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/binary-search
+
+class Solution:
+    def helper(self,start,end):
+        if start+1 == end : 
+            if self.nums[start] == self.target :
+                return start
+            else :
+                return -1
+        else : 
+            mid = int((start + end ) /2)
+            if self.nums[mid] < self.target : 
+                return self.helper(mid,end)
+            elif self.nums[mid] > self.target :
+                return self.helper(start,mid)
+            else : 
+                return mid
+
+            
+    def search(self,nums,target):
+        self.nums = nums
+        self.target = target
+        self.n =  len(nums)
+        if self.n == 0 :
+            return -1
+        return self.helper(0,self.n)

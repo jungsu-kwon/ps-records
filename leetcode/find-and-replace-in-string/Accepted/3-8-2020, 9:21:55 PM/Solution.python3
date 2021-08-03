@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/find-and-replace-in-string
+
+class Solution:
+    def findReplaceString(self, S, indexes, sources, targets):
+        if len(indexes) == 0 :
+            return S
+
+        num_replace = len(indexes)
+        prev_end = 0 
+        S_ = S
+        params = sorted(zip(indexes,sources,targets),reverse=True)
+        for start,source,target in params:
+            front = S_[0:start]
+            origin  =  S_[start:start+len(source)]
+            if origin != source : 
+                print(origin)
+                continue
+            else : 
+                replaced = target 
+            rear = S_[start+len(source):]
+            S_ = "".join([front,target,rear])
+            
+            
+        return S_ 
+            

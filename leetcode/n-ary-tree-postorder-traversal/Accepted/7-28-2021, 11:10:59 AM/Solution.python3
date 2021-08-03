@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/n-ary-tree-postorder-traversal
+
+class Solution:
+    def postorder(self, root: 'Node') -> List[int]:
+        ans: List[int] = []
+        if not root: 
+            return ans
+
+        for child in root.children:
+            ans.extend(self.postorder(child))
+        ans.append(root.val)
+
+        return ans

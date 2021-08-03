@@ -1,0 +1,51 @@
+// https://leetcode.com/problems/game-of-life
+
+class Solution:
+    def count_lives(self,row,col):
+        upper_row = sum([self.memory[i] for i in range(col-1,col+2)
+                                          if ( -1 < i <= self.num_cols-1)])
+        cur_row = sum([self.board[row][i] for i in range(col,col+2) if (i != col) and 
+                                                                      (-1 < i <=self.num_cols-1)]) + self.prev
+                                            
+        down_row = sum([self.board[row+1][i] for i in range(col-1,col+2)
+                                             if row+1 < self.num_rows and
+                                              -1<i<=self.num_cols-1])
+        return upper_row+cur_row+down_row
+
+
+    def gameOfLife(self, board):
+        self.num_rows = len(board)
+        self.num_cols = len(board[0])
+        self.board = board
+
+        if self.num_rows == 0 or self.num_cols == 0 :
+            pass
+
+        else : 
+            self.memory = [0 for i in range(self.num_cols)]
+            self.memory_future = [0 for i in range(self.num_cols)]
+
+            for i in range(self.num_rows):
+                for j in range(self.num_cols) : 
+                    self.memory_future[j] = board[i][j]
+
+                self.prev = 0
+                for j in range(self.num_cols):
+                    temp = self.board[i][j]
+                    lives = self.count_lives(i,j)
+
+                    if lives <= 1 : 
+                        board[i][j] = 0 
+                    elif board[i][j] == 0 and lives == 3 : 
+                        board[i][j] = 1 
+                    elif lives == 2 or lives == 3 : 
+                        self.prev = temp
+                        continue
+                    elif lives >= 4 : 
+                        board[i][j] = 0 
+                    self.prev = temp
+                    
+
+
+                self.memory_future,self.memory = self.memory,self.memory_future
+

@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/generate-parentheses
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        cands = [("(",1)]
+
+        length = 1
+        while length != 2*n:
+            new = []
+            for cand,count in cands:
+                if count >= 1:
+                    new.append((cand+")",count-1))
+                new.append((cand+"(",count+1))
+            length += 1
+            cands = new
+        return [cand[0] for cand in cands if cand[1] == 0]
+
+
+                
+
+
+
+
+
+
+        

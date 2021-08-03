@@ -1,0 +1,50 @@
+// https://leetcode.com/problems/robot-room-cleaner
+
+class Solution:
+	def come_back(self):
+		self.robot.turnLeft()
+		self.robot.turnLeft()
+		self.robot.move()
+		self.robot.turnLeft()
+		self.robot.turnLeft()
+	def turn_left(self):
+		self.robot.turnLeft()
+		self.ind = (self.ind + 1) % 4 
+		
+	def helper(self,pos):
+		self.robot.clean()
+		self.visited.add(pos)
+
+		for i in range(4):
+			delta = self.orientations[self.ind]
+			new_pos = (pos[0]+delta[0],pos[1]+delta[1])
+
+			if new_pos in self.visited or not self.robot.move():
+				self.turn_left()
+				continue
+
+			self.helper(new_pos)
+			self.come_back()
+			self.turn_left()
+
+
+			
+				
+
+	def cleanRoom(self, robot):
+		"""
+		:type robot: Robot
+		:rtype: None
+		"""
+		self.orientations = [(-1,0),(0,-1),(1,0),(0,1)]
+		self.ind = 0
+		self.pos = (0,0)
+		self.visited = set([])
+		self.robot = robot
+
+		self.helper(self.pos)
+
+
+
+
+

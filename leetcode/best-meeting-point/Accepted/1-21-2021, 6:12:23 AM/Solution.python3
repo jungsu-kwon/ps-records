@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/best-meeting-point
+
+class Solution:
+    def minTotalDistance(self, grid: List[List[int]]) -> int:
+      
+        rows=[]  
+        cols=[]
+        
+        m= len(grid)
+        n= len(grid[0])
+        
+        for row in range(m):
+            for col in range(n):
+                if grid[row][col]==1:
+                    rows.append(row)     
+                    cols.append(col)
+        rows.sort()
+        cols.sort()
+        print(rows)
+        rows_med= rows[len(rows)//2]
+        cols_med= cols[len(cols)//2]
+        
+        row_sum= sum(abs(rows_med-row) for  row in rows)
+        col_sum= sum(abs(cols_med-col) for col in cols) 
+        return row_sum + col_sum

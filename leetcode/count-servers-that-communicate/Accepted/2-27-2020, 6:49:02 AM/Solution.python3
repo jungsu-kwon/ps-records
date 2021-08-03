@@ -1,0 +1,40 @@
+// https://leetcode.com/problems/count-servers-that-communicate
+
+class Solution:
+    def countServers(self, grid):
+        num_rows = len(grid)
+        num_cols = len(grid[0])
+        num_servers = 0 
+
+        for i in range(num_rows) : 
+            servers = [] 
+            communicating_servers = 0
+            for j in range(num_cols):
+                server_state = grid[i][j]
+                if server_state == 1 : 
+                    servers.append(j)
+                    communicating_servers +=1 
+                elif server_state == 2 :
+                    communicating_servers +=1 
+
+            if communicating_servers >=2 :
+                num_servers += len(servers)
+                for server in servers:
+                    grid[i][server] = 2
+
+        for j in range(num_cols) : 
+            servers = [] 
+            communicating_servers = 0
+            for i in range(num_rows):
+                server_state = grid[i][j]
+                if server_state == 1 : 
+                    servers.append(i)
+                    communicating_servers +=1 
+                elif server_state == 2 :
+                    communicating_servers +=1 
+
+            if communicating_servers >=2 :
+                num_servers += len(servers)
+                for server in servers:
+                    grid[server][j] = 2
+        return num_servers

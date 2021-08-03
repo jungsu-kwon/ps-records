@@ -1,0 +1,69 @@
+// https://leetcode.com/problems/word-squares
+
+from typing import List
+
+_end = '_'
+def make_trie(*words):
+    root = dict()
+    for word in words:
+        current_dict = root
+        for letter in word:
+            current_dict = current_dict.setdefault(letter, {})
+        current_dict[_end] = _end
+    return root
+
+def in_trie(trie, word):
+    current_dict = trie
+    for letter in word:
+        if letter not in current_dict:
+            return False,{}
+        current_dict = current_dict[letter]
+    return _end in current_dict, current_dict
+
+def get_words(trie,prefix=""):
+    words = []
+    for char in prefix:
+        if char in trie:
+            trie = trie[char]
+        else:
+            return []
+
+    for char,trie_node in trie.items():
+        if char == _end:
+            words.append(prefix)
+        else:
+            for word in get_words(trie_node):
+                words.append(prefix + char + word)
+    return words
+
+class Solution:
+    def wordSquares(self, words: List[str]) -> List[List[str]]:
+        n = len(words[0])
+        trie = make_trie(*words)
+        bfs = [[word] for word in get_words(trie)]
+        step = 1
+        while (bfs and step < n):
+            children = []
+            for node in bfs:
+                prefix = ''.join([word[step] for word in node])
+                for word in get_words(trie,prefix=prefix):
+                    children.append(node + [word])
+            step += 1
+            bfs = children
+        return bfs
+
+                    
+                
+
+                
+
+
+
+
+
+
+            
+
+
+
+

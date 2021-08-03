@@ -1,0 +1,41 @@
+// https://leetcode.com/problems/squares-of-a-sorted-array
+
+class Solution:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        need_to_merge = nums[0] < 0 
+        first_non_neg = None
+        for i,num in enumerate(nums):
+            if need_to_merge and not first_non_neg and num >= 0   : 
+                first_non_neg = i
+
+            nums[i] = num * num
+
+        if not need_to_merge : 
+            return nums
+
+        ans = [0 for i in range(len(nums))]
+        l,r = first_non_neg-1,first_non_neg
+
+        index = 0
+        while l >=0 and r < len(nums):
+            if nums[l] > nums[r] : 
+                ans[index] = nums[r]
+                r += 1 
+            else : 
+                ans[index] = nums[l]
+                l -= 1
+            index += 1 
+
+        if l == -1 : 
+            for enum_index,ans_index in enumerate(range(index,len(nums))):
+                ans[ans_index] = nums[r+enum_index]
+        else :
+            for enum_index,ans_index in enumerate(range(index,len(nums))):
+                ans[ans_index] = nums[l-enum_index]
+        return ans
+
+
+
+
+
+        

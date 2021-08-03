@@ -1,0 +1,55 @@
+// https://leetcode.com/problems/rearrange-string-k-distance-apart
+
+from collections import Counter
+
+class Solution:
+
+    def rearrangeString(self, s: str, k: int) -> str:
+        if not s : 
+            return ''
+
+        counter = Counter(list(s))
+        largestFreq = counter.most_common()[0][1]
+        if largestFreq == 1 :
+            return s
+
+        mergedList = []
+        bins = []
+        for char, freq in counter.most_common():
+            if freq == largestFreq :
+                bins.append([char for i in range(freq)]) 
+            else:
+                mergedList += [char for i in range(freq)]
+
+
+        targetLen = largestFreq - 1 
+
+        splitted  = [mergedList[i * targetLen:(i + 1) * targetLen] 
+                     for i in range((len(mergedList) + targetLen - 1) // targetLen )]  
+
+        bins += splitted
+        if len(bins) < k:
+            return ''
+        if len(bins) == k and len(bins[-1]) < targetLen:
+            return '' 
+
+        ansStr,ind = '',0
+        while bins:
+            ind = ind % len(bins)
+            curList = bins[ind]
+            ansStr += curList.pop(0)
+            if not curList:
+                bins.pop(ind)
+            else:
+                ind += 1 
+        return ansStr
+
+
+
+
+
+
+        
+
+
+        

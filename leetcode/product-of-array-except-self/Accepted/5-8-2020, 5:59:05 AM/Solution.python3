@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/product-of-array-except-self
+
+class Solution:
+    def productExceptSelf(self, nums):
+        n = len(nums)
+        ret = [0 for i in range(n)]
+        prod =  1 
+        for i,num in enumerate(nums) : 
+            prod *= num
+            ret[i] = prod
+        prod = 1
+        for i in range(n-1,0,-1):
+            ret[i] = ret[i-1]*prod
+            prod *= nums[i]
+        ret[0] = prod
+        return ret
+            

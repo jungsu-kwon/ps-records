@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/range-sum-query-2d-mutable
+
+class NumMatrix:
+
+    def __init__(self, matrix: List[List[int]]):
+        self.matrix = matrix
+        for row in self.matrix:
+            for col in range(1,len(row)):
+                row[col] += row[col-1]
+    def update(self, row: int, col: int, val: int) -> None:
+        originalVal = self.matrix[row][col] if col == 0 else self.matrix[row][col] - self.matrix[row][col-1]
+        diff = val - originalVal
+
+        for i in range(col,len(self.matrix[row])):
+            self.matrix[row][i] += diff
+
+
+    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+        ans = 0
+        for i in range(row1,row2+1):
+            ans += self.matrix[i][col2]
+            if col1:
+                ans -= self.matrix[i][col1-1]
+
+        return ans
+        
+
+
+# Your NumMatrix object will be instantiated and called as such:
+# obj = NumMatrix(matrix)
+# obj.update(row,col,val)
+# param_2 = obj.sumRegion(row1,col1,row2,col2)

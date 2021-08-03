@@ -1,0 +1,89 @@
+// https://leetcode.com/problems/design-search-autocomplete-system
+
+from typing import Dict, List
+from collections import namedtuple
+import bisect
+
+HotSentence = namedtuple("hotsentence",
+    ["negHotness","sentence"])
+
+class TrieNode:
+    def __init__(self):
+       self.children: Dict[str,TrieNode] = {}
+       self.hotSentences: List[HotSentence] = []
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+        self.top_k = 3
+        self.curNode = self.root
+
+    def index(self,curNode: TrieNode, hotSentence: HotSentence) -> int:
+        for i,(negHotness,sentence) in enumerate(curNode.hotSentences):
+            if sentence == hotSentence.sentence:
+                return i
+        return -1
+
+    def insert(self, hotSentence: HotSentence) -> None:
+        curNode: TrieNode = self.root
+        for ch in hotSentence.sentence:
+            if not ch in curNode.children:
+                curNode.children[ch] = TrieNode()
+            curNode = curNode.children[ch]
+            
+            if (sentInd := self.index(curNode,hotSentence)) != -1:
+                sentence: str = hotSentence.sentence
+                freq: int = curNode.hotSentences[sentInd].negHotness + hotSentence.negHotness
+                
+                toAdd: HotSentence = HotSentence(sentence=sentence,
+                    negHotness=freq) 
+                curNode.hotSentences = curNode.hotSentences[:sentInd] \
+                    + curNode.hotSentences[sentInd+1:]
+                bisect.insort(curNode.hotSentences,toAdd)
+
+            else:
+                bisect.insort(curNode.hotSentences,
+                    hotSentence)
+
+    def search(self, sentence: str) -> List[str]:
+        if not self.curNode: 
+            return []
+        
+        for ch in sentence:
+            if not ch in self.curNode.children: 
+                self.curNode = None
+                return []
+            self.curNode = self.curNode.children[ch]
+        return [hotSentence.sentence for hotSentence 
+            in self.curNode.hotSentences[:self.top_k]]
+
+    def reset(self) -> None:
+        self.curNode = self.root
+        
+
+
+class AutocompleteSystem:
+    def __init__(self, sentences: List[str], times: List[int]):
+        self.trie = Trie()
+        self.word = ""
+        for sentence,time in zip(sentences,times):
+            hotSentence: HotSentence = HotSentence(-time,sentence)
+            self.trie.insert(hotSentence)
+        # print(list(self.trie.root.children.keys()))
+                             
+
+    def input(self, c: str) -> List[str]:
+        if c == "#":
+            self.trie.reset()
+            self.trie.insert(HotSentence(-1,self.word))
+            self.word = ""
+            return []
+        
+        self.word += c
+        return self.trie.search(c)
+        
+
+
+# Your AutocompleteSystem object will be instantiated and called as such:
+# obj = AutocompleteSystem(sentences, times)
+# param_1 = obj.input(c)

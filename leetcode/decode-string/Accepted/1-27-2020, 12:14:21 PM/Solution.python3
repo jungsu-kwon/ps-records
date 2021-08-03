@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/decode-string
+
+class Solution:
+    def decodeString(self, s: str) -> str:
+        self.stack = [] 
+        self.start = '['
+        self.end = ']'
+
+        for char in s : 
+            if char == self.end : 
+                char_to_mult = ''
+                while True : 
+                    cand = self.stack.pop()
+                    if cand == self.start  : 
+                        break
+                    char_to_mult += cand
+                mult = [] 
+                while True : 
+                    if len(self.stack) == 0  : 
+                        mult = int(''.join(mult[::-1]))
+                        break
+                    if self.stack[-1].isnumeric(): 
+                        mult.append(self.stack.pop())
+                    else : 
+                        mult = int(''.join(mult[::-1]))
+                        break
+
+                char_to_mult *= mult
+                for char in char_to_mult[::-1]  : 
+                    self.stack.append(char)
+            else : 
+                self.stack.append(char)
+        return ''.join(self.stack)
+
+                
+                 

@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/palindromic-substrings
+
+class Solution:
+    def countSubstrings(self,s):
+        n = len(s)
+        self.s = s 
+        if n == 0 : 
+            return 0 
+        self.dp = [[-1 for i in range(n)] for i in range(n)]
+        for i in range(n) : 
+            self.dp[i][i] = 1 
+        count = 0 
+        for i in range(n) : 
+            for j in range(i,n) : 
+                if self.isPalindrome(i,j) : 
+                    count += 1 
+        return count 
+
+
+    def isPalindrome(self,l,r):
+        if self.dp[l][r] != -1 : 
+            return self.dp[l][r]
+        if self.s[l] == self.s[r] : 
+            self.dp[l][r] =  self.isPalindrome(l+1,r-1) if l+1 < r-1 else 1
+        else : 
+            self.dp[l][r] = 0
+        return self.dp[l][r]

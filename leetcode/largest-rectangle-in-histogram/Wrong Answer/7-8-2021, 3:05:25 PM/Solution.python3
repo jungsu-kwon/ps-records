@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/largest-rectangle-in-histogram
+
+from typing import List
+from collections import deque
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        stack = deque([])
+
+        ans = -float('inf')
+
+        for i,height_i in enumerate(heights):
+            ans = max(ans,height_i)
+
+            print(stack)
+            while stack and stack[0][1] > height_i:
+                j,height_j = stack.popleft()
+                ans = max(ans,(height_j) * (i - j ))
+
+            stack.appendleft((i,height_i))
+
+        i = len(heights)
+        while stack:
+            j,height_j = stack.popleft()
+            ans = max(ans,(height_j) * (i - j))
+
+        return ans

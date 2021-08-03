@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/find-permutation
+
+class Solution:
+    def findPermutation(self, s: str) -> List[int]:
+        count = 0
+        counts = [count]
+        for ch in  s:
+            if ch == 'I':
+                count += 1
+            else:
+                count -= 1
+            counts.append(count)
+        mini = min(counts)
+        return [count - mini + 1 for count in counts]
+        
+
+
+        
+            
+
+
+
+
+        
+
+
+
+        

@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/largest-rectangle-in-histogram
+
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        heights.append(0)
+        best = 0
+        stack = [(-1, 0)]
+        for i, h in enumerate(heights):
+            if h < stack[-1][1]:
+                while stack and h <= stack[-1][1]:
+                    prev_i, prev_h = stack.pop()
+                    best = max(best, prev_h * (i - prev_i))
+                stack.append((prev_i, h))
+            elif h > stack[-1][1]:
+                stack.append((i, h))
+        return best

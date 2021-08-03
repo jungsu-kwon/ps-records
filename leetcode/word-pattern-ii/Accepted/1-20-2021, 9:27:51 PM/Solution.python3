@@ -1,0 +1,41 @@
+// https://leetcode.com/problems/word-pattern-ii
+
+class Solution:
+    def match(self,pattern,s):
+        if not pattern and not s : 
+            return True
+        if not pattern or not s :
+            return False
+
+        if pattern[0] in self.mapping:
+            if s.startswith(self.mapping[pattern[0]]):
+                return self.match(pattern[1:],s[len(self.mapping[pattern[0]]):])
+            else: return False
+
+        for i in range(len(s)):
+            substr = s[:i+1]
+            if substr in self.inverseMap:
+                continue
+            self.mapping[pattern[0]] = substr
+            self.inverseMap[substr] = pattern[0]
+
+            if self.match(pattern[1:],s[len(substr):]):
+                return True
+            self.mapping.pop(pattern[0],None)
+            self.inverseMap.pop(substr,None)
+        return False
+
+
+    def wordPatternMatch(self, pattern: str, s: str) -> bool:
+        self.mapping = dict()
+        self.inverseMap = dict()
+        self.strList = list(s)
+        self.index = 0
+
+
+        return self.match(pattern,s)
+        
+
+
+
+        

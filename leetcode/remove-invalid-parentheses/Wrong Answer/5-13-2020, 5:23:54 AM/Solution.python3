@@ -1,0 +1,54 @@
+// https://leetcode.com/problems/remove-invalid-parentheses
+
+class Solution():
+    def can_skip(self,count,char):
+        if char == '(':
+            return count + 1 <= self.num_skips_start
+        elif char == ')':
+            return count + 1 <= self.num_skips_end
+    def count_increment(self,char):
+        if char == '(':
+            return 1 
+        elif char ==')':
+            return -1
+        else : 
+            return 0 
+    def dfs(self,cur,ind,count,num_skips_start,num_skips_end):
+        if count < 0 : 
+            return
+        if ind == self.n: 
+            if (cur[-1] != '(') and count == 0:
+                self.ret.append(cur)
+            return
+        char = self.s[ind]
+        increment = self.count_increment(char)
+        if char == ')':
+            if self.can_skip(num_skips_end,char):
+                self.dfs(cur,ind+1,count,num_skips_start,num_skips_end+1)
+            self.dfs(cur+char,ind+1,count+increment,num_skips_start,num_skips_end)
+        elif char == '(':
+            self.dfs(cur+char,ind+1,count+increment,num_skips_start,num_skips_end)
+            if self.can_skip(num_skips_start,char):
+                self.dfs(cur,ind+1,count,num_skips_start+1,num_skips_end)
+        else : 
+            self.dfs(cur+char,ind+1,count+increment,num_skips_start,num_skips_end)
+
+
+            
+
+        
+    def removeInvalidParentheses(self,s):
+        self.n = len(s)
+        self.s = s
+        if self.n == 0 : 
+            return []
+        self.ret = []
+        num_start,num_end = 0,0
+        for char in s : 
+            if char == '(':
+                num_start += 1 
+            elif char == ')':
+                num_end += 1 
+        self.num_skips_start,self.num_skips_end = max(0,num_start-num_end),max(0,num_end-num_start)
+        self.dfs('',0,0,0,0)
+        return list(set(self.ret))

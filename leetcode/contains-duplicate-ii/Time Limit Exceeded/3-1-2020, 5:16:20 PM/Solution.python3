@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/contains-duplicate-ii
+
+class Solution:
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        n = len(nums)
+        for i in range(n):
+            start = 0 if i <= k else i-k
+            cur = nums[i]
+            for j in range(start,i):
+                if cur == nums[j]:
+                    return True
+        return False
+                    
+                    
+        
+        

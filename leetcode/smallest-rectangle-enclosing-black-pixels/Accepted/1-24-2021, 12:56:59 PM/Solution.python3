@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/smallest-rectangle-enclosing-black-pixels
+
+BLACK = '1'
+WHITE = '0'
+
+class Solution:
+    def minArea(self, image: List[List[str]], x: int, y: int) -> int:
+        def binarySearch(low,high,func):
+            while low < high:
+                mid = low + (high - low) // 2
+                if func(mid) : 
+                    high = mid
+                else:
+                    low = mid + 1
+            return low
+
+        top = binarySearch(0,x, lambda x : any([pixel == BLACK for pixel in image[x]]))
+        bot = binarySearch(x,len(image), lambda x : all([pixel == WHITE for pixel in image[x]]))
+        left = binarySearch(0,y, lambda x : any([row[x] == BLACK for row in image]))
+        right = binarySearch(y,len(image[0]), lambda x : all([row[x] == WHITE for row in image]))
+
+        return (bot - top) * (right - left)
+
+
+

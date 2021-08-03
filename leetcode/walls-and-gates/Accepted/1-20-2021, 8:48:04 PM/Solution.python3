@@ -1,0 +1,67 @@
+// https://leetcode.com/problems/walls-and-gates
+
+GATE = 0 
+WALL = -1
+INF =  2147483647
+class Solution:
+    def validChildren(self,loc):
+        '''
+        loc = tuple i,j
+        '''
+        moves = [(-1,0),(1,0),(0,-1),(0,1)]
+        children = []
+        for move in moves:
+            cand = (loc[0]+move[0],loc[1]+move[1])
+            if cand[0] < 0 or cand[1] < 0 or cand[0] >= self.height or cand[1] >= self.width:
+                continue
+            if cand in self.visited:
+                continue
+            candVal = self.rooms[cand[0]][cand[1]]
+            if  candVal == GATE or candVal == WALL:
+                continue
+            children.append(cand)
+
+        return children
+
+
+
+
+
+
+    def wallsAndGates(self, rooms: List[List[int]]) -> None:
+        """
+        Do not return anything, modify rooms in-place instead.
+        """
+        self.rooms = rooms
+        self.height = len(rooms)
+        if not self.height :
+            return 
+        self.width = len(rooms[0])
+
+        gates = []
+        for i in range(self.height):
+            for j in range(self.width):
+                if rooms[i][j] == GATE :
+                    gates.append((i,j))
+
+
+        for gate in gates:
+            self.visited = set([])
+
+            queue = self.validChildren(gate)
+            dist = 1
+
+            while queue:
+                queueSize = len(queue)
+
+                for i in range(queueSize):
+                    child = queue.pop(0)
+                    self.rooms[child[0]][child[1]] = min(dist,self.rooms[child[0]][child[1]])
+
+                    queue += self.validChildren(child)
+                    self.visited.add(child)
+                    
+                dist += 1
+            
+
+        

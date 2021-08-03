@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/3sum
+
+class Solution(): 
+    def threeSum(self,nums):
+        from collections import Counter
+        counter = Counter(nums)
+        keys = list(counter.keys())
+        key_len = len(keys)
+        ans = set([])
+        n = len(nums)
+        
+        for i in range(key_len):
+            a = keys[i]
+            counter[a] -= 1 
+            for j in range(key_len):
+                b = keys[j]
+                if counter[b] ==  0 :
+                    continue
+                counter[b] -=1
+                c = -a-b
+                if c in counter and counter[c] >= 1 : 
+                    ans.add(tuple(sorted([a,b,c])))
+                counter[b] += 1 
+            counter[a] += 1 
+        ret = [list(elem) for elem in ans]
+        return ret
+                
+

@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/binary-tree-inorder-traversal
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def inorderTraversal(self, root: TreeNode) -> List[int]:
+        traversal = []
+        cur = root 
+        self.stack = []
+        while self.stack or cur != None  :
+            while cur != None :
+                self.stack.append(cur)
+                cur = cur.left
+            cur = self.stack.pop()    
+            traversal.append(cur.val)
+            cur = cur.right
+        return traversal
+    
+            
+                
+                
+            
+        

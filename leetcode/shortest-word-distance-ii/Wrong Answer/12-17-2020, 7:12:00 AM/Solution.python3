@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/shortest-word-distance-ii
+
+class WordDistance:
+
+    def __init__(self, words: List[str]):
+        self.occurence = {}
+        for i,word in enumerate(words) : 
+            if word in self.occurence : 
+                self.occurence[word].append(i)
+            else : 
+                self.occurence[word] = [i]
+
+        
+
+    def shortest(self, word1: str, word2: str) -> int:
+        occurences1 = self.occurence[word1]
+        occurences2 = self.occurence[word2]
+
+        ans = len(self.occurence)
+        for o1 in occurences1 : 
+            for o2 in occurences2 : 
+                ans = min(abs(o1-o2),ans)
+        return ans
+        
+
+
+# Your WordDistance object will be instantiated and called as such:
+# obj = WordDistance(words)
+# param_1 = obj.shortest(word1,word2)

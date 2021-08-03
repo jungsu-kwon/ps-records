@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/relative-sort-array
+
+class Solution:
+    def relativeSortArray(self, arr1, arr2) :
+        from collections import Counter
+        n = len(arr1)
+        counted = Counter(arr1)
+        in_arr2 = 0
+
+        ans = [0 for i in range(n)]
+        ind = 0
+        not_in_arr2 = []
+        for val in arr2 : 
+            ans[ind:ind+counted[val]] = [val for i in range(counted[val])]
+            ind += counted[val]
+        for val in arr1 : 
+            if val not in arr2:
+                not_in_arr2.extend([val for i in range(counted[val])])
+        not_in_arr2.sort()
+        ans[ind:] = not_in_arr2
+        return ans
+
+        
+     

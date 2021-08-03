@@ -1,0 +1,38 @@
+// https://leetcode.com/problems/intersection-of-two-linked-lists
+
+class Solution:
+    def get_end(self,head):
+        cur = head
+        end = cur
+        n = 0 
+        while cur != None : 
+            end = cur
+            cur = cur.next
+            n += 1 
+        return end,n
+
+
+    def getIntersectionNode(self,headA,headB): 
+        if headA == None or headB == None : 
+            return None
+        #determine overlap
+        endA,lenA = self.get_end(headA)
+        endB,lenB = self.get_end(headB)
+
+        if endA != endB  : 
+            return None
+        shorter_,longer_ = sorted([(headA,lenA),(headB,lenB)],key=lambda x:x[1])
+        shorter,longer = shorter_[0],longer_[0]
+        diff = longer_[1]-shorter_[1]
+
+        for i in range(diff):
+            longer = longer.next
+        
+        for i in range(shorter_[1]):
+            if shorter == longer : 
+                return shorter
+            shorter,longer = shorter.next,longer.next
+        return None
+
+
+

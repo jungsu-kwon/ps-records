@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/maximum-number-of-removable-characters
+
+class Solution:
+	def find_index_set(self,s,p,i,j):
+		"""s = "abcacb", p = "ab"""
+		if j == len(p):
+			return [[]]
+		if i == len(s):
+			return []
+		
+		ans =[]
+		if s[i] == p[j]:
+			ans += [[i]+_ for _ in self.find_index_set(s, p, i+1, j+1)]
+		ans += self.find_index_set(s, p, i+1, j)
+		return ans
+		
+			
+
+	def maximumRemovals(self, s: str, p: str, removable) -> int:
+		index_sets = self.find_index_set(s, p, 0, 0)
+
+		maxi = 0
+		for i,num in enumerate(removable):
+			index_sets = [index_set for index_set in index_sets if not num in index_set]
+			if not index_sets:
+				return maxi
+			maxi += 1
+		return maxi
+			
+					

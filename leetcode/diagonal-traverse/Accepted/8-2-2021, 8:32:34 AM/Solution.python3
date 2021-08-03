@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/diagonal-traverse
+
+from typing import List
+
+class Solution:
+    def findDiagonalOrder(self, mat: List[List[int]]) -> List[int]:
+        numRows: int = len(mat)
+        numCols: int = len(mat[0])
+        maxDiagSum: int = numCols + numRows - 2
+
+        ans: List[int] = []
+        for diagSum in range(maxDiagSum+1):
+            if diagSum % 2 == 0:
+                startRow: int = min(diagSum,numRows-1)
+                startCol: int = diagSum - startRow
+                numElems: int = min(startRow+1,numCols - startCol)
+                
+                ans += [mat[startRow - i][startCol + i] for i in range(numElems)]
+            else:
+                startCol: int = min(diagSum, numCols-1)
+                startRow: int = diagSum - startCol
+                numElems: int = min(numRows - startRow, startCol+1)
+                ans += [mat[startRow + i][startCol - i] for i in range(numElems)]
+                
+        return ans

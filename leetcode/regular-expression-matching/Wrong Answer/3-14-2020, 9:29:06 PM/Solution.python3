@@ -1,0 +1,88 @@
+// https://leetcode.com/problems/regular-expression-matching
+
+class Solution:
+    def isMatch(self, s,p):
+        if len(p) == 0 : 
+            if len(s) != 0 : 
+                return False
+        
+        s_count = []
+        p_count = []
+        for i,char in enumerate(s) : 
+            if i == 0 : 
+                s_count.append([char,1])
+                prev = char
+            else :
+                if char == prev : 
+                    s_count[-1][1] += 1 
+                else : 
+                    s_count.append([char,1])
+                    prev = char
+        prev = None 
+        for i,char in enumerate(p) : 
+            if char == '*' : 
+                if prev == None : 
+                    return False
+                else : 
+                    p_count[-1][1] = -1 
+            elif char == '.' : 
+                p_count.append(['.',1])
+                prev = '.'
+            else : 
+                if prev == char : 
+                    if not p_count[-1][1] == -1 : 
+                        p_count[-1][1] += 1 
+                else : 
+                    p_count.append([char,1])
+                    prev = char
+        ind1 = 0
+        ind2 = 0 
+        n1,n2 = len(s_count),len(p_count)
+        while True  : 
+            s_char,s_freq = s_count[ind1]
+            p_char,p_freq = p_count[ind2]
+
+            if s_char == p_char : 
+                if p_freq == -1 : 
+                    ind1 += 1 
+                    ind2 += 1
+                elif s_freq > p_freq :
+                    s_count[ind1][1] -= p_freq
+                    ind2 +=1 
+                elif s_freq == p_freq : 
+                    ind1 += 1 
+                    ind2 +=1 
+                if s_freq < p_freq : 
+                    return False
+
+            elif p_char == '.' : 
+                s_count[ind1][1] -= p_freq
+                ind2 += 1 
+                if s_count[ind1][1] == 0 :
+                    ind1 += 1 
+            elif p_freq == -1 : 
+                ind2 +=1 
+            else : 
+                return False
+
+
+            if ind1 == n1 and ind2 == n2 : 
+                return True
+            elif ind2 == n2 and ind1 < n1 : 
+                return False
+            elif ind1 == n1 and ind2 <n2 : 
+                for i in range(ind2,n2) : 
+                    p_char,p_freq = p_count[i]
+                    if p_freq != -1 : 
+                        return False
+                return True
+
+        return False
+                
+                
+
+
+
+
+
+

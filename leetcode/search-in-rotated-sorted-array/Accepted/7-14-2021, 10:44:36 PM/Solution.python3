@@ -1,0 +1,61 @@
+// https://leetcode.com/problems/search-in-rotated-sorted-array
+
+from typing import List
+
+class Solution:
+    def isLeft(self,nums: List[int], index: int)-> bool:
+        """
+        returns if index is left of pivot
+        """
+        leftEnd: int = nums[0]
+        curVal: int = nums[index]
+
+        return curVal >= leftEnd
+
+
+    def findPivot(self,nums:List[int]) -> int:
+        """
+        returns index of rotation pivot in nums
+        returns -1 if no rotations is found
+        """
+
+        left: int = 0
+        right: int = len(nums) - 1
+
+        while (left <= right):
+            mid = (left + right) // 2
+            if self.isLeft(nums,mid):
+                left = mid + 1
+            else:
+                right = mid - 1
+
+        cand: int = left
+        if cand > 0 and cand < len(nums):
+            if nums[cand -1] > nums[cand]:
+                return cand
+        return -1
+
+    def search(self, nums: List[int], target: int) -> int:
+        pivot = self.findPivot(nums)
+
+        # not found
+        if pivot == -1:
+            left: int = 0
+            right: int = len(nums) - 1 
+
+        elif nums[pivot] <= target and nums[-1] >= target:
+            left: int = pivot
+            right: int = len(nums) -1 
+        else:
+            left: int = 0
+            right: int = pivot - 1
+
+        while (left <= right):
+            mid: int = (left + right) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            elif nums[mid] == target:
+                return mid
+            else:
+                right = mid - 1
+        return -1

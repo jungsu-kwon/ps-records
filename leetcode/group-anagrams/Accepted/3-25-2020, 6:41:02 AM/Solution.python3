@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/group-anagrams
+
+class Solution():                
+        
+    def groupAnagrams(self,strs):
+        self.alphabets = 'abcdefghijklmnopqrstuvwxyz'
+        #assert len(self.alphabets) == 26
+        self.inds = {}
+        self.groups = {}
+        for i,alpha in enumerate(self.alphabets) : 
+            self.inds[alpha] = i 
+        for str_ in strs : 
+            n = len(str_)
+            key = [0 for i in range(len(self.alphabets))]
+            for char in str_ : 
+                key[self.inds[char]] += 1 
+            key_tuple = tuple(key)
+            if key_tuple in self.groups.keys():
+                self.groups[key_tuple].append(str_)
+            else : 
+                self.groups[key_tuple] = [str_]
+        return self.groups.values()
+            

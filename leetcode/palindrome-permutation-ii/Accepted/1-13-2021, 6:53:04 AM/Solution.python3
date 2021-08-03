@@ -1,0 +1,57 @@
+// https://leetcode.com/problems/palindrome-permutation-ii
+
+from collections import Counter
+from itertools import permutations
+
+class Solution:
+    def getMirrorStr(self,perm,oddChar):
+        addOddChar = oddChar != ''
+        firstHalf = list(perm)
+        secondHalf = list(perm)[::-1]
+        if addOddChar :
+            return ''.join(firstHalf + [oddChar] + secondHalf)
+        return ''.join(firstHalf+secondHalf)
+    
+    def getPermutations(self,counter,prefix):
+        if len(counter) == 0 :
+            return [prefix]
+        permsList = []
+        for char,count in counter.items():
+            if count == 0 :
+                continue
+            counter[char] -= 2
+
+            permsList += self.getPermutations(counter,prefix+char)
+            counter[char] = count
+            
+        if not permsList:
+            permsList.append(prefix)
+        
+        return permsList
+
+
+    def generatePalindromes(self, s: str) -> List[str]:
+        counter,oddCount = Counter(),0
+        for char in s:
+            counter[char] += 1
+
+        ans = []
+        oddChar = ''
+        for char,count in counter.items():
+            isOdd = count % 2
+            if not isOdd:
+                continue
+            oddCount += 1
+            oddChar = char
+            if oddCount != 1:
+                return ans
+        if oddChar != '':
+            counter[oddChar] -= 1
+
+        return [self.getMirrorStr(perm,oddChar) for perm in self.getPermutations(counter,'')]
+        
+
+            
+
+
+           

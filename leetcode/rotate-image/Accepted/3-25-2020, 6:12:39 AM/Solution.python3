@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/rotate-image
+
+class Solution:
+    def rotate(self,matrix):
+        n = len(matrix)
+        if n <= 1 : 
+            return
+        num_squares = int(n/2)
+        for i in range(num_squares):
+            for j in range(n-2*i-1):
+                ty,tx = (i,j+i)
+                ry,rx = (j+i,n-i-1)
+                by,bx = (n-i-1,n-j-1-i)
+                ly,lx = (n-j-1-i,i)
+                top,right,bot,left = matrix[ty][tx],matrix[ry][rx],matrix[by][bx],matrix[ly][lx]
+                matrix[ty][tx] = left
+                matrix[ry][rx] = top
+                matrix[by][bx] = right
+                matrix[ly][lx] = bot
+                

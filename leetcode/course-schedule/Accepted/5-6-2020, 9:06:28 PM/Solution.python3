@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/course-schedule
+
+class Solution:
+    def children(self,root):
+        return self.edges[root]
+
+    def dfs(self,root):
+        if root in self.visited : 
+            return True
+        self.visited.add(root)
+
+        for child in self.children(root):
+            if self.dfs(child):
+                return True
+            self.visited.remove(child)
+        return False
+
+    def canFinish(self, numCourses, prerequisites): 
+        self.edges = [[] for i in range(numCourses)]
+        self.visited = set([])
+        for edge in prerequisites : 
+            self.edges[edge[0]].append(edge[1])
+
+        for root in range(numCourses):
+            if self.dfs(root):
+                return False
+            self.visited = set([])
+        return True

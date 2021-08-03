@@ -1,0 +1,31 @@
+// https://leetcode.com/problems/stone-game
+
+    
+    
+class Solution:
+    def helper(self,start,end,sum):
+        if self.memo[start][end] != 0 :
+            return self.memo[start][end]
+        if start == end : 
+            return self.piles[start]
+        
+        ret = max(sum-self.helper(start,end-1,sum-self.piles[end]),
+                  sum-self.helper(start+1,end,sum-self.piles[start]))
+        self.memo[start][end] = ret
+        return ret
+       
+        
+    
+    def stoneGame(self, piles: List[int]) -> bool:
+        self.n = len(piles)
+        self.piles = piles
+        self.memo = [[0 for i in range(self.n)] for i in range(self.n)]
+        self.sum = sum(piles)
+        
+        maxi = self.helper(0,self.n-1,self.sum)
+        print(maxi)
+        if maxi >= int(self.sum/2) : 
+            return True
+        return False 
+    
+        

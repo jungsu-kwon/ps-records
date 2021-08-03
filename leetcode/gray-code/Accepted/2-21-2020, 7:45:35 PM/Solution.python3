@@ -1,0 +1,21 @@
+// https://leetcode.com/problems/gray-code
+
+class Solution:
+    def grayCode(self,n):
+        ret = [0 for i in range(2**n)]
+        if n == 0 : 
+            return [0]
+        ret[0] = 0
+        ret[1] = 1
+        if n == 1 : 
+            return ret
+
+        for i in range(2,n+1):
+            start = 2**(i-1)
+            end = 2**(i)
+            for j in range(2**(i-1)):
+                ret[start+j] = ret[start-1-j] + 2**(i-1)
+
+        return ret
+
+

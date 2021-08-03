@@ -1,0 +1,54 @@
+// https://leetcode.com/problems/design-search-autocomplete-system
+
+from typing import Dict, List
+from collections import namedtuple
+import bisect
+
+HotSentence = namedtuple("hotsentence",
+    ["negHotness","sentence"])
+
+class TrieNode:
+    def __init__(self):
+       self.children: Dict[str,TrieNode] = {}
+       self.hotSentences: List[HotSentence] = []
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+        self.top_k = 3
+        self.curNode = self.root
+
+    def insert(self, hotSentence: HotSentence) -> None:
+        curNode: TrieNode = self.root
+        for ch in hotSentence.sentence:
+            if not ch in curNode.children:
+                curNode.children[ch] = TrieNode()
+            curNode = curNode.children[ch]
+            bisect.insort(curNode.hotSentences,
+                hotSentence)
+            if len(curNode.hotSentences) > self.top_k:
+                curNode.hotSentences = curNode.hotSentences[:self.top_k]
+
+    def search(self, sentence: str) -> List[str]:
+        for ch in sentence:
+            if not ch in self.curNode.children: return []
+            self.curNode = self.curNode.children[ch]
+        return [hotSentence.sentence for hotSentence 
+            in self.curNode.hotSentences]
+
+
+class AutocompleteSystem:
+    def __init__(self, sentences: List[str], times: List[int]):
+        self.trie = Trie()
+        for sentence,time in zip(sentences,times):
+            hotSentence: HotSentence = HotSentence(-time,sentence)
+            self.trie.insert(hotSentence)
+
+    def input(self, c: str) -> List[str]:
+        return self.trie.search(c)
+        
+
+
+# Your AutocompleteSystem object will be instantiated and called as such:
+# obj = AutocompleteSystem(sentences, times)
+# param_1 = obj.input(c)

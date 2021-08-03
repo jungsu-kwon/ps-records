@@ -1,0 +1,32 @@
+// https://leetcode.com/problems/ternary-expression-parser
+
+
+class Solution:
+
+    def parseTernary(self, expression: str) -> str:
+        stack = []
+
+        i = len(expression) - 1
+        while i >= 0:
+            ch = expression[i]
+            if ch != '?':
+                if ch == ':':
+                    i -= 1
+                else:
+                    stack.append(ch)
+                    i -= 1
+            else:
+                flag = expression[i-1]
+                left = stack.pop(-1)
+                right = stack.pop(-1)
+
+                if flag == 'T':
+                    stack.append(left)
+                else:
+                    stack.append(right)
+                i -= 2
+        return stack[0]
+
+
+
+                

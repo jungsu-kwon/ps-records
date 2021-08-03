@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/trapping-rain-water
+
+class Solution:
+    def trap(self, height):
+        n = len(height)
+        if n <= 1 : 
+            return 0 
+        buffer = [-1 for i in range(n)]
+        maxi = -1
+
+        for i in range(n):
+            cur = height[i]
+            buffer[i] = maxi
+            if cur > 0 and cur > maxi : 
+                maxi = cur
+        maxi = -1
+                
+        for i in range(n-1,0,-1):
+            cur = height[i]
+            buffer[i] = min(maxi,buffer[i])
+            if cur > 0 and cur > maxi : 
+                maxi = cur
+        reserve = 0 
+        for i in range(n):
+            buf_cur = buffer[i]
+            cur = height[i]
+            
+            if buf_cur == -1 : 
+                continue
+            else : 
+                reserve += max(0,buf_cur-cur)
+
+        return reserve
+
+                

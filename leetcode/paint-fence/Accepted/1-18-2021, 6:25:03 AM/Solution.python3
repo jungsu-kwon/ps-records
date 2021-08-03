@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/paint-fence
+
+class Solution:
+    def numWays(self, n: int, k: int) -> int:
+        # duplicate  --> a[j]
+        # wo-duplicate --> b[j]
+        if not n*k:
+            return 0
+
+        a_i = 0
+        b_i = 1
+
+        for i in range(1,n):
+            a_i,b_i = b_i,(k-1)*(a_i+b_i)
+
+        return (k)*(a_i+b_i)
+
+            
+        

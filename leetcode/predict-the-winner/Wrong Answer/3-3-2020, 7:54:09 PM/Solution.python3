@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/predict-the-winner
+
+class Solution:
+        
+    def PredictTheWinner(self, nums: List[int]) -> bool:
+        total_score = sum(nums)
+        n = len(nums)
+        
+        if n == 1 : 
+            return True
+        self.nums = nums
+        dp = [[0 for i in range(n)] for i in range(n)]
+        
+        for step in range(1,n):
+            for start in range(0,n-step):
+                if step == 1 : 
+                    dp[start][start+step] = max(total_score - nums[start+1] + nums[start],
+                                                total_score - nums[start] + nums[start+step])
+                else : 
+                    dp[start][start+step] = max(total_score - dp[start+1][start+step] + nums[start],
+                                                total_score - dp[start][start+step-1] +nums[start+step])
+        if dp[0][n-1] >= total_score/2:     
+            return True
+        return False

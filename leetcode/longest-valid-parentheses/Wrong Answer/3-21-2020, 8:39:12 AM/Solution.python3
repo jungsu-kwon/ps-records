@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/longest-valid-parentheses
+
+class Solution():
+    def longestValidParentheses(self,s):
+        if not s or len(s) == 1 : 
+            return 0
+        maxi,n = 0,len(s)
+        dp = [0 for i in range(n)]
+        for i in range(n):
+            cur = s[i]
+            back = cur == ')'
+            if back : 
+                next_ = i-1
+                while next_ >= 0 and dp[next_] != 0 :
+                    next_ -= dp[next_]
+                if s[next_] == '(' : 
+                    dp[i] = i-next_ + 1 
+                    if dp[i] > maxi : 
+                        maxi = dp[i]
+
+
+                
+        return maxi

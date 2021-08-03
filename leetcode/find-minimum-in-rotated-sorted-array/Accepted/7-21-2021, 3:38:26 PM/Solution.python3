@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/find-minimum-in-rotated-sorted-array
+
+from typing import List
+
+class Solution:
+    def findPivot(self,nums: List[int]) -> int:
+        '''
+        find rotational pivot's index
+        returns -1 if not found
+        '''
+
+        left: int = 0
+        right: int = len(nums) - 1
+        leftVal: int = nums[0]
+
+
+        while (left + 1 < right):
+            mid: int = (left + right) // 2
+            if nums[mid] < leftVal:
+                if nums[mid - 1] > nums[mid]:
+                    return mid
+                right = mid - 1
+            else:
+                left = mid + 1
+        if nums[left] > nums[right]: return right
+        if left and nums[left] < nums[left-1]: return left
+        return 0
+            
+            
+            
+
+    def findMin(self, nums: List[int]) -> int:
+        return nums[self.findPivot(nums)]

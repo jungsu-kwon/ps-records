@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/maximum-size-subarray-sum-equals-k
+
+class Solution:
+    def maxSubArrayLen(self, nums: List[int], k: int) -> int:
+        if not nums:
+            return int(k != 0)
+        dictSumToInd = {}
+        partialSum = 0
+        maxLen = 0
+        
+        dictSumToInd[0] = -1
+        for i,num in enumerate(nums):
+            partialSum += num
+            if not partialSum  in dictSumToInd:
+                dictSumToInd[partialSum] =  i
+            if partialSum - k in dictSumToInd:
+                maxLen = max(i-dictSumToInd[partialSum - k],maxLen)
+        return maxLen
+
+        

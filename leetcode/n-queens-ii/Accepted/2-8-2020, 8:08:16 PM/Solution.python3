@@ -1,0 +1,71 @@
+// https://leetcode.com/problems/n-queens-ii
+
+class Solution:
+    def init(self,n) : 
+        self.n = n 
+        self.attack_zone = [[0 for i in range(n)] for i in range(n)]
+        #self.queens = [[0 for i in range(n)] for i in range(n)]
+
+    def is_not_under_attack(self,row,col):
+        return self.attack_zone[row][col] == 0 
+
+    def remove_queen(self,row,col) : 
+        self.change_attack_zone(row,col,-1)
+
+    def place_queen(self,row,col) : 
+        self.change_attack_zone(row,col,1)
+
+    def change_attack_zone(self,row,col,val): 
+        #self.queens[row][col] = 1 
+        # add count to row and col
+        for i in range(self.n):
+            # add count to row
+            self.attack_zone[row][i] += val 
+            # add count to col
+            self.attack_zone[i][col] += val 
+
+        # add count to diag1 left bot to right top
+        n_diag1_left = min(self.n-row-1,col) 
+        n_diag1_right = min(self.n-col-1,row)
+        '''
+        for i in range(n_diag1_left+1) :
+            self.attack_zone[row+i][col-i] += val
+        for i in range(n_diag1_right+1):
+            self.attack_zone[row-i][col+i] += val 
+        '''
+        for i in range(-n_diag1_right,n_diag1_left+1) :
+            #print(row+i,col-i)
+            self.attack_zone[row+i][col-i] += val
+        #for i in range(n_diag1_right+1):
+        #    self.attack_zone[row-i][col+i] += val 
+
+        # add count to diag2 left top to right bot
+        n_diag2_left = min(row-1,col-1) 
+        n_diag2_right =min(self.n-col-1 ,self.n - row-1)
+        for i in range(-n_diag2_right,n_diag2_left+1) : 
+            self.attack_zone[row-i][col-i] += val
+        #for i in range(n_diag2_right+1) : 
+        #    self.attack_zone[row+i][col+i] += val
+        self.attack_zone[row][col] -= val*4
+
+
+    def backtrack_nqueen(self,row = 0, count = 0):
+        for col in range(self.n):
+            # iterate through columns at the curent row.
+            if self.is_not_under_attack(row, col):
+                # explore this partial candidate solution, and mark the attacking zone
+                self.place_queen(row, col)
+                if row + 1 == self.n:
+                    # we reach the bottom, i.e. we find a solution!
+                    count += 1
+                else:
+                    # we move on to the next row
+                    count = self.backtrack_nqueen(row + 1, count)
+                # backtrack, i.e. remove the queen and remove the attacking zone.
+                self.remove_queen(row, col)
+        return count
+
+    def totalNQueens(self, n: int) -> int:
+        self.init(n)
+        count = self.backtrack_nqueen(row=0,count = 0)
+        return count 

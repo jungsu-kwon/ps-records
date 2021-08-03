@@ -1,0 +1,44 @@
+// https://leetcode.com/problems/next-greater-node-in-linked-list
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def nextLargerNodes(self, head: ListNode) -> List[int]:
+        stack = [] 
+        cur = head
+        maxi = head.val
+        while cur : 
+            stack.append(cur.val)
+            if maxi < cur.val:
+                maxi = cur.val
+            cur = cur.next
+        N = len(stack)
+        dp = [0 for i in range(N)]
+        dp[-1] = 0
+        for i in range(N-2,-1,-1):
+            cur,next_val = stack[i],stack[i+1]
+            if cur < next_val : 
+                dp[i] = next_val
+            elif cur== next_val : 
+                dp[i] = dp[i+1]
+            else : 
+                if cur < maxi : 
+                    for ind in range(i+1,N):
+                        if stack[ind] > cur:
+                            dp[i] = stack[ind]
+                            break
+        return dp
+                        
+                    
+                
+            
+            
+             
+
+        
+        
+   

@@ -1,0 +1,54 @@
+// https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+from collections import deque
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if root == None : 
+            return None 
+        _,pPath = self.path(root,p.val)
+        _,qPath = self.path(root,q.val)
+        cur = root 
+        n = min(len(pPath),len(qPath))
+        for i in range(n):
+            pdir,qdir = pPath[i],qPath[i]
+            
+            if qdir != pdir :
+                return cur
+            elif qdir == pdir:
+                if pdir == 'L' : 
+                    cur = cur.left
+                else :
+                    cur = cur.right
+        return cur
+                   
+        
+    def path(self,root,p):
+        if root == None : 
+            return False,deque([])
+        if root.val == p:
+            return True,deque([])
+        left_exists,left_path = self.path(root.left,p)
+        
+        if left_exists : 
+            left_path.appendleft('L')
+            return True,left_path
+        else :
+            right_exists,right_path = self.path(root.right,p)
+            
+            if right_exists : 
+                right_path.appendleft('R')
+                return True,right_path
+            else : 
+                return False,deque([])
+        
+        
+        
+        
+            
+        

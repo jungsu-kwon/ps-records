@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array
+
+class Solution():
+    def searchRange(self,nums,target):
+        import bisect
+        if len(nums) == 1 : 
+            if target == nums[0] : 
+                return [0,0]
+            else :
+                return [-1,-1]
+        def binary_search(nums,target,left=True):
+            if left : 
+                ans = bisect.bisect_left(nums,target)
+                if ans != len(nums) and nums[ans] == target : 
+                    return ans
+                else :
+                    return -1 
+            else : 
+                ans = bisect.bisect_right(nums,target)
+                if ans != len(nums)  and nums[ans-1] == target : 
+                    return ans-1 
+                else : 
+                    return -1
+        left = binary_search(nums,target,left=True)
+        if left != - 1 : 
+            right = binary_search(nums,target,left=False)
+        else : 
+            right = -1 
+        return [left,right]
+                

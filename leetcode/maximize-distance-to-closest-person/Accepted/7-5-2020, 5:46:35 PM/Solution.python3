@@ -1,0 +1,33 @@
+// https://leetcode.com/problems/maximize-distance-to-closest-person
+
+class Solution:
+    def maxDistToClosest(self, seats):
+        num_seats = len(seats)
+        dists = [-1 for i in range(num_seats)]
+        left = None 
+
+        for i,seat in enumerate(seats) : 
+            if seat : 
+                left = i 
+            elif left != None :
+                dists[i] = i - left
+
+        right = None 
+        for i in range(len(seats)-1,-1,-1):
+            seat = seats[i]
+            if seat : 
+                right,dists[i] = i,0
+            elif right != None : 
+                temp = int(dists[i] == -1) * num_seats + int(dists[i] != -1) * dists[i]
+                dists[i] = min(right - i,temp)
+
+        maxi = 0
+        for dist in dists : 
+            maxi = max(dist,maxi)
+
+        return maxi
+
+                    
+
+
+

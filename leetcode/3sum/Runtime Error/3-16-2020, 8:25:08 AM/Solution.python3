@@ -1,0 +1,44 @@
+// https://leetcode.com/problems/3sum
+
+class Solution(): 
+    def threeSum(self,nums):
+        from collections import Counter
+        import bisect
+
+        counter = Counter(nums)
+        keys = sorted(list(counter.keys()))
+        num_keys = len(keys)
+        maxi,mini = keys[-1],keys[0]
+        ans = set([])
+
+        for i in range(num_keys):
+            a = keys[i]
+            if a <= 0 : 
+                left,right = bisect.bisect_left(keys,-maxi-a),num_keys
+            else : 
+                left,right = 0,bisect.bisect_right(keys,-mini-a)
+            for j in range(left,right):
+                b = keys[j]
+                c = -a-b
+                    
+                if c in counter  :
+                    ans.add(tuple(sorted([a,b,c])))
+        ret = [] 
+        for i in ans : 
+            a,b,c = i
+            set_ans = Counter([a,b,c])
+            append = True
+            for elem in set_ans:
+                if set_ans[elem] > counter[elem]:
+                    append = False
+                    break
+                    
+            if append :  
+                ret.append([a,b,c])
+
+        return ret
+
+                
+
+        
+        

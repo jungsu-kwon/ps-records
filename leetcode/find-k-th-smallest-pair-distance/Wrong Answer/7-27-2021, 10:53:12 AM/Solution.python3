@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/find-k-th-smallest-pair-distance
+
+from typing import List
+
+class Solution:
+    def count(self, nums: List[int], distance: int) -> int:
+        start: int = 0
+        end: int = 0
+        count: int = 0
+        n: int = len(nums)
+
+        while start < n or end < n:
+            while end < n and nums[end] - nums[start] <= distance:
+                end += 1
+            if end < n: count += end - start - 1
+            start += 1
+            
+
+        return count
+
+
+    def smallestDistancePair(self, nums: List[int], k: int) -> int:
+        nums.sort()
+        # print(nums)
+
+        left: int = 0
+        right: int = nums[-1] - nums[0]
+        k -= 1
+
+        while left < right:
+            mid: int = (left + right) // 2
+            count: int = self.count(nums,mid)
+
+            if count >= k:
+                right = mid
+            else:
+                left = mid + 1
+            # print(left,right,count)
+        return left

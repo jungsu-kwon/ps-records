@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/alien-dictionary
+
+class Solution:
+    def getChar(self,word,i):
+        if i >= len(word):
+            return None
+        return word[i]
+    def samePrefix(self,word1,word2,i):
+        return word1[:i] == word2[:i]
+    def alienOrder(self, words):
+        ansList = []
+        maxiLen = max([len(word) for word in words])
+
+        for i in range(maxiLen):
+            chars = [self.getChar(word,i) for word in words]
+            prevWordIndex,prevIndex = None,-1
+            for j,char in enumerate(chars):
+                if char and char not in ansList:
+                    if prevWordIndex is None or self.samePrefix(words[prevWordIndex],words[j],i):
+                        ansList.insert(prevIndex+1,char)
+                        prevIndex += 1
+                else:
+                    orderIndex = ansList.index(char) if char else -2
+                    if prevWordIndex is not None  and  self.samePrefix(words[prevWordIndex],words[j],i):
+                        if orderIndex < prevIndex:
+                            return ''
+                    prevIndex = orderIndex
+                prevWordIndex = j
+
+        return ''.join(ansList)

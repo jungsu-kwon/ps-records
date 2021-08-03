@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/shortest-word-distance
+
+class Solution:
+    def shortestDistance(self, words: List[str], word1: str, word2: str) -> int:
+        occurences1,occurences2 = [],[]
+
+        for i,word in enumerate(words) : 
+            if word == word1 : 
+                occurences1.append(i)
+            elif word == word2 : 
+                occurences2.append(i)
+
+        ans = len(words)
+        for o1 in occurences1 : 
+            for o2 in occurences2 : 
+                ans = min(abs(o1-o2),ans)
+        return ans
+        

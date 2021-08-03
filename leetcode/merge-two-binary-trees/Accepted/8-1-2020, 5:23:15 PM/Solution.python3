@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/merge-two-binary-trees
+
+class Solution:
+    def copy(self,t):
+        if t == None : 
+            return None
+        copy_t = TreeNode(t.val)
+        copy_t.left,copy_t.right = self.copy(t.left),self.copy(t.right)
+        return copy_t
+        
+
+    def mergeTrees(self, t1,t2):
+        if t1 == None and t2 == None : 
+            return None 
+        if t1 == None or t2 == None : 
+            def isNone(t):
+                return t == None 
+            t,_ = sorted([t1,t2],key=isNone) 
+            return t
+
+        copy_t = TreeNode(t1.val+t2.val)
+        copy_t.left,copy_t.right = self.mergeTrees(t1.left,t2.left),self.mergeTrees(t1.right,t2.right)
+        return copy_t
+            
+        

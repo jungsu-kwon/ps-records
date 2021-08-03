@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/symmetric-tree
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+        
+def isMirror(n1,n2):
+    if n1 == None and n2 == None : 
+        return True
+    if n1 == None or n2 == None : 
+        return False
+    if n1.val != n2.val : 
+        return False
+    if not isMirror(n1.left,n2.right) :
+        return False
+    if not isMirror(n1.right,n2.left):
+        return False
+    return True
+    
+    
+class Solution:
+    def isSymmetric(self, root: TreeNode) -> bool:
+        if root == None : 
+            return True
+        return isMirror(root.left,root.right)
+        
+        

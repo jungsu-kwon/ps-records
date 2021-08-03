@@ -1,0 +1,44 @@
+// https://leetcode.com/problems/merge-k-sorted-lists
+
+class Solution(): 
+    def get_mini_ind(self):
+        mini = None
+        mini_ind = -1 
+        for ind in self.valid_lists:
+            node = self.lists[ind]
+            val = node.val
+            if  mini == None or mini > val : 
+                mini = val
+                mini_ind = ind
+        return mini_ind
+
+    def mergeKLists(self,lists):
+        self.valid_lists = []
+        self.lists = lists
+        cur = None
+        head = None
+        for i,node in enumerate(lists) : 
+            if node : 
+                self.valid_lists.append(i)
+        
+        while self.valid_lists : 
+            mini_ind = self.get_mini_ind()
+            min_node = self.lists[mini_ind]
+
+            if cur : 
+                cur.next = min_node 
+                cur = cur.next
+            else : 
+                cur = min_node
+                head = cur
+            next_node = min_node.next
+            if next_node : 
+                self.lists[mini_ind] = next_node
+            else : 
+                self.lists[mini_ind] = None 
+                self.valid_lists.pop(self.valid_lists.index(mini_ind))
+            if len(self.valid_lists) == 1 : 
+                cur.next = self.lists[self.valid_lists[0]]
+                return head
+
+        return head

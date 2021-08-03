@@ -1,0 +1,56 @@
+// https://leetcode.com/problems/bulb-switcher-ii
+
+class Solution:
+    def reached_max(self,n,length):
+        if n == 1 and length >= 2 :
+            return True
+        if n == 2 and length >= 4 :
+            return True
+        if n == 3 and length >= 8 : 
+            return True
+        if n > 3 and length >= 16:
+            return True
+        
+    def flipLights(self, n, m) :
+        cases = set([])
+        if m > 16 : 
+            m = 16
+        for a in range(m+1):
+            for b in range(m-a+1):
+                for c in range(m-a-b+1):
+                    for d in range(m-a-b-c+1):
+                        if self.reached_max(n,len(cases)):
+                            return len(cases)
+                        if a + b + c +d == m:
+                            if n == 1 : 
+                                cases.add(((a+c+d)%2))
+                            elif n == 2  :
+                                cases.add(((a+c+d)%2,(a+b)%2))
+                            elif n == 3 :
+                                cases.add(((a+c+d)%2,(a+b)%2,(a+c)%2))
+                            else :
+                                cases.add(((a+c+d)%2,(a+b)%2,(a+c)%2,(a+b+d)%2))
+        return len(cases)
+
+
+
+
+
+        
+
+        
+         
+
+
+
+
+        
+    
+
+        
+         
+
+
+
+
+        

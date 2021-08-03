@@ -1,0 +1,35 @@
+// https://leetcode.com/problems/paint-house-ii
+
+class Solution:
+    def findTwoMins(self, costs):
+        min1, min2 = float(inf),float(inf)
+        for cost in costs:
+            if cost <= min1:
+                min1,min2 = cost,min1
+            elif cost < min2:
+                min2 = cost
+        return min1,min2
+
+    def minCostII(self, costs):
+        n = len(costs)
+        if n == 0 :
+            return 0
+
+        k = len(costs[0])
+        if k == 0 :
+            return 0
+
+        dp = [costs[0][i] for i in range(k)]
+
+        for i in range(1,n):
+            min1,min2 = self.findTwoMins(dp)
+            for j in range(k):
+                if dp[j] == min1 :
+                    dp[j] = costs[i][j] + min2
+                else:
+                    dp[j] = costs[i][j] + min1
+        return min(dp)
+
+
+
+        

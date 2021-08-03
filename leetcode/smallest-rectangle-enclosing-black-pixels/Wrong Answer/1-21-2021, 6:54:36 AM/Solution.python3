@@ -1,0 +1,45 @@
+// https://leetcode.com/problems/smallest-rectangle-enclosing-black-pixels
+
+black = '1'
+white = '0'
+class Solution:
+    def validChildren(self,y,x):
+        moves = [(1,0),(-1,0),(0,1),(0,-1)]
+        children = []
+        for move in moves:
+            cand = (y+move[0],x+move[1])
+            if cand in self.visited:
+                continue
+            if cand[0] < 0 or cand[0] >= self.height or cand[1] < 0 or cand[1] >= self.width:
+                continue
+            children.append(cand)
+            
+        return children
+            
+        
+        
+    def minArea(self, image: List[List[str]], x: int, y: int) -> int:
+        self.height = len(image)
+        if not self.height:
+            return 0
+        self.width = len(image[0])
+        self.visited = set()
+        self.x1,self.x2 = self.width,-1
+        self.y1,self.y2 = self.height,-1
+        
+        self.queue = self.validChildren(x,y)
+        
+        while self.queue:
+            n = len(self.queue)
+            for i in range(n):
+                pixel = self.queue.pop(0)
+
+                self.x1,self.x2 = min(self.x1,pixel[1]),max(self.x2,pixel[1])
+                self.y1,self.y2 = min(self.y1,pixel[0]),max(self.y2,pixel[0])
+                self.visited.add(pixel)
+                self.queue += self.validChildren(*pixel)
+        return (self.x2 - self.x1) * (self.y2 - self.y1)
+                
+        
+        
+        

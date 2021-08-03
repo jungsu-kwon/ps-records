@@ -1,0 +1,55 @@
+// https://leetcode.com/problems/reverse-words-in-a-string-ii
+
+class Solution:
+    def find_word(self,s,start) : 
+        '''
+        return location of last non-white space character 
+        from left --> right if right == False
+        from right --> left if right == True
+        '''
+        for i,char in enumerate(s[start:]) :
+            if char == ' ' : 
+                return start + (i-1)
+        return -1 
+
+        
+    def reverseWords(self, s) :
+        """
+        Do not return anything, modify s in-place instead.
+        """
+
+        """
+
+        we will use constant memory
+        assuming O(len(word)) = c 
+
+        """
+        if not s : 
+            return 
+
+        s.reverse()
+        start = 0 
+
+        while start < len(s) : 
+            end = self.find_word(s,start)
+            if end == -1 : 
+                end = len(s) -1 
+            l,r = start,end
+            while l < r  : 
+                s[l],s[r] = s[r],s[l]
+                l += 1 
+                r -= 1 
+            start = end + 2 
+
+if __name__ == '__main__' : 
+    solver = Solution()
+    in_str = list('apple is enemy of samsung')
+    solver.reverseWords(in_str)
+    print(in_str)
+
+
+
+
+
+
+        

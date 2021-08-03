@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/closest-binary-search-tree-value
+
+class Solution:
+    def closestValue(self, root: TreeNode, target: float) -> int:
+        curNode: TreeNode = root
+        ans: Union[float, int] = float('inf')
+        while curNode:
+            ans = min(ans, curNode.val,
+                      key=lambda x: abs(x - target) )
+            curNode = curNode.left if target < curNode.val \
+                        else curNode.right
+        return ans
+            

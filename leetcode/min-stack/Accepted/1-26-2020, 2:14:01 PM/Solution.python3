@@ -1,0 +1,49 @@
+// https://leetcode.com/problems/min-stack
+
+class MinStack:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.n = 0 
+        self.stack = [] 
+        self.min = [] 
+
+    def push(self, x: int) -> None:
+        self.stack.append(x)
+        if self.n == 0 :
+            self.min.append(x)
+        else : 
+            prev_min = self.min[-1]
+            self.min.append(min(prev_min,x))
+        self.n += 1 
+        
+
+    def pop(self) -> None:
+        if self.n != 0 :
+            self.min.pop()
+            self.stack.pop()
+            self.n -= 1 
+        
+
+    def top(self) -> int:
+        if self.n == 0 : 
+            return -1 
+        else : 
+            return self.stack[-1]
+
+    def getMin(self) -> int:
+        if self.n == 0 :
+            return -1 
+        else : 
+            return self.min[-1]
+        
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(x)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()

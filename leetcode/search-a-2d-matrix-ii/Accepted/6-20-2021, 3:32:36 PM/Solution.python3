@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/search-a-2d-matrix-ii
+
+import bisect
+class Solution:        
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+
+        # set basic things
+        num_rows = len(matrix)
+        num_cols = len(matrix[0]) if matrix else 0
+        if not num_rows or not num_cols:
+            return False
+
+        end = num_cols
+        for row in matrix:
+            end = bisect.bisect_left(row,target)
+            if end != num_cols and row[end] == target:
+                return True
+
+        return False
+                
+            
+        
+        

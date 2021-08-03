@@ -1,0 +1,30 @@
+// https://leetcode.com/problems/perfect-squares
+
+class Solution:
+    def numSquares(self, n: int) -> int:
+        import math
+        maxi = int(math.sqrt(n))
+        self.cands = [i*i for i in range(1,maxi+1)]
+        self.queue = set([n])
+        self.visited = set([])
+        self.step = 0
+        while True : 
+            n = len(self.queue)
+            self.queue_ = set([])
+            if n == 0 :
+                break
+            for i in range(n) : 
+                num = self.queue.pop()
+                if num == 0 :
+                    return self.step 
+                
+                for cand in self.cands : 
+                    cur = num - cand
+                    if cur  >= 0  :  
+                        self.queue_.add(cur)
+                self.visited.add(num)
+            self.step += 1 
+            self.queue = self.queue_
+        return -1 
+
+        

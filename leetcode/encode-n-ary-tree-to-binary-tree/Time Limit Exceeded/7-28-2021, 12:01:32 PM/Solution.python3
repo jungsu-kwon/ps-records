@@ -1,0 +1,52 @@
+// https://leetcode.com/problems/encode-n-ary-tree-to-binary-tree
+
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children
+"""
+
+"""
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
+"""
+
+class Codec:
+    # Encodes an n-ary tree to a binary tree.
+    def encode(self, root: 'Node') -> TreeNode:
+        if not root: return None
+
+        treeRoot: TreeNode = TreeNode(root.val)
+        children: List[TreeNode] = [self.encode(child) 
+            for child in root.children]
+        
+        prevChild: TreeNode = children[0] if children else None
+        treeRoot.left = prevChild
+
+        for child in children:
+            prevChild.right = child
+            prevChild = child
+
+        return treeRoot
+	
+	# Decodes your binary tree to an n-ary tree.
+    def decode(self, data: TreeNode) -> 'Node':
+        if not data: 
+            return None
+
+        root: Node = Node(data.val)
+        children: List[Node] = []
+        curChild: TreeNode = data.left
+
+        while curChild:
+            children.append(self.decode(curChild))
+            curChild = curChild.right
+        
+        root.children = children
+        return root

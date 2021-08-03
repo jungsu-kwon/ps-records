@@ -1,0 +1,42 @@
+// https://leetcode.com/problems/longest-palindromic-substring
+
+class Solution:
+    def longestPalindrome(self, s):
+        list_str = list(s)
+        n = len(list_str)
+        if n == 0 : 
+            return '' 
+        elif n == 1 : 
+            return s[0]
+        
+        #note_char_center = [0 for i in range(n)]
+        #note_space_center = [0 for i in range(n-1)]
+        maxi = -1 
+        cand = ''
+        
+        # for char centre  
+        for i in range(n) : 
+            max_char = min(i-1,n-1-i)
+            for j in range(max_char) : 
+                left,right = list_str[i-j-1],list_str[i+j+1]
+                if left != right : 
+                    #note_char_center[i] = 2*j+1
+                    if maxi < 2*j + 1 :
+                        maxi = 2*j + 1 
+                        cand = list_str[i-j:i+j+1]
+                    break
+
+        # for space_center 
+        for i in range(n-1):
+            max_char = min(i+1,n-i-1)
+            for j in range(max_char) : 
+                left,right = list_str[i-j],list_str[i+j]
+                if left != right : 
+                    #note_space_center[i] = 2*(j+1)
+                    if 2*(j+1) > maxi : 
+                        maxi = 2*j 
+                        cand = list_str[i-j+1:i+j]
+                    break
+        return ''.join(cand)
+
+

@@ -1,0 +1,54 @@
+// https://leetcode.com/problems/sort-an-array
+
+class Solution:
+    def sortArray(self, nums) :
+        self.n = len(nums)        
+        self.nums = nums
+        step = 1 
+        left = 0
+        while step <=  self.n -1  : 
+            left = 0
+            while left < self.n -1 :
+                mid = left + step -1
+                right = left + 2*step -1 
+                right = min(self.n - 1 ,right)
+                if not  mid >= self.n :
+                    self.merge(left,mid,right)
+                left += 2*step
+            step *= 2 
+        return self.nums
+
+    def merge(self,l,m,r):
+        n_l = m - l + 1 
+        n_r = r - m 
+
+        left = [0] * n_l 
+        right = [0] * n_r
+
+        for i in range(n_l) : 
+            left[i] = self.nums[l+i] 
+        for i in range(n_r) : 
+            right[i] = self.nums[m+i+1]
+
+        cur,cur_l,cur_r = l,0,0
+
+        while cur_l < n_l and cur_r < n_r  :
+            
+            if left[cur_l] < right[cur_r] :
+                self.nums[cur] = left[cur_l]
+                cur_l += 1 
+            else : 
+                self.nums[cur] = right[cur_r]
+                cur_r += 1 
+            cur += 1 
+
+        while cur_l < n_l : 
+            self.nums[cur] = left[cur_l]
+            cur_l += 1 
+            cur += 1 
+
+        while cur_r < n_r : 
+            self.nums[cur] = right[cur_r]
+            cur_r += 1 
+            cur += 1 
+

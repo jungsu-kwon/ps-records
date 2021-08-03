@@ -1,0 +1,56 @@
+// https://leetcode.com/problems/maximum-xor-of-two-numbers-in-an-array
+
+from typing import List
+
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+
+class Solution:
+    def __init__(self):
+        self.root: TrieNode = TrieNode()
+        self.maxBits: int = 0
+
+    def getBinary(self, num:int) -> List[int]:
+        return [(num >> i) & 1  for i in range(self.maxBits)][::-1]
+
+
+
+    def findMaximumXOR(self, nums: List[int]) -> int:
+        self.maxBits = len(bin(max(nums))) - 2
+        ans: int = 0
+
+        for num in nums:
+            curNode: TrieNode = self.root
+            xorNode: TrieNode = self.root
+
+            bits: List[int] = self.getBinary(num)
+            xor: int = 0
+            for bit in bits:
+                xor <<= 1
+                # insert nodes
+                if not bit in curNode.children:
+                    curNode.children[bit] = TrieNode()
+                curNode = curNode.children[bit]
+
+                # compute xor
+                xorBit: int = 1 - bit
+                if xorBit in xorNode.children:
+                    xor += 1
+                    xorNode = xorNode.children[xorBit]
+                else:
+                    xorNode = xorNode.children[1 - xorBit]
+
+            ans = max(xor,ans)
+        return ans
+
+
+
+            
+
+
+        
+
+            
+            
+        

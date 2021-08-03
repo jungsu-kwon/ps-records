@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/find-k-th-smallest-pair-distance
+
+from collections import defaultdict, Counter
+from typing import List, Dict
+
+class Solution:
+    def smallestDistancePair(self, nums: List[int], k: int) -> int:
+        diffs: Dict[int,int] = defaultdict(int)
+        counter = Counter(nums)
+
+        for num1, count1 in counter.items():
+            for num2, count2 in counter.items():
+                diff: int = abs(num1 - num2)
+                if num1 == num2:
+                    diffs[diff] += count1 * (count1 - 1) / 2
+                else:
+                    diffs[diff] += count1 * count2
+
+        rank: int = 0
+        curDiff: int = 0
+        while True:
+            rank += diffs[curDiff]
+            if rank >= k:
+                return curDiff
+            curDiff += 1
+

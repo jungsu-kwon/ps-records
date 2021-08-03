@@ -1,0 +1,23 @@
+// https://leetcode.com/problems/evaluate-reverse-polish-notation
+
+class Solution:
+    def evalRPN(self, tokens) :
+        self.stack = [] 
+        self.symbols = list('+-/*')
+
+        for token in tokens : 
+            if token in self.symbols : 
+                b = self.stack.pop()
+                a = self.stack.pop()
+
+                if token == '+' :
+                    self.stack.append(a+b)
+                elif token == '-' : 
+                    self.stack.append(a-b)
+                elif token == '*' : 
+                    self.stack.append(a*b)
+                elif token == '/' : 
+                    self.stack.append(int(a/b))
+            else : 
+                self.stack.append(int(token))
+        return self.stack.pop()

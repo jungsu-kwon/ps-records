@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/zigzag-conversion
+
+class Solution:
+    def convert(self, s, numRows):
+        import math
+        n = len(s)
+        if n == 0 : 
+            return ''
+        if numRows <= 1 : 
+            return s 
+            
+        split_size = 2*numRows-2
+        num_splits = int(math.ceil(n / float(split_size)))
+        ans_strs = ['' for i in range(numRows)]
+        for i in range(num_splits):
+            split = s[i*split_size : min((i+1) * split_size,n)]
+            split_size = len(split)
+            down = split[:min(split_size,numRows-1)]
+            up = split[numRows-1:]
+            for i,char in enumerate(down) : 
+                ans_strs[i]+=char
+            for i,char in enumerate(up):
+                ans_strs[numRows-1-i] += char
+        ans = ''
+        for row in ans_strs: 
+            ans += ''.join(row)
+        return ans
+

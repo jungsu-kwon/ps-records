@@ -1,0 +1,49 @@
+// https://leetcode.com/problems/search-a-2d-matrix-ii
+
+class Solution:
+    def searchMatrix(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        self.max_i = 0
+        self.max_j = 0 
+        self.cur_i = 0
+        self.cur_j = 0 
+
+        if len(matrix) == 0 :
+            return False
+        
+        self.num_rows = len(matrix)
+        self.num_cols = len(matrix[0])
+        for i in range(self.num_rows) : 
+            if matrix[i][0] >= target : 
+                if matrix[i][0] == target : 
+                    return True
+                self.max_i = i 
+                break
+        for j in range(self.num_cols):
+            if matrix[0][j] >= target : 
+                if matrix[0][j] == target :
+                    return True
+                self.max_j = j
+                break
+        
+        for i in range(self.max_i) : 
+            for j in range(self.max_j) : 
+                if matrix[i][j] == target : 
+                    return True
+        return False
+            
+            
+                    
+                
+                
+                
+                
+                
+                
+                
+
+        

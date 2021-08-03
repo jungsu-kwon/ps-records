@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/3sum-smaller
+
+class Solution:
+    def threeSumSmaller(self, nums, target):
+        sortedNums = sorted(nums)
+        ans = 0
+
+        if not nums :
+            return ans
+
+        for i,num in enumerate(sortedNums):
+            l,r = i+1, len(nums)-1
+            while l < r:
+                if num + sortedNums[l] + sortedNums[r] >= target:
+                    r -= 1 
+                else:
+                    ans += r - l
+                    l += 1
+        return ans
+
+
+

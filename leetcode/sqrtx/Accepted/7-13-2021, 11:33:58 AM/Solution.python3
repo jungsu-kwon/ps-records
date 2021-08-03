@@ -1,0 +1,17 @@
+// https://leetcode.com/problems/sqrtx
+
+class Solution:
+    def mySqrt(self, x: int) -> int:
+        left: int = 0
+        right: int = x
+
+        while left <= right:
+            mid: int = (left + right) // 2
+            square: int = mid * mid
+            if square == x:
+                return mid
+            elif square < x:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return right

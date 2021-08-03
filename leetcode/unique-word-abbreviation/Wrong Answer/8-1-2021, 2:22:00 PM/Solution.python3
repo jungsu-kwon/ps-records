@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/unique-word-abbreviation
+
+from typing import DefaultDict, List
+from collections import defaultdict
+
+class ValidWordAbbr:
+    def getAbbr(self,word: str) -> str:
+        if len(word) <= 2: return word
+        return f"{word[0]}{len(word)-2}{word[-1]}"
+
+    def __init__(self, dictionary: List[str]):
+        self.abbrs: DefaultDict[str,List[str]] = defaultdict(list)
+        for word in dictionary:
+            self.abbrs[self.getAbbr(word)].append(word)
+
+        
+
+    def isUnique(self, word: str) -> bool:
+        if (abbr := self.getAbbr(word)) in self.abbrs:
+            return len(self.abbrs[abbr]) == 1 and self.abbrs[abbr][0] == word
+        return True
+
+# Your ValidWordAbbr object will be instantiated and called as such:
+# obj = ValidWordAbbr(dictionary)
+# param_1 = obj.isUnique(word)

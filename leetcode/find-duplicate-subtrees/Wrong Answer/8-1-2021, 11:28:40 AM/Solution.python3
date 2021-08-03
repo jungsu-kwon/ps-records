@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/find-duplicate-subtrees
+
+from typing import List, Dict
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+class Solution:
+    def treeHash(self, root: TreeNode) -> str:
+        hashVal: str = ""
+        if not root: return hashVal
+
+        if leftHash := self.treeHash(root.left): 
+            hashVal = leftHash
+            hashVal += "," + str(root.val)
+        else: hashVal = str(root.val)
+
+        if rightHash := self.treeHash(root.right):
+            hashVal += "," + rightHash
+        
+        if hashVal in self.hash:
+            self.ans[hashVal] = root
+
+        self.hash[hashVal] = root
+        return hashVal
+
+        
+
+
+    def findDuplicateSubtrees(self, root: TreeNode) -> List[TreeNode]:
+        self.hash: Dict[str,TreeNode] = {}
+        self.ans: Dict[str,TreeNode] = {}
+        self.treeHash(root)
+        return self.ans.values()

@@ -1,0 +1,83 @@
+// https://leetcode.com/problems/serialize-and-deserialize-n-ary-tree
+
+from typing import List
+
+# Definition for a Node.
+class Node(object):
+    def __init__(self, val=None, children=None):
+        self.val = val
+        self.children = children
+
+class Codec:
+    def serialize(self, root: 'Node') -> str:
+        """Encodes a tree to a single string.
+        
+        :type root: Node
+        :rtype: str
+        """
+        if not root:
+            return "null"
+
+        ans: str = ""
+        bfs: List['Node'] = [[root]]
+
+        while bfs:
+            nextBfs: List['Node'] = []
+
+            for children in bfs:
+                if not children:
+                    ans += "null,"
+                    continue
+
+                for child in children:
+                    ans += f"{child.val},"
+                    nextBfs.append(child.children)
+                ans += "null,"
+
+            ans += "level,"
+            bfs = nextBfs
+
+        # strip trailing ,
+        return ans[:-1]
+	
+    def deserialize(self, data: str) -> 'Node':
+        """Decodes your encoded data to tree.
+        
+        :type data: str
+        :rtype: Node
+        """
+        # print(data)
+        if not data:
+            return None
+        
+        levels: List[List[str]] = [[val for val in level.split(',') if val]
+            for level in data.split('level')]
+        
+        root: 'Node' = Node(int(levels[0][0]))
+        prevLevel: List['Node'] = [root]
+
+        for level in levels[1:]:
+            if not level:
+                continue
+                
+            parentInd: int = 0
+            curParent: 'Node' = prevLevel[parentInd]
+            curParent.children = []
+            levelNodes: List['Node'] = []
+            # print(prevLevel)
+
+            for val in level:
+                if val == 'null':
+                    parentInd += 1
+                    
+                    if parentInd < len(prevLevel):
+                        curParent = prevLevel[parentInd]
+                    else:
+                        curParent = None
+                else:
+                    child: 'Node' = Node(int(val),children=[])
+                    curParent.children.append(child)
+                    levelNodes.append(child)
+            prevLevel = levelNodes
+        return root
+                     

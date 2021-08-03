@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/plus-one
+
+class Solution:
+    def plusOne(self, digits: List[int]) -> List[int]:
+        carry: int = 1
+        for i in range(len(digits)):
+            if carry == 0: break
+
+            ind: int = len(digits) - 1 - i
+            curDigit: int = digits[ind] + carry
+            if curDigit == 10: 
+                digits[ind] = 0
+                carry = 1
+            else: 
+                digits[ind] = curDigit
+                carry = 0
+
+        return digits

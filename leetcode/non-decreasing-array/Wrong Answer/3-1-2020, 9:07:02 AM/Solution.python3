@@ -1,0 +1,28 @@
+// https://leetcode.com/problems/non-decreasing-array
+
+class Solution:
+    def checkPossibility(self,nums):
+        num_decrease = 0 
+        prev = nums[0]
+        
+        n = len(nums)
+        
+        for i,num in enumerate(nums):
+            nex = nums[i+1] if i + 1 < n else num
+            if (prev > num and num>nex) : 
+                return False
+            elif prev > num or nex < num:
+                num_decrease += 1 
+                prev = prev
+                if num_decrease >1 : 
+                    return False
+                continue
+                
+            if num_decrease >1 :    
+                return False
+            
+            prev = num
+        return num_decrease <= 1 
+
+
+

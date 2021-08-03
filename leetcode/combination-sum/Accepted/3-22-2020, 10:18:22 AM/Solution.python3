@@ -1,0 +1,25 @@
+// https://leetcode.com/problems/combination-sum
+
+class Solution():
+    def combinationSum(self,candidates,target):
+        self.combinations = {}
+        self.cands = candidates  
+        res = self.helper(target)
+        ret = list(set([tuple(sorted(res_)) for res_ in res]))
+        return ret 
+    def helper(self,target):
+        if target in self.combinations : 
+            return self.combinations[target]
+        ret = []
+        if target <=0 : 
+            return ret
+        for cand in self.cands :
+            if cand < target : 
+                dp_res = self.helper(target-cand)
+                ret += [(cand,) + res for res in dp_res]
+            elif cand == target : 
+                ret += [(cand,)]
+        self.combinations[target] = ret 
+        return ret
+        
+

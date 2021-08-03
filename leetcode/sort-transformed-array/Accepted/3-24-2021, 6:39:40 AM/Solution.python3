@@ -1,0 +1,60 @@
+// https://leetcode.com/problems/sort-transformed-array
+
+from typing import List,Tuple
+
+class Solution:
+    def split_list(self,nums:List[int],a,b,c) -> Tuple[List[int]]:
+        if a != 0:
+            thresh = float(-b / (2.0*a))
+            l1,l2 = [num for num in nums if num < thresh],[num for num in nums if num >= thresh]
+            if a < 0:
+                return l1,l2[::-1]
+            return l1[::-1],l2
+            
+        elif b != 0:
+            if b < 0:
+                return nums[::-1],[]
+            return nums,[]
+        else:
+            return nums,[]
+
+    def apply_quad(self,num:int,a:int,b:int,c:int) -> int:
+        return c + (b * num) + (a*num*num)
+
+    def merge_lists(self,asc1 : List[int], asc2 : List[int]) -> List[int]:
+        n = len(asc1) + len(asc2)
+        ans = [-1 for i in range(n)]
+        ind1,ind2 = 0,0
+
+        while ind1 != len(asc1) and ind2 != len(asc2):
+            left,right = asc1[ind1],asc2[ind2]
+            if left < right:
+                ans[ind1+ind2] = left
+                ind1 += 1
+            else:
+                ans[ind1+ind2] = right
+                ind2 += 1
+        if ind1 == len(asc1):
+            for i in range(ind2,len(asc2)):
+                ans[ind1+i] = asc2[i]
+        else:
+            for i in range(ind1,len(asc1)):
+                ans[ind2+i] = asc1[i]
+        return ans
+    
+
+            
+        
+    def sortTransformedArray(self, nums: List[int], a: int, b: int, c: int) -> List[int]:
+        l1,l2 = self.split_list(nums,a,b,c)
+        l1 = [self.apply_quad(num,a,b,c) for num in l1]
+        l2 = [self.apply_quad(num,a,b,c) for num in l2]
+        
+        if not l2:
+            return l1
+        return self.merge_lists(l1,l2)
+
+
+
+        
+

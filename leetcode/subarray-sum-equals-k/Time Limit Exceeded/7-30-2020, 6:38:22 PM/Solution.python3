@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/subarray-sum-equals-k
+
+class Solution:
+    def subarraySum(self, nums, k):
+        count = 0
+        n = len(nums)
+        for i in range(n):
+            cur = sum(nums[:i+1])
+            if cur == k : 
+                count += 1 
+            for j in range(n-i-1):
+                cur += nums[j+i+1] - nums[j]
+                if cur == k:
+                    count += 1 
+        return count
+                
+
+

@@ -1,0 +1,22 @@
+// https://leetcode.com/problems/find-all-anagrams-in-a-string
+
+class Solution():
+    def match(self,counter_s,counter_p):
+        for k in counter_s.keys():
+            if not (k in counter_p and counter_s[k] == counter_p[k]) :
+                return False
+        return True
+
+    def findAnagrams(self,p,s):
+        from collections import Counter
+        ans = [] 
+        s_counter,p_counter= Counter(s),Counter(p[:len(s)])
+        if len(s) > len(p):
+            return []
+
+        for i,char in enumerate(p[len(s):]):
+            if self.match(s_counter,p_counter):
+                ans.append(i)
+            p_counter[p[i]] -= 1 
+            p_counter[char] += 1 
+        return ans

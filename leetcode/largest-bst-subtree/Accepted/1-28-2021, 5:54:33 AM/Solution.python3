@@ -1,0 +1,44 @@
+// https://leetcode.com/problems/largest-bst-subtree
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def helper(self,root):
+        '''
+        returns isBST,treeSize,minVal,maxVal
+        '''
+        isBST,treeSize,minVal,maxVal = True,1,root.val,root.val
+        if root.left:
+            isLeftBST,leftSize,minLeft,maxLeft = self.helper(root.left)
+            if not isLeftBST or maxLeft >= root.val :
+                isBST = False
+            treeSize += leftSize
+            minVal = minLeft
+
+        if root.right:
+            isRightBST, rightSize, minRight, maxRight = self.helper(root.right)
+            if not isRightBST or minRight <= root.val:
+                isBST = False
+            treeSize += rightSize
+            maxVal = maxRight
+
+        if isBST:
+            self.treeSize =  max(self.treeSize,treeSize)
+        return isBST,treeSize,minVal,maxVal
+
+            
+
+    def largestBSTSubtree(self, root: TreeNode) -> int:
+        self.treeSize = 0
+        if not root:
+            return 0 
+        self.helper(root)
+        return self.treeSize
+        
+
+        
+        

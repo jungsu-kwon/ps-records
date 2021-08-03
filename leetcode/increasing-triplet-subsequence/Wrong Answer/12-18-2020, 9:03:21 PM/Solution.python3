@@ -1,0 +1,26 @@
+// https://leetcode.com/problems/increasing-triplet-subsequence
+
+class Solution:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+
+        if not nums : 
+            return False
+
+        minis = [0 for i in range(len(nums))]
+        maxis = [0 for i in range(len(nums))]
+
+        mini = nums[0]
+        for i,num in enumerate(nums) : 
+            minis[i] = min(mini,num)
+
+        maxi = nums[-1]
+        for i,num in enumerate(nums[::-1]):
+            maxis[len(nums)-1-i] = max(maxi,num)
+
+         
+        for i,num in enumerate(nums) :
+            if num > minis[i] and maxis[i] > num : 
+                return True
+        return False
+
+        

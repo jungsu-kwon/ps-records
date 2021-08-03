@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/find-k-th-smallest-pair-distance
+
+from typing import List
+import bisect
+
+class Solution:
+    def smallestDistancePair(self, nums: List[int], k: int) -> int:
+        diffs: List[int] = []
+        for i, num1 in enumerate(nums):
+            for j, num2 in enumerate(nums[i+1:]):
+                bisect.insort_left(diffs,abs(num1-num2))
+        
+        return diffs[k-1]

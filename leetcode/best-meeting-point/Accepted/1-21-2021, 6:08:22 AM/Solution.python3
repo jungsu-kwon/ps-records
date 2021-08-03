@@ -1,0 +1,39 @@
+// https://leetcode.com/problems/best-meeting-point
+
+import math
+class Solution:
+    def bestLoc(self,axis=0):
+        maxi = self.height if axis == 0 else self.width
+        minDist = None
+
+        for i in range(maxi):
+            dist = 0 
+            for coord in self.coords:
+                dist += abs(i-coord[axis])
+            if not minDist or dist < minDist:
+                minDist = dist
+        return minDist
+                
+
+
+
+    def minTotalDistance(self, grid: List[List[int]]) -> int:
+        self.grid = grid
+        self.height= len(grid)
+        if not self.height:
+            return -1
+        self.width = len(grid[0])
+
+        self.coords = []
+        for i in range(self.height):
+            for j in range(self.width):
+                if self.grid[i][j] == 1 :
+                    self.coords.append((i,j))
+        return self.bestLoc(axis=0) + self.bestLoc(axis=1)
+
+
+        
+
+
+        
+        

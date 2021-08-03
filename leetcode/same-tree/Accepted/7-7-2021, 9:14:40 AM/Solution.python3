@@ -1,0 +1,37 @@
+// https://leetcode.com/problems/same-tree
+
+from collections import deque
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+class Solution:
+    def is_same(self,p : TreeNode,q : TreeNode) -> bool:
+        if p is None and q is None:
+            return True
+        if p is None or q is None:
+            return False
+        if p.val == q.val:
+            return True
+        return False
+
+    def isSameTree(self, p: TreeNode, q: TreeNode) -> bool:
+        queue = deque([(p,q)])
+
+        while queue:
+            p,q = queue.popleft()
+            if not self.is_same(p,q):
+                return False
+            if p is None:
+                continue
+
+            queue.append((p.left,q.left))
+            queue.append((p.right,q.right))
+            
+            
+        return True
+
+        

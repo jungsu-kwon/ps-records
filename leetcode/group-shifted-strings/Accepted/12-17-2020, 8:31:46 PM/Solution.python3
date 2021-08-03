@@ -1,0 +1,19 @@
+// https://leetcode.com/problems/group-shifted-strings
+
+class Solution:
+    def get_hash_key(self,string):
+        return tuple((ord(char) - ord(string[0])) % 26  for char in string)
+
+    def groupStrings(self, strings):
+        ans_dict = {}
+        for string in strings : 
+            hash_key = self.get_hash_key(string)
+            
+            if hash_key in  ans_dict : 
+                ans_dict[hash_key].append( string)
+            else : 
+                ans_dict[hash_key] = [string]
+        return [v for v in ans_dict.values()]
+
+
+        

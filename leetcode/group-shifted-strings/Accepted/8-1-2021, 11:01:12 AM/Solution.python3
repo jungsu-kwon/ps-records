@@ -1,0 +1,20 @@
+// https://leetcode.com/problems/group-shifted-strings
+
+from collections import defaultdict
+from string import ascii_lowercase
+from typing import List, Dict, Tuple
+
+class Solution:
+    def groupStrings(self, strings: List[str]) -> List[List[str]]:
+        alpha2Int: Dict[str,int] = {ch:i for i,ch in enumerate(ascii_lowercase)}
+        numAlphas: int = len(ascii_lowercase)
+
+        def stringHash(string: str) ->  Tuple[int]:
+            return tuple([(alpha2Int[ch] - alpha2Int[string[0]]) % numAlphas 
+                for ch in string])
+        
+        groups: Dict[Tuple[int],List[str]] = defaultdict(list)
+        for string in strings:
+            groups[stringHash(string)].append(string)
+
+        return groups.values()

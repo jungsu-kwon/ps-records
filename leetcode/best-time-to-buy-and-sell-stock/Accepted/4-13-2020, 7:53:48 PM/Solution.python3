@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/best-time-to-buy-and-sell-stock
+
+class Solution:
+    def maxProfit(self,prices):
+        n = len(prices)
+        if n == 0 : 
+            return 0 
+        mini,maxi,max_profit = prices[-1],prices[-1],0
+        for i in range(n-1,-1,-1):
+            max_profit = max(maxi-prices[i],max_profit)
+            maxi = max(prices[i],maxi)
+        return max_profit
+

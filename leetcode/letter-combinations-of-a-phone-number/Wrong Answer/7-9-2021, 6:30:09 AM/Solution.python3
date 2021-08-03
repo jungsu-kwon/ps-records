@@ -1,0 +1,29 @@
+// https://leetcode.com/problems/letter-combinations-of-a-phone-number
+
+from typing import List
+class Solution:
+    def init(self):
+        self.mapping = {}
+        self.mapping["2"] = "abc"
+        self.mapping["3"] = "def"
+        self.mapping["4"] = "ghi"
+        self.mapping["5"] = "jkl"
+        self.mapping["6"] = "mno"
+        self.mapping["7"] = "pqrs"
+        self.mapping["8"] = "tuv"
+        self.mapping["9"] = "wxyz"
+
+    def helper(self,digits,first=0) -> List[str]:
+        if first == len(digits):
+            return [""]
+        
+        ans = []
+        for char in self.mapping[digits[first]]:
+            for combi in self.helper(digits,first=first+1):
+                ans.append(char + combi)
+        return ans
+
+    def letterCombinations(self, digits: str) -> List[str]:
+        self.init()
+        return self.helper(digits)
+        

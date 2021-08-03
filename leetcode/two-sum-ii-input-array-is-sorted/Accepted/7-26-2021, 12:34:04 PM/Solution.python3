@@ -1,0 +1,18 @@
+// https://leetcode.com/problems/two-sum-ii-input-array-is-sorted
+
+from typing import List, Dict
+from collections import defaultdict
+
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        numDict: Dict[int, int] = defaultdict(list)
+
+        for i,num in enumerate(numbers,start=1):
+            otherNum: int = target - num
+
+            if otherNum in numDict:
+                return [numDict[otherNum],i]
+            
+            numDict[num] = i
+        
+        return [-1,-1]

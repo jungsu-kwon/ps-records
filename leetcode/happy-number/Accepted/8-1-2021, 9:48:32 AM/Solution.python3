@@ -1,0 +1,16 @@
+// https://leetcode.com/problems/happy-number
+
+from typing import Set, List
+
+class Solution:
+    def helper(self,n: int) -> bool:
+        if n in self.visited: return False
+        self.visited.add(n)
+        digitSum: List[int] = sum([int(ch) * int(ch) for ch in str(n)])
+        if digitSum == 1: return True
+        return self.helper(digitSum)
+
+        
+    def isHappy(self, n: int) -> bool:
+        self.visited: Set[int] = set()
+        return self.helper(n)

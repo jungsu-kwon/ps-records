@@ -1,0 +1,85 @@
+// https://leetcode.com/problems/regular-expression-matching
+
+class Solution:
+    def counter(self,arr) : 
+        counted = [] 
+        prev = None 
+        for i,char in enumerate(arr):
+            if char == '*' : 
+                if prev == None : 
+                    return False
+                else : 
+                    counted[-1][1] = -1 
+            else : 
+                if prev == char : 
+                    if not counted[-1][1] == -1 : 
+                        counted[-1][1] += 1 
+                else : 
+                    counted.append([char,1])
+                    prev = char
+        return counted
+
+    def isMatch(self, s,p):
+        if len(p) == 0 : 
+            if len(s) != 0 : 
+                return False
+        
+        s_count = self.counter(s)
+        p_count = self.counter(p)
+        ans = self.helper(s_count,p_count)
+        return ans
+    def helper(self,s_count,p_count):
+        s_count = s_count.copy()
+        p_count = p_count.copy()
+        print('s',s_count)
+        print('p',p_count)
+        if s_count and p_count : 
+            s_char,s_freq = s_count[0]
+            p_char,p_freq = p_count[0]
+            if p_char == '.' and p_freq == -1: 
+                return self.helper(s_count[1:],p_count) or self.helper(s_count[1:],p_count[1:])
+            elif p_char == '.' or p_char == s_char : 
+                if p_freq == -1 : 
+                    ans = self.helper(s_count[1:],p_count[1:])
+                    if ans : 
+                        return ans
+                    for i in range(s_freq) : 
+                        s_count[0][1] -= 1
+                        ans = self.helper(s_count,p_count[1:])
+                        if ans : 
+                            return True
+                    return False
+                        
+
+                elif s_freq == p_freq : 
+                    return self.helper(s_count[1:],p_count[1:])
+                elif s_freq > p_freq : 
+                    s_count[0][1] -= p_freq 
+                    return self.helper(s_count,p_count[1:])
+                elif s_freq < p_freq : 
+                    return False
+            elif p_char != s_char : 
+                if p_freq == - 1 : 
+                    return self.helper(s_count,p_count[1:])
+                else : 
+                    return False
+
+        elif s_count : 
+            return False
+        elif p_count : 
+            for i in range(len(p_count)):
+                p_char,p_freq = p_count[i]
+                if p_freq != -1 : 
+                    return False
+            return True
+        else : 
+            return True
+                
+                
+
+
+
+
+
+
+

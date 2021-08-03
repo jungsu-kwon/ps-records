@@ -1,0 +1,48 @@
+// https://leetcode.com/problems/find-the-celebrity
+
+# The knows API is already defined for you.
+# return a bool, whether a knows b
+# def knows(a: int, b: int) -> bool:
+
+class Solution:
+    def findCelebrity(self, n: int) -> int:
+        i = 0
+        cand = -1
+        while i < n:
+            j = i  + 1
+            while j < n and not knows(i,j):
+                j += 1
+                
+
+            if j == n:
+                cand = i
+                break
+            i += 1
+            
+        if cand == -1 :
+            return -1
+        
+        for i in range(n):
+            if i == cand:
+                continue
+
+            if not knows(i,cand):
+                return -1
+
+            if knows(cand,i):
+                return -1
+            
+        return cand
+
+
+                
+
+
+
+
+
+            
+
+
+
+        

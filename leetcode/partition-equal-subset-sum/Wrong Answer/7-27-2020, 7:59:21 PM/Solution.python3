@@ -1,0 +1,24 @@
+// https://leetcode.com/problems/partition-equal-subset-sum
+
+class Solution():
+    def canPartition(self,nums):
+        from collections import Counter
+        counter = Counter(nums)
+        nums_sum = sum(nums)
+        if nums_sum % 2 == 1 : 
+            return False
+        return self.search(counter,nums_sum//2)
+
+    def search(self,counter,target):
+        if target == 0 : 
+            return True
+        for key,v in counter.items():
+            if v != 0 and  v <= target : 
+                counter[key] -= 1 
+                if self.search(counter,target-key):
+                    return True
+                counter[key] += 1 
+        return False
+
+
+

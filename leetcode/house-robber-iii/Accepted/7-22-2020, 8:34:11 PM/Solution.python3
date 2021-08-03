@@ -1,0 +1,13 @@
+// https://leetcode.com/problems/house-robber-iii
+
+class Solution:
+    def rob(self, root):
+        return max(self.value(root))
+    def value(self,root):
+        if root == None : 
+            return 0,0
+        left_val = self.value(root.left)
+        right_val = self.value(root.right)
+        return (max(left_val) + max(right_val),
+                left_val[0] + right_val[0] + root.val)
+

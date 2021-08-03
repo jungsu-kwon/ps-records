@@ -1,0 +1,36 @@
+// https://leetcode.com/problems/open-the-lock
+
+class Solution:
+    def openLock(self, deadends, target ) :
+        self.queue = ['0000'] 
+        self.visited = set([])
+        self.step = 0
+        
+        while True : 
+            n = len(self.queue)
+            if n == 0 : 
+                break
+            for i in range(n) : 
+                num = self.queue.pop(0)
+                if num in self.visited or num in deadends:
+                    continue
+                if num == target : 
+                    return self.step
+                for i in range(4):
+                    temp_pos = list(num)
+                    temp_neg = list(num)
+                    temp_pos[i] = str((int(temp_pos[i])+1)%10)
+                    temp_neg[i] = str((int(temp_neg[i])-1)%10)
+                    pos = ''.join(temp_pos)
+                    neg = ''.join(temp_neg)
+                    if pos not in self.visited : 
+                        self.queue.append(pos)
+                    if neg not in self.visited : 
+                        self.queue.append(neg)
+                self.visited.add(num)
+                    
+            self.step += 1  
+        return -1  
+        
+        
+        

@@ -1,0 +1,27 @@
+// https://leetcode.com/problems/closest-binary-search-tree-value
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def closestValue(self, root: TreeNode, target: float) -> int:
+        node = root
+        closest = node.val
+        diff = abs(closest-target)
+
+        while node:
+            # update closest int
+            if abs(node.val - target) < diff:
+                closest = node.val
+                diff = abs(closest-target)
+
+            if target < node.val :
+                node = node.left
+            else :
+                node = node.right
+        return closest
+
+        

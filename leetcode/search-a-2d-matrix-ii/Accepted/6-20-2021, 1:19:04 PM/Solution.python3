@@ -1,0 +1,34 @@
+// https://leetcode.com/problems/search-a-2d-matrix-ii
+
+class Solution:
+    def searchMatrix(self, matrix, target):
+        """
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        def helper(matrix, i, j, k, l, target):
+            if i == j and k == l:
+                return matrix[i][k] == target
+            elif i <= j and k <= l:
+                x = (j - i) // 2 + i
+                y = (l - k) // 2 + k
+                if matrix[x][y] == target:
+                    return True
+                elif matrix[x][y] > target:
+                    return helper(matrix, i, j, k, y-1, target) or helper(matrix, i, x-1, k, l, target)
+                else:
+                    return helper(matrix, i, x, y+1, l, target) or helper(matrix, x+1, j, k, l, target)
+            else:
+                return False
+        if not matrix:
+            return False
+        if not matrix[0]:
+            return False
+		# Check boundy
+        if matrix[0][0] > target:
+            return False
+        m, n = len(matrix)-1, len(matrix[0])-1
+        if matrix[m][n] < target:
+            return False
+        return helper(matrix, 0, m, 0, n, target)
